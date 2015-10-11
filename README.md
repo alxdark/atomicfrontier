@@ -1,6 +1,7 @@
 # Atomic Frontier
 A procedural content generation library for the Atomic Frontier set of post-apocalyptic games
 
+[![Build Status](https://travis-ci.org/alxdark/atomicfrontier.svg?branch=master)](https://travis-ci.org/alxdark/atomicfrontier)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 (Commitizen set up to use the [AngularJS commit guidelines](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#-git-commit-guidelines "AngularJS commit guidelines"))
