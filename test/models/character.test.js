@@ -60,7 +60,7 @@ describe("ion.models.Character", function() {
 
         var ch = new Character({gender: "female", name: name, age: 18,
             appearance: ["Has a scar on her left cheek"], inventory: inv});
-        
+
         expect(ch.toString()).to.equal('Mabel Grange. Age 18. Has a scar on her left cheek. Possessions: 3 orangeses.');
         expect(ch.toHTML()).to.equal('<p>Mabel Grange. Age 18. Has a scar on her left cheek. </p><div class="more"><p></p><p>Possessions: 3 orangeses.</p></div>');
     });

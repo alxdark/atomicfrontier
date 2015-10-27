@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 var Name = require('../../src/models/name');
 
-xdescribe("atomic.models.Name", function() {
+describe("atomic.models.Name", function() {
     var name;
     beforeEach(function() {
         name = new Name({given: "Mary", family: "Johnson"});
