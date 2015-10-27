@@ -1,5 +1,5 @@
 var ion = require('../ion');
-var Model = require('./Model');
+var Model = require('./model');
 var Builder = require('../builder');
 
 module.exports = ion.define(Model, {
