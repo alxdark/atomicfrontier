@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var Weather = require('../../src/models/Weather');
+var Weather = require('../../src/models/weather');
 
 describe("atomic.models.Weather", function() {
     it("behaves like a Model subclass", function() {
