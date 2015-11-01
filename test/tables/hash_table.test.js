@@ -1,7 +1,7 @@
 var HashTable = require('../../src/tables/hash_table');
 var expect = require('chai').expect;
 
-describe("ion.tables.HashTable", function() {
+describe("atomic.tables.HashTable", function() {
 
     var table = null;
     beforeEach(function() {

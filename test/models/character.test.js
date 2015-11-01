@@ -3,7 +3,7 @@ var Character = require('../../src/models/character');
 var Name = require('../../src/models/name');
 var Bag = require('../../src/models/bag');
 
-describe("ion.models.Character", function() {
+describe("atomic.models.Character", function() {
     var boy, girl;
     beforeEach(function() {
         boy = new Character({gender: "male"});

@@ -1,35 +1,37 @@
 {
-    "name": "atomicfrontier",
-    "version": "0.1.0",
-    "description": "Procedural content generation library for the Atomic Frontier family of games",
-    "main": "src/atomic.js",
-    "scripts": {
-        "commit": "git cz",
-        "test": "mocha --recursive",
-        "test:watch": "mocha -w"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/alxdark/atomicfrontier"
-    },
-    "keywords": [
-        "procedural",
-        "content",
-        "generation",
-        "rpg",
-        "games",
-        "post-apocalyptic"
-    ],
-    "author": "Alx Dark <alxdark@gmail.com> (http://alxdark.com/)",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/alxdark/atomicfrontier/issues"
-    },
-    "homepage": "https://github.com/alxdark/atomicfrontier",
-    "devDependencies": {
-        "chai": "3.3.0",
-        "mocha": "2.3.3"
-    },"czConfig": {
-        "path": "node_modules/cz-conventional-changelog"
-    }
+  "name": "atomicfrontier",
+  "version": "0.1.0",
+  "description": "Procedural content generation library for the Atomic Frontier family of games",
+  "main": "src/atomic.js",
+  "scripts": {
+    "commit": "git cz",
+    "test": "mocha --recursive",
+    "test:watch": "mocha -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alxdark/atomicfrontier"
+  },
+  "keywords": [
+    "procedural",
+    "content",
+    "generation",
+    "rpg",
+    "games",
+    "post-apocalyptic"
+  ],
+  "author": "Alx Dark <alxdark@gmail.com> (http://alxdark.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alxdark/atomicfrontier/issues"
+  },
+  "homepage": "https://github.com/alxdark/atomicfrontier",
+  "devDependencies": {
+    "chai": "3.3.0",
+    "mocha": "2.3.3",
+    "sinon": "1.17.2"
+  },
+  "czConfig": {
+    "path": "node_modules/cz-conventional-changelog"
+  }
 }

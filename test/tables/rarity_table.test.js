@@ -4,7 +4,7 @@ require('../seedrandom');
 var ion = require('../../src/ion');
 var RarityTable = require('../../src/tables/rarity_table');
 
-describe("ion.tables.RarityTable", function() {
+describe("atomic.tables.RarityTable", function() {
 
     function calculatePercentageOfResults(table) {
         var common = 0, uncommon = 0, rare = 0;

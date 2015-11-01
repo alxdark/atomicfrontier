@@ -3,7 +3,7 @@ var Model = require('./model');
 
 module.exports = ion.define(Model, {
     /**
-     * A weather forecast for a day in a month.
+     * A weather.js forecast for a day in a month.
      *
      * @class ion.models.Weather
      * @extends ion.models.Model

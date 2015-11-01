@@ -1,8 +1,8 @@
 var expect = require('chai').expect;
+var Character = require('../../src/models/character');
 var Family = require('../../src/models/family');
 
-// TODO: This depends on characters, and on atomic.createCharacter, yikes!
-xdescribe("ion.models.Family", function() {
+describe("atomic.models.Family", function() {
     var f;
     beforeEach(function() {
         f = new Family();
@@ -21,36 +21,36 @@ xdescribe("ion.models.Family", function() {
         expect(f.childCount).to.equal(3);
     });
     it("selects the male/female parent via the male/female property", function() {
-        var f = atomic.createCharacter({gender: "female"});
-        var m = atomic.createCharacter({gender: "male"});
+        var f = new Character({gender: "female"});
+        var m = new Character({gender: "male"});
 
-        var family = new ion.models.Family({parent: f, other: m});
-        expect(family.male).toEqual(m);
-        expect(family.female).toEqual(f);
+        var family = new Family({parent: f, other: m});
+        expect(family.male).to.equal(m);
+        expect(family.female).to.equal(f);
     });
     it("selects the single parent if the other is deceased or absent", function() {
-        var f = atomic.createCharacter({gender: "female"});
-        var m = atomic.createCharacter({gender: "male"});
+        var f = new Character({gender: "female"});
+        var m = new Character({gender: "male"});
         f.status = "deceased";
 
-        var family = new ion.models.Family({parent: f, other: m});
-        expect(family.single).toEqual(m);
+        var family = new Family({parent: f, other: m});
+        expect(family.single).to.equal(m);
 
         delete f.status;
         m.status = "absent";
-        expect(family.single).toEqual(f);
+        expect(family.single).to.equal(f);
 
         f.status = "deceased";
-        expect(family.single).toEqual(null);
+        expect(family.single).to.equal(null);
     });
     it("identifies a person as a parent", function() {
-        var f = atomic.createCharacter({gender: "female"});
-        var m = atomic.createCharacter({gender: "male"});
-        var o = atomic.createCharacter();
+        var f = new Character({gender: "female"});
+        var m = new Character({gender: "male"});
+        var o = new Character();
 
-        var family = new ion.models.Family({parent: f, other: m});
-        expect(family.isParent(f)).toBeTruthy();
-        expect(family.isParent(m)).toBeTruthy();
-        expect(family.isParent(o)).toBeFalsy();
+        var family = new Family({parent: f, other: m});
+        expect(family.isParent(f)).to.be.true;
+        expect(family.isParent(m)).to.be.true;
+        expect(family.isParent(o)).to.be.false;
     });
 });

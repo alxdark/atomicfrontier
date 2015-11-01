@@ -31,7 +31,7 @@ function copy(target, source) {
 var slice = Array.prototype.slice,
     indexOf = Array.prototype.indexOf,
     filter = Array.prototype.filter,
-    map  = Array.prototype.map,
+    //map  = Array.prototype.map,
     forEach = Array.prototype.forEach;
 
 var ion = {

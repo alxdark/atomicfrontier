@@ -4,7 +4,7 @@ var ion = require('../../src/ion');
 var Table = require('../../src/tables/table');
 
 // COMPLETE 2013-03-27
-describe("ion.tables.Table", function() {
+describe("atomic.tables.Table", function() {
 
     var table;
     beforeEach(function() {

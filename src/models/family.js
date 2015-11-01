@@ -20,7 +20,7 @@ function coupleNames(family, relationship) {
     }
 }
 
-var Family = ion.define({
+module.exports = ion.define({
     /**
      * A family. This means (in the context of this game), a set of parents with some kids,
      * some of whom may themselves be in family objects with kids, etc. One of the building

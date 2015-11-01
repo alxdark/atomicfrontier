@@ -10,6 +10,13 @@ ion.extend(lib, {
     version: '1.0.0',
     Builder: require('./builder')
 });
+lib.db = {
+    Database: require('./db/database'),
+    EncounterDatabase: require('./db/encounter_database'),
+    ItemDatabase: require('./db/item_database'),
+    ProfessionDatabase: require('./db/profession_database'),
+    StoreDatabse: require('./db/store_database')
+};
 lib.tables = {
     Table: require('./tables/table'),
     HashTable: require('./tables/hash_table'),
@@ -18,10 +25,17 @@ lib.tables = {
 lib.models = {
     Bag: require('./models/bag'),
     Family: require('./models/family'),
+    Gang: require('./models/gang'),
     Item: require('./models/item'),
     Model: require('./models/model'),
     Name: require('./models/name')
 };
+lib.dice = require('./dice/dice');
+
+// Etc... for each generator
+lib.createCharacter = require('./generators/character').createCharacter;
+lib.createRace = require('./generators/character').createRace;
+lib.getProfessions = require('./generators/character').getProfessions;
 
 /**
  * Create a deep copy of this models item, maintaining the correct subclass,

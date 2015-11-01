@@ -1,0 +1,368 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        html {
+            font-size: 12px;
+        }
+        h3 {
+            margin-bottom: 0;
+        }
+        body {
+            font-family: sans-serif;
+        }
+        ul {
+            list-style-type: none;
+        }
+        li {
+            line-height: 1.5;
+        }
+        em {
+            color: #B22222;
+        }
+        body > ul {
+            padding: 0 20px;
+        }
+        body > ul li {
+            font-variant: small-caps;
+        }
+        body > ul li:before {
+            content: "Type: ";
+            color: #ccc;
+            font-weight: bold;
+        }
+        body > ul li > ul li {
+            font-variant: normal;
+        }
+        body > ul li > ul li:before {
+            content: "Area: ";
+            color: #ccc;
+            font-weight: bold;
+        }
+        body > ul li > ul li > ul li:before {
+            content: "Building: ";
+            color: #ccc;
+            font-weight: bold;
+        }
+        body > ul li > ul li > ul li > ul li:before {
+            content: "Room: ";
+            color: #ccc;
+            font-weight: bold;
+        }
+
+        body > ul li > ul li > ul li.complex:before {
+            content: "Complex: ";
+            color: #ccc;
+            font-weight: bold;
+        }
+        body > ul li > ul li > ul li.complex > ul li:before {
+            content: "Building: ";
+            color: #ccc;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+<h3>Locations (July 5, 2014)</h3>
+
+<ul>
+    <li>Natural
+        <ul>
+            <li>Canyons</li>
+            <li>Cave</li>
+            <li>Caverns (cave complex)</li>
+            <li>Crater</li>
+            <li>Forest</li>
+            <li>Prairie</li>
+            <li>Lake</li>
+            <li>Radioactive Area</li>
+            <li>Rest Area</li>
+            <li>Scenic Overlook</li>
+            <li>River</li>
+            <li>Dry riverbed, gulch</li>
+        </ul>
+    </li>
+    <li>Rural
+        <ul>
+            <li>Farm
+                <ul>
+                    <li>barn</li>
+                    <li>garage</li>
+                    <li>chicken coop</li>
+                    <li>stables</li>
+                    <li>greenhouse</li>
+                    <li>silo</li>
+                    <li>storm cellar</li>
+                    <li>fallout shelter</li>
+                    <li>root cellar</li>
+                    <li>well house</li>
+                    <li>shed</li>
+                    <li>grainery</li>
+                    <li>water mill</li>
+                    <li>windmill</li>
+                    <li>horsemill</li>
+                    <li>pigpen/sty</li>
+                </ul>
+            </li>
+            <li>Ranch
+                <ul>
+                    <li>bunkhouse</li>
+                    <li>chow wagon</li>
+                </ul>
+            </li>
+            <li>Dairy Farm <em>just combine with farm?</em></li>
+            <li>Water trough with windmill pump</li>
+            <li>Shacks</li>
+            <li>Miscellaneous
+                <ul>
+                    <li class="complex">Fairgrounds <em>Elminate complex?</em></li>
+                    <li>grange building</li>
+                    <li>church</li>
+                    <li>stables</li>
+                    <li>cemetery</li>
+                    <li>landfills/dumps</li>
+                    <li>race track</li>
+                    <li>luxury home</li>
+                    <li>mobile home park</li>
+                    <li>prison</li>
+                    <li>reformatory school</li>
+                    <li>ranger station</li>
+                    <li>power stations</li>
+                    <li>power lines</li>
+                    <li>dams</li>
+                    <li>reservoir</li>
+                    <li>water towers <em>???</em></li>
+                    <li>cisterns <em>???</em></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>Road Infrastructure <em>billboard?</em>
+        <ul>
+            <li>Roadside stand</li>
+            <li>Highway patrol station</li>
+            <li>Battle wreckage/car accident</li>
+            <li>Roadside memorial</li>
+            <li>Roadside service building
+                <ul>
+                    <li>gas station</li>
+                    <li>motel</li>
+                    <li>diner</li>
+                    <li>drive-in diner</li>
+                    <li>truck stop</li>
+                    <li>rest stop</li>
+                    <li>gun shop</li>
+                    <li>car dealership</li>
+                    <li>roadside chapel</li>
+                    <li>dude ranch</li>
+                    <li>gift shop</li>
+                    <li>campground</li>
+                    <li>boat shop</li>
+                    <li>bait shop</li>
+                    <li>casino</li>
+                    <li>mini golf</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>Rail Infrastructure
+        <ul>
+            <li>Train Station</li>
+            <li>Grain Transfer Depot</li>
+            <li>Trainyard
+                <ul>
+                    <li>roundhouse / engine house</li>
+                    <li>rail yard</li>
+                    <li>repair building</li>
+                    <li>administrative offices</li>
+                </ul>
+            </li>
+            <li>Wreckage
+                <ul>
+                    <li>abandoned train cars</li>
+                    <li>derailed train cars</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>Rural Industrial
+        <ul>
+            <li>Military Installation <em>Revise away "complex" layer</em>
+                <ul>
+                    <li>ICBM missile silos</li>
+                    <li>underground bunker complex</li>
+                    <li>ammunition factory</li>
+                    <li class="complex">Army Base</li>
+                    <li class="complex">Air Force Base</li>
+                </ul>
+            </li>
+            <li>Research Facility
+                <ul>
+                    <li>astronomical observatory (radio or optical with scopes)</li>
+                    <li>university campus</li>
+                    <li>light-industrial research facilities</li>
+                </ul>
+            </li>
+            <li>Mine</li>
+            <li>Quarry</li>
+            <li>Oil Field</li>
+            <li>Airport</li>
+            <li>Roadside Service Building <em>Move to road infrastructure? Everything is on a road</em>
+                <ul>
+                    <li>slaughterhouse</li>
+                    <li>grain silo</li>
+                    <li>grain storage depot</li>
+                    <li>feed store</li>
+                    <li>radio towers</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>Suburban
+        <ul>
+            <li>Housing Tract
+                <ul>
+                    <li>House</li>
+                </ul>
+            </li>
+            <li>Miscellaneous
+                <ul>
+                    <li>church</li>
+                    <li>synagogue</li>
+                    <li>cemetery</li>
+                    <li>drive-in movie theater</li>
+                    <li>mobile home park</li>
+                    <li>elementary school</li>
+                    <li>high school</li>
+                    <li>college campus</li>
+                    <li>grocery store</li>
+                    <li>produce stands</li>
+                    <li>police station</li>
+                    <li>fire station</li>
+                    <li>apartment building</li>
+                    <li>retirement home</li>
+                    <li>sanitarium</li>
+                    <li>nurseries</li>
+                    <li>hospital</li>
+                    <li class="complex">city park
+                        <ul>
+                            <li>playground</li>
+                            <li>pool</li>
+                            <li>sports fields</li>
+                            <li>picnic areas</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>Urban Ruins
+        <ul>
+            <li>Factory
+                <ul>
+                    <li>junk yard</li>
+                    <li>salvage yard</li>
+                    <li>scrap yard</li>
+                    <li>warehouse</li>
+                    <li>manufacturing plant</li>
+                    <li>soda bottling plants</li>
+                    <li>business administration/headquarters</li>
+                    <li>industrial bakery</li>
+                    <li>warehouse</li>
+                    <li>trucking facilities</li>
+                    <li>foundry</li>
+                    <li>power transfer station</li>
+                    <li>bus station</li>
+                    <li>train station</li>
+                </ul>
+            </li>
+            <li>Business
+                <ul>
+                    <li>grocery store</li>
+                    <li>restaurant</li>
+                    <li>{barber shop|beauty salon}</li>
+                    <li>drug store</li>
+                    <li>bookstore</li>
+                    <li>liquor store</li>
+                    <li>pet shop</li>
+                    <li>record shop</li>
+                    <li>instrumental music store</li>
+                    <li>bank</li>
+                    <li>bakery</li>
+                    <li>library</li>
+                    <li>history museum</li>
+                    <li>movie theater</li>
+                    <li>theater</li>
+                    <li>florist</li>
+                    <li>bar</li>
+                    <li>diner</li>
+                    <li>hotel</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>Communities
+        <ul>
+            <li>Encampment
+                <ul>
+                    <li>semi-permanent camp</li>
+                    <li>hobo encampment</li>
+                    <li>bunker</li>
+                    <li>fallout shelter</li>
+                    <li>camp site</li>
+                </ul>
+            </li>
+            <li>Settlement
+                <ul>
+                    <li>makeshift fortification</li>
+                    <li>cabin/tent city</li>
+                    <li>RV encampment</li>
+                </ul>
+            </li>
+            <li>Town</li>
+            <li>Farm <em>inhabited</em></li>
+            <li>Ranch <em>inhabited</em></li>
+        </ul>
+    </li>
+</ul>
+
+<!--
+
+Loot:
+    Agricultural
+    Automotive
+    Civic
+    Criminal
+    Garage
+    Hospital
+    House
+    Industrial
+    Institution
+    Lodging
+    Military
+    Office
+    Public
+    Research
+    Restaurant
+    School
+    Tourism
+    Travel
+<ul>
+    <li>name</li>
+    <li>landform? If relevant, can be used to generate a name</li>
+    <li>frequency</li>
+    <li>encounter info (chance, types)</li>
+    <li>loot/container info (if any)</li>
+</ul>
+
+central: church, synagogue, academic campus, restaurant, police station,
+    fire station, fraternal organization (masons, IOOF, Elk, Moose, Eagle,
+    only the cool ones), bus station, train station, city park (playground, pool,
+    sports fields, picnic areas), hotel, hospital, city hall, courthouse, post office,
+    jailhouse/county jail
+-->
+
+</body>
+</html>
