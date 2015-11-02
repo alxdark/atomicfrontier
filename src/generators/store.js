@@ -16,9 +16,8 @@ var createCharacterName = require('./character_name');
 var createRelationship = require('./relationships').createRelationship;
 var createContainer = require('./bag').createContainer;
 var createStockpile = require('./bag').createStockpile;
-// TODO: SHould never refer to the atomic package; move these.
-var deserializer = require('../atomic').models.deserializer;
-var clone = require('../atomic').models.clone;
+var deserializer = require('../models/lib').deserializer;
+var clone = require('../models/lib').clone;
 
 // This is not a store name:
 // The Emily "The Kid" Flores Sporting Goods Store

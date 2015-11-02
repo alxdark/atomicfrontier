@@ -1,11 +1,9 @@
 'use strict';
 
-var ion = require('./ion');
-
 var lib = {};
 
+var ion = require('./ion');
 ion.extend(lib,  ion);
-
 ion.extend(lib, {
     version: '1.0.0',
     Builder: require('./builder')
@@ -24,63 +22,35 @@ lib.tables = {
 };
 lib.models = {
     Bag: require('./models/bag'),
+    Character: require('./models/character'),
     Family: require('./models/family'),
     Gang: require('./models/gang'),
+    IonSet: require('./models/ion_set'),
     Item: require('./models/item'),
     Model: require('./models/model'),
-    Name: require('./models/name')
+    Name: require('./models/name'),
+    Profession: require('./models/profession'),
+    Relationship: require('./models/relationship'),
+    Store: require('./models/store'),
+    Weather: require('./models/weather')
 };
 lib.dice = require('./dice/dice');
 
-// Etc... for each generator
-lib.createCharacter = require('./generators/character').createCharacter;
-lib.createRace = require('./generators/character').createRace;
-lib.getProfessions = require('./generators/character').getProfessions;
+lib.createAppearance = require('./generators/appearance');
+lib.createCharacterName = require('./generators/character_name');
+lib.createCollectible = require('./generators/collectible');
+lib.createCorporateName = require('./generators/corporate_name');
+lib.createStore = require('./generators/store');
+lib.createWeather = require('./generators/weather');
 
-/**
- * Create a deep copy of this models item, maintaining the correct subclass,
- * nested objects, etc.
- *
- * @static
- * @method clone
- * @for atomic.models
- * @return {atomic.models.Model} clone
- */
-lib.models.clone = function(object, freeze) {
-    freeze = lib.isBoolean(freeze) ? freeze : Object.isFrozen(object);
-    var model = deserializer(JSON.stringify(object));
-    if (freeze) {
-        return Object.freeze(model);
-    }
-    return model;
-}
-/**
- * Given a JSON object, convert it back to a graph of model objects in this library. You can
- * also pass a JSON string to this method. This method is used to recreate JSON that has
- * been persisted, among other things.
- *
- * @static
- * @method deserializer
- * @for atomic.models
- * @param json {Object} a json object to convert to a models object. Can also be a string object.
- * @return {atomic.models.Model} model object or subclass
- */
-function deserializer(object, nested) {
-    // Convert from string to JSON if necessary
-    if (nested !== true && lib.isString(object)) {
-        object = JSON.parse(object);
-    }
-    if (lib.isObject(object) || lib.isArray(object)) {
-        if (object.type) {
-            object = new lib.models[object.type](object);
-        }
-        for (var prop in object) {
-            object[prop] = deserializer(object[prop], true);
-        }
-    }
-    return object;
-}
-lib.models.deserializer = deserializer;
+ion.extend(lib, require('./generators/bag'));
+ion.extend(lib, require('./generators/family'));
+ion.extend(lib, require('./generators/gang'));
+ion.extend(lib, require('./generators/character'));
+ion.extend(lib, require('./generators/data'));
+ion.extend(lib, require('./generators/place_name'));
+ion.extend(lib, require('./generators/reading'));
+ion.extend(lib, require('./generators/relationships'));
+ion.extend(lib.models, require('./models/lib'));
 
 module.exports = lib;
-

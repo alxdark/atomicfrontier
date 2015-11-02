@@ -2,6 +2,10 @@ var ion = require('../ion');
 var Model = require('./model');
 var Builder = require('../builder');
 
+var combatTraits = ["Agile", "Archery", "Athletics", "Cunning", "Driving", "Explosives",
+    "Firearms", "Horseback Riding", "Intimidate", "Medicine", "Melee Weapons", "Military",
+    "Motorcycling", "Stealth", "Strong", "Tough", "Tracking", "Trucking", "Unarmed Combat"];
+
 function gangName(b) {
     var members = ion.toList(this.members, function(m) {
         return m.name;
@@ -16,7 +20,7 @@ function gangName(b) {
 function combatantString(b, c) {
     // Remove uninteresting traits from description.
     var traits = {};
-    atomic.getCombatTraits().forEach(function(traitName) {
+    combatTraits.forEach(function(traitName) {
         if (c.trait(traitName) > 0) {
             traits[traitName] = c.trait(traitName);
         }
