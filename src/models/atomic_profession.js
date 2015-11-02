@@ -12,8 +12,8 @@ module.exports = ion.define(Profession, {
      * A sub-class of profession that handles assigning rank for professions such as
      * the military and police.
      *
-     * @class ion.models.AtomicProfession
-     * @extends ion.models.Profession
+     * @class atomic.models.AtomicProfession
+     * @extends atomic.models.Profession
      *
      * @constructor
      * @param params {Object}
@@ -25,7 +25,7 @@ module.exports = ion.define(Profession, {
      * Assigns rank to the character based on traits.
      *
      * @method assignRank
-     * @for ion.models.AtomicProfession
+     * @for atomic.models.AtomicProfession
      */
     assignRank: function(character) {
         var name = this.names[0], rank = null;

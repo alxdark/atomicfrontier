@@ -7,12 +7,12 @@ var map = Array.prototype.map;
 /**
  * Passes each element of the array to the function, which is passed three parameters:
  * the builder, the item in the list, and the item's index in the list.
- *
+ * @example
  *     builder(list, function(b, item, index) {
-     *         b("#"+index + " " +item.name);
-     *     });
+ *         b("#"+index + " " +item.name);
+ *     });
  *
- * @function
+ * @method builder
  * @param array {Array}
  * @param func {Function}
  * @chainable
@@ -29,7 +29,7 @@ function each(array, func) {
  * Appends the string. If there are additional values appended afterwards, they
  * are interpolated as if the string was a format string (see `ion.format()`).
  *
- * @function
+ * @method builder
  * @param string {String}
  * @chainable
  */
@@ -44,14 +44,14 @@ function format() {
  * If the expression is true, execute the true function, otherwise execute the
  * false function, in either case, the function will be passed one parameter:
  * the builder.
- *
+ * @example
  *     builder(!!this.parent, function(b) {
-     *         b("Only added if this.parent was present");
-     *     }, function(b) {
-     *         b("Only added if this.parent was NOT present");
-     *     });
+ *         b("Only added if this.parent was present");
+ *     }, function(b) {
+ *         b("Only added if this.parent was NOT present");
+ *     });
  *
- * @function
+ * @method builder
  * @param expr {Boolean}
  * @param trueFn {Function}
  * @param falseFn {Function}
@@ -67,12 +67,12 @@ function either(expr, trueFn, falseFn) {
 /**
  * If the expression is true, execute the function. The function is passed one
  * parameter: the builder.
- *
+ * @example
  *     builder(!!this.parent, function(b) {
-     *         b("Only added if this.parent was present");
-     *     });
+ *         b("Only added if this.parent was present");
+ *     });
  *
- * @function
+ * @method builder
  * @param expr {Boolean}
  * @param func {Function}
  * @chainable
@@ -86,12 +86,12 @@ function when(expr, func) {
  * Adds an HTML tag, and then calls the supplied function to create
  * content nested in the tag. The function is passed one argument:
  * the builder.
- *
+ * @example
  *     builder("p", {class: "person"}, function(b) {
-     *         b(character.toString();
-     *     });
+ *         b(character.toString();
+ *     });
  *
- * @function
+ * @method builder
  * @param name {String} the tag name
  * @param attrs {Object} name/value attribute pairs
  * @param func {Function} a callback function
@@ -110,10 +110,10 @@ function tag(name, attrs, func) {
  * Adds an HTML tag, and then calls the supplied function to create
  * content nested in the tag. The function is passed one argument:
  * the builder.
- *
+ * @example
  *     builder("p", {class: "person"}, character.toString());
  *
- * @function
+ * @method builder
  * @param name {String} the tag name
  * @param attrs {Object} name/value attribute pairs
  * @param string {String} a string to add as the content of the tag
@@ -128,10 +128,10 @@ function simpletag(name, attrs, string) {
 }
 /**
  * If the expression evaluates as true, appends the string.
- *
+ * @example
  *     builder(!!this.parent, "Only added if this.parent was present");
  *
- * @function
+ * @method builder
  * @param expr {Boolean}
  * @param string {String}
  * @chainable
@@ -143,11 +143,11 @@ function append(expr, string) {
 }
 /**
  * Add the string, pluralized.
- *
+ * @example
  *     builder("plum", 3).toString()
  *     => "3 plums"
  *
- * @function
+ * @method builder
  * @param string {String}
  * @param count {Number}
  * @chainable
@@ -163,13 +163,13 @@ function toString() {
  * This constructor returns a function that can be called with many different parameter
  * signatures to create toString() and toHTML() output (these different parameters are
  * documented as different "methods").
- *
+ * @example
  *     var b = ion.Builder();
  *     b("p", {class: 'foo'}, "Some text in the paragraph tag.");
  *     b.toString();
  *     => "<p class='foo'>Some text in the paragraph tag.</p>");
  *
- * @class ion.Builder
+ * @class atomic.Builder
  */
 module.exports = function(ctx) {
     if (!ctx) {

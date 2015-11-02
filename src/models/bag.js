@@ -32,10 +32,16 @@ var Bag = ion.define(Model, {
     /**
      * An unordered collection of items, including multiples of the same item.
      *
-     * @class ion.models.Bag
-     * @extends ion.models.Model
+     * @class atomic.models.Bag
+     * @extends atomic.models.Model
      * @constructor
      * @param [params] {Object} The JSON data to initialize this model.
+     */
+    /**
+     * The items in the bag. Each entry has two properties: `item` with an item
+     *      object, and `count` with the number of this item in the bag.
+     * @property entries
+     * @type Array
      */
     init: function(params) {
         Model.call(this, params);
@@ -75,7 +81,7 @@ var Bag = ion.define(Model, {
      * Add items to this bag.
      *
      * @method add
-     * @param item {String|ion.models.Item} an item to add
+     * @param item {String|atomic.models.Item} an item to add
      * @param [count=1] {Number} of items to add
      * @return {Number} the number of items after adding
      */
@@ -111,7 +117,7 @@ var Bag = ion.define(Model, {
      * because trying to remove more items than are in the bag will throw exceptions.
      *
      * @method remove
-     * @param item {String|ion.models.Item} an item to remove
+     * @param item {String|atomic.models.Item} an item to remove
      * @param [count=1] {Number} of items to remove
      * @return {Number} the number of items after removals
      */
@@ -138,7 +144,7 @@ var Bag = ion.define(Model, {
     /**
      * Return this bag, filtered using a filter function, which is passed the item and
      * the count:
-     *
+     * @example
      *     bag.filter(function(item, count) {
          *         return item.is('food');
          *     }).toString();
@@ -146,7 +152,7 @@ var Bag = ion.define(Model, {
      *
      * @method filter
      * @param func {Function} filter function
-     * @returns {ion.models.Bag}
+     * @return {atomic.models.Bag}
      */
     filter: function(func) {
         var other = new Bag();
@@ -165,7 +171,7 @@ var Bag = ion.define(Model, {
      * group of items in the bag.
      *
      * @method value
-     * @param [item] {String|ion.models.Item} an item; if supplied, only the value of these items will be returned
+     * @param [item] {String|atomic.models.Item} an item; if supplied, only the value of these items will be returned
      * @return {Number} the total value of the items in the bag
      */
     value: function(item) {
@@ -176,7 +182,7 @@ var Bag = ion.define(Model, {
      * group of items in the bag.
      *
      * @method enc
-     * @param [item] {String|ion.models.Item} an item; if supplied, only the encumbrance of these items will be returned
+     * @param [item] {String|atomic.models.Item} an item; if supplied, only the encumbrance of these items will be returned
      * @return {Number} the total encumbrance of the items in the bag
      */
     enc: function(item) {
@@ -187,7 +193,7 @@ var Bag = ion.define(Model, {
      * group of items in the bag.
      *
      * @method count
-     * @param [item] {String|ion.models.Item} an item; if supplied, only these items will be counted in the bag
+     * @param [item] {String|atomic.models.Item} an item; if supplied, only these items will be counted in the bag
      * @return {Number} the total count of the items in the bag
      */
     count: function(item) {

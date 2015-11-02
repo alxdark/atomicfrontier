@@ -1,0 +1,13 @@
+{
+    "name": "atomicfrontier",
+    "description": "Some description",
+    "version": "0.2.0",
+    "url": "http://atomicfrontiergames.com/",
+    "logo": "",
+    "options": {
+        "outdir": "docs/api",
+        "paths": ["src"],
+        "themedir" : "node_modules/yuidoc-lucid-theme",
+        "helpers" : ["node_modules/yuidoc-lucid-theme/helpers/helpers.js"]
+    }
+}

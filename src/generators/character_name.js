@@ -65,7 +65,7 @@ function getFamilyName(race) {
 /**
  * Generate a random name for a mid-century American, of the kind that would be
  * wandering around an atomic era apocalypse.
- *
+ * @example
  *     var girl = atomic.createCharacterName({gender: "female"})
  *     girl.toString()
  *     => "Ada King"
@@ -82,7 +82,7 @@ function getFamilyName(race) {
  *     @param [params.race] {String} "anglo" or "hispanic" (Optional. If not specified, 20% of names are Hispanic).
  *     @param [params.given] {String} set the given name to this name
  *     @param [params.family] {String} set the family name to this name
- * @return {ion.models.Name}
+ * @return {atomic.models.Name}
  */
 module.exports = function(opts) {
     opts = opts || {};

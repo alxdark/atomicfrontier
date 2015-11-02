@@ -5,8 +5,8 @@ module.exports = ion.define(Model, {
     /**
      * A weather.js forecast for a day in a month.
      *
-     * @class ion.models.Weather
-     * @extends ion.models.Model
+     * @class atomic.models.Weather
+     * @extends atomic.models.Model
      *
      * @constructor
      * @param data {Object} A data object initializing properties of a name.

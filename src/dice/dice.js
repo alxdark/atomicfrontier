@@ -20,7 +20,7 @@ var Die = ion.define({
      * Rolling changes this face up side, randomly, as you'd expect if you
      * rolled a die.
      *
-     * @class ion.dice.Die
+     * @class atomic.dice.Die
      * @constructor
      * @param faces {Number} The number of faces on a white die
      * @param [color=white] {String} The color of the die
@@ -28,7 +28,7 @@ var Die = ion.define({
     init: function(faces, color) {
         /**
          * The number of polyhedral faces on the die.
-         * @property faces {Number}
+         * @property {Number} faces
          */
         this.faces = faces;
         /**
@@ -61,15 +61,6 @@ var Die = ion.define({
     symbol: function() {
         return this.value.toString();
     },
-    /**
-     * A string description of the die.
-     *     var die = new ion.dice.Die(20, "blue");
-     *     die.toString();
-     *     => "[blue 20]"
-     *
-     * @method
-     * @return {String}
-     */
     toString: function() {
         return ion.format("[{0} {1}]", this.color, this.symbol());
     }
@@ -79,12 +70,12 @@ var Die = ion.define({
  * Models a fudge die. This is a six-sided die with two blank sides, two "+"
  * symbols, and two "-" symbols on its faces. These translate into the values
  * -1, 0 or 1.
- * @class ion.dice.FudgeDie
- * @extends ion.dice.Die
+ * @class atomic.dice.FudgeDie
+ * @extends atomic.dice.Die
  */
 var FudgeDie = ion.define(Die, {
     /**
-     * @class ion.dice.FudgeDie
+     * @class atomic.dice.FudgeDie
      * @constructor
      */
     init: function(color) {
@@ -106,9 +97,9 @@ var FudgeDie = ion.define(Die, {
  * A set of dice. Helps to roll an entire set of dice, get the sum of the
  * dice, and so forth.
  *
- * @class ion.dice.Dice
+ * @class atomic.dice.Dice
  * @constructor
- * @param [dice]* {ion.dice.Die} One or more dice to include in this set of dice.
+ * @param [dice]* {atomic.dice.Die} One or more dice to include in this set of dice.
  * Or, can be an array of dice or dice objects. (Correct?)
  */
 var Dice = ion.define({
@@ -130,7 +121,7 @@ var Dice = ion.define({
      * Add a die to this set of dice.
      *
      * @method push
-     * @param die {ion.dice.Die} A die to add to the set of dice.
+     * @param die {atomic.dice.Die} A die to add to the set of dice.
      */
     push: function (die) {
         this[this.length++] = die;

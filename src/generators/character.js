@@ -96,6 +96,11 @@ function traitsForAdult(character, prof, opts) {
 /**
  * Get all (post-collapse) professions. These are valid values for the `atomic.createCharacter()`
  * call's {profession: [name]}.
+ *
+ * @static
+ * @method getProfessions
+ * @for atomic
+ * @return {Array} array of profession names that can be used by generators
  */
 module.exports.getProfessions = function() {
     return ion.profDb.findAll('post').rows.map(function(row) {
@@ -105,8 +110,8 @@ module.exports.getProfessions = function() {
 
 /**
  * Create a character.
- *
- *     atomic.createCharacter({profession: 'thief', inventory: false})
+ * @example
+ *     atomic.createCharacter({profession: 'thief', equip: false})
  *     => character
  *
  * @static
@@ -123,7 +128,7 @@ module.exports.getProfessions = function() {
  *     @param [params.equip=true] {Boolean} Should an inventory be created for this character?
  *     @param [params.traits] {Object} a map of trait names to trait values. These are deducted from the traits
  *          added to the character during generation.
- * @return {ion.models.Character} character
+ * @return {atomic.models.Character} character
  */
 module.exports.createCharacter = function(params) {
     var prof = null, opts = createOpts(params);
@@ -158,7 +163,7 @@ module.exports.createCharacter = function(params) {
 
 /**
  * Select one of the available races (Anglo 80% of the time, Hispanic 20% of the time).
- *
+ * @example
  *     atomic.createRace()
  *     => "hispanic"
  *

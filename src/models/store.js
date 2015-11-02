@@ -7,8 +7,8 @@ module.exports = ion.define(Model, {
     /**
      * A Store
      *
-     * @class ion.models.Store
-     * @extends ion.models.Model
+     * @class atomic.models.Store
+     * @extends atomic.models.Model
      *
      * @constructor
      * @param [params] {Object} params
@@ -23,7 +23,7 @@ module.exports = ion.define(Model, {
         /**
          * Owner of the store
          * @property owner
-         * @type {ion.models.Character}
+         * @type {atomic.models.Character}
          */
         this.owner = null;
         /**
@@ -32,13 +32,13 @@ module.exports = ion.define(Model, {
          * currency.
          *
          * @property onhand
-         * @type {ion.models.Bag}
+         * @type {atomic.models.Bag}
          */
         this.onhand = null;
         /**
          * The inventory for sale at this establishment
          * @property inventory
-         * @type {ion.models.Bag}
+         * @type {atomic.models.Bag}
          */
         this.inventory = new Bag();
         /**

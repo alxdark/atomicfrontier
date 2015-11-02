@@ -5,7 +5,7 @@ module.exports = ion.define({
      * A set data structure. This is going to be built into future versions of JavaScript,
      * so this object follows that API where feasible.
      *
-     * @class ion.models.IonSet
+     * @class atomic.models.IonSet
      * @param [array] {Array} initial items for set
      */
     init: function(array) {

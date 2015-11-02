@@ -2,6 +2,9 @@
 
 var ion = require('../ion');
 var Bag = require('../models/bag');
+var Item = require('../models/item');
+var Table = require('../tables/table');
+var db = require('./data').itemDatabase;
 
 // "Nuclear War Survival Skills" -- this one is still in print, not government
 // "Nuclear Dangers: Myths and Facts"
@@ -19,7 +22,7 @@ var Bag = require('../models/bag');
 // specific kinds of electronic or mechanical parts
 // baseball cards
 
-var rarity = new ion.tables.Table();
+var rarity = new Table();
 rarity.add(75, "common");
 rarity.add(22, "uncommon");
 rarity.add(3, "rare");
@@ -31,7 +34,7 @@ module.exports = function(params) {
     // Really?
     var bag = new Bag();
     ion.times(params.number, function() {
-        var mag = new ion.models.Item(ion.itemDb.find("magazine"));
+        var mag = new Item(db.find("magazine"));
         mag.rarity = rarity.get();
         bag.add(mag, 1);
     });

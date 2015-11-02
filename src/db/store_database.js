@@ -24,9 +24,47 @@ function getClustering(tags) {
 }
 
 module.exports = ion.define(Database, {
+    /**
+     *  A database for looking up store configuration definitions. Only tag queries are
+     *  supported.
+     *
+     * @class atomic.db.StoreDatabase
+     * @extends atomic.db.Database
+     *
+     * @constructor
+     * @param tags {Array} an array of tags
+     */
+
     init: function(params) {
         Database.call(this, params);
     },
+    /**
+     * Find and return a store configuration. Only tag-based searches are supported.
+     *
+     * @method find
+     * @param [params] {Object}
+     * @param [params.tags] {String} a tag query
+     * @return {atomic.models.Store} store
+     */
+    /**
+     * One or more strings, with the following fields separated with a ! character:
+     * <ul>
+     * <li>Name[; alternative name][; alternative name]</li>
+     * <li>Policies of store</li>
+     * <li>profession of owner</li>
+     * <li>trait of owner</li>
+     * <li>inventory tag search</li>
+     * <li>inventory total value</li>
+     * <li>inventory minValue of items</li>
+     * <li>inventory maxValue of items</li>
+     * <li>one or more space-separated tags (starting with frequency: common, uncommon, or rare)</li>
+     * </ul>
+     * The tags can either be the numerical index of the tag in the array as it was provided in the database's constructor
+     * (very space efficient), or the tag string itself.
+     *
+     * @for atomic.db.StoreDatabase
+     * @method register
+     */
     register: function() {
         var opts, inv;
         for (var i=0, len = arguments.length; i < len; i++) {

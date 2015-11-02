@@ -25,8 +25,8 @@ function makeSearchName(string) {
 module.exports = ion.define(Database, {
     /**
      *
-     * @class ion.db.ItemDatabase
-     * @extends ion.db.Database
+     * @class atomic.db.ItemDatabase
+     * @extends atomic.db.Database
      *
      * @constructor
      * @param tags {Array} an array of tags
@@ -44,7 +44,7 @@ module.exports = ion.define(Database, {
      * In addition tags, there are some other conditions you can specify for finding an item.
      *
      * @method find
-     * @for ion.db.ItemDatabase
+     * @for atomic.db.ItemDatabase
      *
      * @param [params] {Object}
      *      @param [params.tags] {String} one or more tag strings, either to be matched, or to be
@@ -54,13 +54,13 @@ module.exports = ion.define(Database, {
      *      @param [params.minEnc=0] {Number} the minimum encumbrance a matching item can have
      *      @param [params.maxEnc=Number.MAX_VALUE] {Number} the maximum encumbrance a matching item can have
      *
-     * @return {ion.models.Item} an item that matches the query
+     * @return {atomic.models.Item} an item that matches the query
      */
     /**
      * In addition tags, there are some other conditions you can specify for finding an item.
      *
      * @method findAll
-     * @for ion.db.ItemDatabase
+     * @for atomic.db.ItemDatabase
      *
      * @param [params] {Object}
      *      @param [params.tags] {String} one or more tag strings, either to be matched, or to be
@@ -90,7 +90,7 @@ module.exports = ion.define(Database, {
      * database twice (once intact, and once broken).
      *
      * @method register
-     * @for ion.db.ItemDatabase
+     * @for atomic.db.ItemDatabase
      *
      * @param item* {String} One or more item strings
      */

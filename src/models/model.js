@@ -7,7 +7,7 @@ var Model = ion.define({
      * Model objects can be converted to JSON and persisted, then reconstituted
      * back into models classes.
      *
-     * @class ion.models.Model
+     * @class atomic.models.Model
      * @constructor
      * @param  data {Object} The JSON used to initialize the properties of this models.
      */

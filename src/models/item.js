@@ -5,8 +5,8 @@ var Builder = require('../builder');
 module.exports = ion.define(Model, {
     /**
      * An item.
-     * @class ion.models.Item
-     * @extends ion.models.Model
+     * @class atomic.models.Item
+     * @extends atomic.models.Model
      *
      * @constructor
      * @param data {String/Object} The name of the object (as registered with `ion.registerItem`),

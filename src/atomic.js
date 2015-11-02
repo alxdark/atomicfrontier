@@ -41,26 +41,31 @@ lib.getProfessions = require('./generators/character').getProfessions;
  * Create a deep copy of this models item, maintaining the correct subclass,
  * nested objects, etc.
  *
+ * @static
  * @method clone
- * @return {ion.models.Model} clone
+ * @for atomic.models
+ * @return {atomic.models.Model} clone
  */
 lib.models.clone = function(object, freeze) {
     freeze = lib.isBoolean(freeze) ? freeze : Object.isFrozen(object);
-    var model = create(JSON.stringify(object));
+    var model = deserializer(JSON.stringify(object));
     if (freeze) {
         return Object.freeze(model);
     }
     return model;
 }
 /**
- * Given a JSON object, convert it back to a graph of Ionosphere models objects. This method
- * does assume that the library is available at the known location of `window.ion`. You can
+ * Given a JSON object, convert it back to a graph of model objects in this library. You can
  * also pass a JSON string to this method. This method is used to recreate JSON that has
  * been persisted, among other things.
  *
+ * @static
+ * @method deserializer
+ * @for atomic.models
  * @param json {Object} a json object to convert to a models object. Can also be a string object.
+ * @return {atomic.models.Model} model object or subclass
  */
-function create(object, nested) {
+function deserializer(object, nested) {
     // Convert from string to JSON if necessary
     if (nested !== true && lib.isString(object)) {
         object = JSON.parse(object);
@@ -70,12 +75,12 @@ function create(object, nested) {
             object = new lib.models[object.type](object);
         }
         for (var prop in object) {
-            object[prop] = create(object[prop], true);
+            object[prop] = deserializer(object[prop], true);
         }
     }
     return object;
 }
-lib.models.deserializer = create;
+lib.models.deserializer = deserializer;
 
 module.exports = lib;
 

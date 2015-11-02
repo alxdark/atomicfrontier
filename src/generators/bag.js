@@ -224,10 +224,10 @@ function createParams(params) {
  * @for atomic
  *
  * @param params {Object}
- *     @param params.profession {String|ion.models.Profession} profession name or instance
+ *     @param params.profession {String|atomic.models.Profession} profession name or instance
  *     @param [params.gender] {String} gender of character (male or female)
  *
- * @return {ion.models.Bag} A bag of items on the person of that NPC
+ * @return {atomic.models.Bag} A bag of items on the person of that NPC
  */
 module.exports.createKit = function(params) {
     var bag = new Bag(),
@@ -256,7 +256,7 @@ module.exports.createKit = function(params) {
 
 /**
  * Generate a collection of items.
- *
+ * @example
  *     var bag = atomic.createBag({
  *         totalValue: 500,
  *         minValue: 10,
@@ -323,7 +323,7 @@ module.exports.createStockpile = function(params) {
         return createBag(params);
     }
 
-    var bag = new ion.models.Bag();
+    var bag = new Bag();
     var count = getClusterSpread(params.cluster);
     var tags = "-currency ".concat(params.tags);
 
@@ -345,7 +345,7 @@ module.exports.createStockpile = function(params) {
  * @for atomic
  *
  * @param type {String} the container type
- * @return {ion.models.Bag} a bag representing a container
+ * @return {atomic.models.Bag} a bag representing a container
  *
  */
 // TODO: Take a params object. All methods should do this.

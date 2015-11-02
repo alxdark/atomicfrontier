@@ -6,8 +6,8 @@ module.exports = ion.define({
     /**
      * A table of elements you select by key. Similar to a JavaScript object, but with a couple
      * of additional conveniences for building tables.
-     *
-     *     var table = new ion.tables.HashTable(function(value) {
+     * @example
+     *     var table = new atomic.tables.HashTable(function(value) {
      *         return ion.roll(value);
      *     });
      *     table.put("a", "b", "c", "3d6");
@@ -16,7 +16,7 @@ module.exports = ion.define({
      *     table.get("b");
      *     => 12
      *
-     * @class ion.tables.HashTable
+     * @class atomic.tables.HashTable
      *
      * @constructor
      * @param [outFunction] {Function} A function to run on values supplied to the put method
@@ -28,8 +28,8 @@ module.exports = ion.define({
     },
     /**
      * Add something to this table, under one or more keys.
-     *
-     *     var table = new ion.tables.HashTable();
+     * @example
+     *     var table = new atomic.tables.HashTable();
      *     table.put(1,2,3, "A");
      *     table.put(4,5, "B");
      *     table.get(4);

@@ -18,8 +18,8 @@ function split(string) {
 module.exports = ion.define(Database, {
     /**
      *
-     * @class ion.db.ProfessionDatabase
-     * @extends ion.db.Database
+     * @class atomic.db.ProfessionDatabase
+     * @extends atomic.db.Database
      *
      * @constructor
      * @param tags {Array} an array of tags
@@ -39,7 +39,7 @@ module.exports = ion.define(Database, {
      *
      *     // Tags were registered with db.registerTags(), so they can be referenced
      *     // by index, either base-10 or base-36.
-     *     db.register(ion.models.Profession,
+     *     db.register(atomic.models.Profession,
      *       "Doctor!46!4d 4h 4i 2u 3r!2 5f 21 2r 2s", "c.honorific = 'Doctor';",
      *     );
      *
@@ -53,9 +53,9 @@ module.exports = ion.define(Database, {
      * The first tag must always be `common`, `uncommon` or `rare`.
      *
      * @method register
-     * @for ion.db.ProfessionDatabase
+     * @for atomic.db.ProfessionDatabase
      *
-     * @param class {ion.models.Profession} a profession class or subclass that implements
+     * @param class {atomic.models.Profession} a profession class or subclass that implements
      *      game-specific training for a character.
      * @param spec {String} one or more strings specifying professions to include.
      * @param function {String} function body of a post-training processing method.

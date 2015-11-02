@@ -72,6 +72,7 @@ patterns.add('rare', function(type) {
  });*/
 patterns.add('uncommon', function(type) {
     // West Anderson Junction
+    var location = ion.random(locative[type]);
     return regionByLocation(location) + " " + getName() + " " + ion.random(locative[type]);
 });
 patterns.add('uncommon', function(type) {
@@ -100,7 +101,7 @@ var landforms = ion.keys(locative);
 
 /**
  * Generate a random place name.
- *
+ * @example
  *     atomic.createPlaceName("Water");
  *     => "West Rock Springs"
  *

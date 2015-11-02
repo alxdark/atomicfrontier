@@ -241,7 +241,7 @@ function adjective(character, statements) {
 /**
  * Describe a character's appearance and behavior. This description will be different
  * each time the character is passed to this function.
- *
+ * @example
  *     atomic.createAppearance(character)
  *     => "Long brown hair, short stature"
  *
@@ -249,7 +249,7 @@ function adjective(character, statements) {
  * @method createAppearance
  * @for atomic
  *
- * @param character {ion.models.Character} The character to describe.
+ * @param character {atomic.models.Character} The character to describe.
  * @return {String} A description of the appearance and behavior of the character
  */
 module.exports = function(character) {

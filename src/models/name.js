@@ -5,8 +5,8 @@ module.exports = ion.define(Model, {
     /**
      * A person's name (given and family name).
      *
-     * @class ion.models.Name
-     * @extends ion.models.Model
+     * @class atomic.models.Name
+     * @extends atomic.models.Model
      *
      * @constructor
      * @param [data] {Object} A data object initializing properties of a name.

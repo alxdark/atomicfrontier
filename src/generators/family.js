@@ -223,7 +223,7 @@ function nextGeneration(family, kin, i, gen) {
  *          their grand-children, above 3 you're going to get a history lesson).
  *      @param [params.parent] {Object} the parameters to pass to the first character
  *          created, that will set the profession, race and name of sub-generations.
- * @returns {ion.models.Family} a family
+ * @return {atomic.models.Family} a family
  */
 module.exports.createFamily = function(opts) {
     opts = opts || {};

@@ -74,7 +74,7 @@ var ion = {
      * Execute a function N times. Each iteration of the function, it receives the
      * arguments `i` for the current iteration (starting at zero), and `N` for the
      * total number of times the function will be excuted.
-     *
+     * @example
      *      ion.times(4, function(i,n) {
      *          console.log(i,"of",n,"iterations");
      *      });
@@ -84,9 +84,8 @@ var ion = {
      *      => "3 of 4 iterations"
      *
      * @param count {Number} the number of times to execute the function.
-     * @param func {Function} the function to execute. Receives two parameters, `i`
-     *      (zero-based index of the iteration) and `N` (total number of iterations
-     *      to be performed).
+     * @param func {Function} the function to execute. Receives two parameters, `i` (zero-based index of the
+     *    iteration) and `N` (total number of iterations to be performed).
      * @param [context] {Object} object bound to the function when executed
      */
     times: function(count, func, context) {
@@ -171,7 +170,7 @@ var ion = {
     },
     /**
      * Bound the value n by the minimum and maximum values:
-     *
+     * @example
      *     ion.bounded(-2, 0)
      *     => 0
      *     ion.bounded(32, 1, 100)
@@ -181,7 +180,7 @@ var ion = {
      *
      * @static
      * @method bounded
-     * @for ion
+     * @for atomic
      *
      * @param n {Number}
      * @param min {Number}
@@ -197,7 +196,7 @@ var ion = {
      *
      * @static
      * @method sum
-     * @for ion
+     * @for atomic
      *
      * @param array {Array} array of number values
      * @return {Number} the sum of the values in the array
@@ -216,7 +215,7 @@ var ion = {
     /**
      * Put an indefinite article in front of the word based on whether or not it
      * starts with a vowel.
-     *
+     * @example
      *     ion.article("walkie talkie")
      *     => "a walkie talkie"
      *     ion.article("album")
@@ -224,7 +223,7 @@ var ion = {
      *
      * @static
      * @method article
-     * @for ion
+     * @for atomic
      *
      * @param string {String} String to prefix with an indefinite article
      * @return {String} The string with "a" or "an" in front of it.
@@ -234,7 +233,7 @@ var ion = {
     },
     /**
      * Format a string with parameters. There are many ways to supply values to this method:
-     *
+     * @example
      *     ion.format("This {0} a {1}.", ["is", "test"]);
      *     => "This is a test."
      *     ion.format("This {0} a {1}.", "is", "test");
@@ -244,7 +243,7 @@ var ion = {
      *
      * @static
      * @method format
-     * @for ion
+     * @for atomic
      *
      * @param template {String} template string
      * @param values+ {Object} An array, a set of values, or an object with key/value pairs that
@@ -271,7 +270,7 @@ var ion = {
      * for cases where it should not be added, "uncountables"). The string should
      * note the method of pluralizing the string in curly braces if it is not a
      * simple noun that is pluralized using "s", "es" or "aries". For example:
-     *
+     * @example
      *     ion.pluralize("shoe", 3)
      *     => "3 shoes"
      *     ion.pluralize("status", 2)
@@ -288,7 +287,7 @@ var ion = {
      *
      * @static
      * @method pluralize
-     * @for ion
+     * @for atomic
      *
      * @param name {String} A string name following the rules described above
      * @param [count=1] {Number} The number of these items
@@ -296,14 +295,14 @@ var ion = {
      */
     /**
      * Items can also be used with this method.
-     *
+     * @example
      *     var item = new Item("quarry");
      *     ion.pluralize(item, 3)
      *     => "3 quarries"
      *
      * @static
      * @method pluralize
-     * @for ion
+     * @for atomic
      *
      * @param item {Item} An item with a string name following the rules described above
      * @param [count=1] {Number} The number of these items
@@ -342,7 +341,7 @@ var ion = {
     },
     /**
      * Convert a string to sentence case (only the first letter capitalized).
-     *
+     * @example
      *     ion.sentenceCase("antwerp benedict");
      *     => "Antwerp benedict"
      *     ion.sentenceCase("antwerp-Benedict");
@@ -352,7 +351,7 @@ var ion = {
      *
      * @static
      * @method sentenceCase
-     * @for ion
+     * @for atomic
      *
      * @param string {String}
      * @return {String} in sentence case
@@ -371,7 +370,7 @@ var ion = {
      * Copyright 2008-2013 David Gouch. Licensed under the MIT License.*
      *
      * [0]: http://daringfireball.net/2008/05/title_case
-     *
+     * @example
      *     ion.titleCase("antwerp benedict");
      *     => "Antwerp Benedict"
      *     ion.titleCase("antwerp-Benedict");
@@ -381,7 +380,7 @@ var ion = {
      *
      * @static
      * @method titleCase
-     * @for ion
+     * @for atomic
      *
      * @param string {String} string to title case
      * @return {String} in title case
@@ -404,8 +403,9 @@ var ion = {
      * Convert a string to a valid tag by removing spaces and converting
      * to lower-case letters.
      *
+     * @static
      * @method toTag
-     * @for ion
+     * @for atomic
      */
     toTag: function(string) {
         if (!ion.isString(string)) { return string; }
@@ -413,7 +413,7 @@ var ion = {
     },
     /**
      * Format the elements of an array into a list phrase.
-     *
+     * @example
      *     ion.toList(['Apples', 'Bananas', 'Oranges'], function(value) {
      *         return "*"+value;
      *     });
@@ -421,7 +421,7 @@ var ion = {
      *
      * @static
      * @method toList
-     * @for ion
+     * @for atomic
      *
      * @param array {Array} The array to format
      * @param func {Function} An optional function to format the elements of the array in the returned string.
@@ -455,24 +455,24 @@ var ion = {
      * variants will be returned with a variant selected. The value is then checked again to
      * see if it can still be randomized further, and this process continues until a primitive
      * value is returned (a number, object, string, or boolean).
-     *
-     *     ion.random("A")
+     * @example
+     *     atomic.random("A")
      *     => "A"
      *
-     *     ion.random(['A','B','C']);
+     *     atomic.random(['A','B','C']);
      *     => 'A'
      *
-     *     ion.random("{Big|Bad|Black} Dog");
+     *     atomic.random("{Big|Bad|Black} Dog");
      *     => 'Bad Dog'
      *
-     *     ion.random(function() {
+     *     atomic.random(function() {
      *         return ["A","B","C"];
      *     });
      *     => "B"
      *
      * @static
      * @method random
-     * @for ion
+     * @for atomic
      *
      * @param value {String|Array|Function} A string with optional variants, or an array from
      *      which to select an element, or a function that returns a value.
@@ -495,13 +495,13 @@ var ion = {
      * Combines randomization with formatting. First, randomizes the first argument using the `ion.random()`
      * function. Then formats the resulting string using the rest of the arguments passed in to the method,
      * as described by the `ion.format()` function.
-     *
-     *     ion.resolve(["Mr. {name}", "Mrs. {name}"], {name: "Smith"});
+     * @example
+     *     atomic.resolve(["Mr. {name}", "Mrs. {name}"], {name: "Smith"});
      *     => "Mrs. Smith"
      *
      * @static
      * @method resolve
-     * @for ion
+     * @for atomic
      *
      * @param value {String|Array|Function} A string with optional variants, or an array from
      *      which to select an element, or a function that returns a value.
@@ -516,33 +516,22 @@ var ion = {
         array[0] = ion.random(array[0]);
         return ion.format.apply(ion.format, array);
     },
-
     /**
-     * Returns a random number between one and N:
-     *
-     *     ion.roll(8)
+     * Returns a random number based on a die roll string. Math operations are supported:
+     * @example
+     *     atomic.roll("3d6+2")
+     *     => 9
+     *     atomic.roll("(2d4*10)+500")
+     *     => 540
+     *     atomic.roll(8)
      *     => 4
      *
      * @static
      * @method roll
-     * @for ion
+     * @for atomic
      *
-     * @param number {Number} the maximum value to return
-     * @return {Number} a value from 1 to N
-     */
-    /**
-     * Returns a random number based on a die roll string. Math operations are supported:
-     *
-     *     ion.roll("3d6+2")
-     *     => 9
-     *     ion.roll("(2d4*10)+500")
-     *     => 540
-     *
-     * @static
-     * @method roll
-     * @for ion
-     *
-     * @param notation {String} a notation for a dice roll
+     * @param value {String|Number} a notation for a dice roll (including mathematical expressions, if needed),
+     *      or the maximum value to return.
      * @return {Number} a die roll value
      */
     roll: function(value) {
@@ -571,16 +560,16 @@ var ion = {
      * is usually more efficient, but if you need to iterate through a set of values in a random order,
      * without traversing the same element more than once, `ion.shuffle()` is a better way to randomize
      * your data.
-     *
+     * @example
      *     var array = ['A','B','C']
-     *     ion.shuffle(array);
+     *     atomic.shuffle(array);
      *     =>
      *     array;
      *     => ['C','A','B']
      *
      * @static
      * @method shuffle
-     * @for ion
+     * @for atomic
      *
      * @param array {Array} The array to shuffle (in place)
      */
@@ -595,14 +584,14 @@ var ion = {
     },
     /**
      * Test against a percentage that something will occur.
-     *
-     *     if (ion.test(80)) {
+     * @example
+     *     if (atomic.test(80)) {
      *         // Happens 80% of the time.
      *     }
      *
      * @static
      * @method test
-     * @for ion
+     * @for atomic
      *
      * @param percentage {Number} The percentage chance that the function returns true
      * @return {Boolean} true if test passes, false otherwise
@@ -623,7 +612,7 @@ var ion = {
      *
      * @static
      * @method gaussian
-     * @for ion
+     * @for atomic
      *
      * @param stdev {Number} The amount of variance from the mean, where about
      *   68% of the numbers will be a number +/- this amount.
@@ -650,13 +639,13 @@ var ion = {
      *
      * @static
      * @method nonNegativeGaussian
-     * @for ion
+     * @for atomic
      *
      * @param stdev {Number} The amount of variance from the mean, where about
      *  68% of the numbers will be a number +/- this amount.
      * @param [mean=0] {Number} The mean around which random numbers will be
      *  generated.
-     * @returns a random, non-negative number (can include zero)
+     * @return a random, non-negative number (can include zero)
      */
     nonNegativeGaussian: function(stdev, mean) {
         mean = (mean < 0) ? 0 : mean;

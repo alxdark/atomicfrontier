@@ -26,8 +26,8 @@ module.exports = ion.define({
      * some of whom may themselves be in family objects with kids, etc. One of the building
      * blocks of encounters and homesteads, at the least.
      *
-     * @class ion.models.Family
-     * @extends ion.models.Model
+     * @class atomic.models.Family
+     * @extends atomic.models.Model
      * @constructor
      * @param [params] {Object} The JSON data to initialize this model.
      */
@@ -35,13 +35,13 @@ module.exports = ion.define({
         /**
          * Unmarried children
          * @property children
-         * @type {Array} of `ion.models.Character` instances
+         * @type {Array} of {atomic.models.Character} instances
          */
         this.children = [];
         /**
          * Children in families of their own
          * @property couples
-         * @type {Array} of `ion.models.Family` instances
+         * @type {Array} of {atomic.models.Family} instances
          */
         this.couples = []; // children with spouses, represented by a family object. Removed from children
         Model.call(this, params);
@@ -53,7 +53,7 @@ module.exports = ion.define({
          * now part of a descendant couple).
          *
          * @property childCount
-         * @returns {Number}
+         * @return {Number}
          */
         childCount: function() {
             return (this.children.length + this.couples.length);
@@ -62,7 +62,7 @@ module.exports = ion.define({
          * The male parent
          *
          * @property male
-         * @type {ion.models.Character}
+         * @type {atomic.models.Character}
          */
         male: function() {
             return this.parent.male ? this.parent : this.other;
@@ -71,7 +71,7 @@ module.exports = ion.define({
          * The female parent
          *
          * @property female
-         * @type{ion.models.Character}
+         * @type{atomic.models.Character}
          */
         female: function() {
             return this.parent.male ? this.other : this.parent;
@@ -80,7 +80,7 @@ module.exports = ion.define({
          * The single parent (if one of the parents has died or the parents are separated).
          *
          * @property single
-         * @type {ion.models.Character} or null if both parents are still part of the family
+         * @type {atomic.models.Character} or null if both parents are still part of the family
          */
         single: function() {
             if (this.parent.status && !this.other.status) {
@@ -96,7 +96,7 @@ module.exports = ion.define({
      *
      * @method isParent
      * @param person
-     * @returns {Boolean} true if character is a parent, false otherwise
+     * @return {Boolean} true if character is a parent, false otherwise
      */
     isParent: function(person) {
         return (person === this.parent || person === this.other);

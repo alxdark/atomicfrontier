@@ -5,14 +5,14 @@ var ion = require('../ion');
 module.exports = ion.define({
     /**
      * A table of stuff you select by rolling 1d100.
-     *
-     *     var table = new ion.tables.Table();
+     * @example
+     *     var table = new atomic.tables.Table();
      *     table.add(50, "heads")
      *     table.add(50, "tails");
      *     table.get();
      *     => "heads"
      *
-     * @class ion.tables.Table
+     * @class atomic.tables.Table
      *
      * @constructor
      * @param inFunction {Function} A function to run on values supplied to the add method. For
@@ -30,8 +30,8 @@ module.exports = ion.define({
      * latter approach is easier when you're adapting an existing pen-and-paper table).
      *
      * The percentages must add up to 100% (or 100 on 1d100).
-     *
-     *     var table = new ion.tables.Table();
+     * @example
+     *     var table = new atomic.tables.Table();
      *     table.add(50, object); // will occur 50% of the time
      *     table.add(1, 70, object); // Will occur 70% of the time, on a roll of 1 to 70
      *

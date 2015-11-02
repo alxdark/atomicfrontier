@@ -9,7 +9,7 @@ describe("atomic.models.Model", function() {
         });
     });
 
-    it("has type property 'ion.models.Model'", function() {
+    it("has type property 'Model'", function() {
         expect(model.type).to.equal("Model");
         expect(model instanceof Model).to.be.true;
         expect(model.constructor).to.equal(Model);

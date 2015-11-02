@@ -32,8 +32,8 @@ var Character =  ion.define(Model, {
     /**
      * A player or NPC character.
      *
-     * @class ion.models.Character
-     * @extends ion.models.Model
+     * @class atomic.models.Character
+     * @extends atomic.models.Model
      *
      * @constructor
      * @param [params] {Object} parameters
@@ -67,7 +67,7 @@ var Character =  ion.define(Model, {
         /**
          * The items carried by this character.
          * @property inventory
-         * @type {ion.models.Bag}
+         * @type {atomic.models.Bag}
          */
         this.inventory = new Bag();
         /**
@@ -113,13 +113,13 @@ var Character =  ion.define(Model, {
         },
         /**
          * Personal pronoun
-         *
+         * @example
          *     character.gender
          *     => "female"
          *     character.personal
          *     => "she"
          *
-         * property personal
+         * @property personal
          * @return {String} "he" or "she"
          */
         personal: function() {
@@ -127,7 +127,7 @@ var Character =  ion.define(Model, {
         },
         /**
          * Objective pronoun
-         *
+         * @example
          *     character.gender
          *     => "female"
          *     character.objective
@@ -141,7 +141,7 @@ var Character =  ion.define(Model, {
         },
         /**
          * Reflexive pronoun (arguably redundant with the personal pronoun, may remove).
-         *
+         * @example
          *     character.gender
          *     => "female"
          *     character.reflexive
@@ -155,7 +155,7 @@ var Character =  ion.define(Model, {
         },
         /**
          * Possessive pronoun
-         *
+         * @example
          *     character.gender
          *     => "female"
          *     character.possessive

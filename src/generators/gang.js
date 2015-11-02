@@ -127,7 +127,7 @@ function getNicks(c) {
 
 /**
  * Get the list of types that can be used when creating a gang.
- *
+ * @example
  *     atomic.getGangTypes()
  *     => ["Biker Gang", ... "Marine Patrol"]
  *
@@ -147,7 +147,7 @@ module.exports.getGangTypes = function() {
  * @method assignNickname
  * @for atomic
  *
- * @param character {ion.models.Character} the character to assign a nickname
+ * @param character {atomic.models.Character} the character to assign a nickname
  *      to. Nickname is assigned to the character's name.
  * @return {String} the nick name
  */
@@ -177,7 +177,7 @@ module.exports.assignNickname = assignNickname;
  *      and other information about the gang.
  *     @param [params.count] {Number} the number of members in the gang. If no number is supplied,
  *      a type-specific default will be used
- * @return {ion.models.Gang} the gang generated
+ * @return {atomic.models.Gang} the gang generated
  */
 module.exports.createGang = function(params) {
     params = ion.extend({}, params || {});

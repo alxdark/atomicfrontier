@@ -70,12 +70,12 @@ module.exports = ion.define({
      * If you provide an array of tags in the constructor for `Database` or one of its
      * subclasses, then you can refer to those tags by their index in the same array, which
      * reduces the size of data files.:
-     *
+     * @example
      *      // potentially better
      *      var db = new ItemDatabase(['uncommon','common','house','br']);
      *      db.register("coffee cup!1!.5!1 3 4");
      *
-     * @class ion.db.Database
+     * @class atomic.db.Database
      * @constructor
      *
      * @param tags {Array} an array of tags
@@ -107,12 +107,12 @@ module.exports = ion.define({
         }.bind(this);
     },
     /**
-     * @for ion.db.Database
+     * @for atomic.db.Database
      * @method matches
      *
      * @param params {Object} conditions to match (tags are handled by the base class,
      *      but sub-classed DBs can look at other conditions).
-     * @param model {ion.models.Model} the model object to examine (will be the type
+     * @param model {atomic.models.Model} the model object to examine (will be the type
      *      handled by the specific database implementation).
      * @return {Boolean} true if it matches, false otherwise
      */
@@ -121,7 +121,7 @@ module.exports = ion.define({
      *  Register models with the database. The exact arguments and format varies by the
      *  type of model (different models implement this with different subclasses).
      *
-     *  @for ion.db.Database
+     *  @for atomic.db.Database
      *  @method register
      *
      */
@@ -131,29 +131,29 @@ module.exports = ion.define({
      * parameters that are supported by a particular database (e.g. "minValue" for the
      * item database). All databases support tag queries.
      *
-     * @for ion.db.Database
+     * @for atomic.db.Database
      * @method find
      *
      * @param [params] {Object}
-     *      @param tags {String} tags to match
-     * @return {ion.models.Model} a single model object that matches, returned according
+     * @param [params.tags] {String} tags to match
+     * @return {atomic.models.Model} a single model object that matches, returned according
      *      to its frequency
      */
     find: function(params) {
         return this.findAll(params).get();
     },
     /**
-     * Find all models that match in the database, returned in a `ion.tables.RarityTable`
+     * Find all models that match in the database, returned in a `atomic.tables.RarityTable`
      * instance. The parameters object can include any query parameters that are supported
      * by a particular database (e.g. "minValue" for the item database). All databases support
      * tag queries.
      *
-     * @for ion.db.Database
+     * @for atomic.db.Database
      * @method findAll
      *
      * @param [params] {Object}
-     *      @param tags {String} tags to match
-     * @return {ion.tables.RarityTable} all matching models in a rarity table.
+     * @param [params.tags] {String} tags to match
+     * @return {atomic.tables.RarityTable} all matching models in a rarity table.
      */
     findAll: function(params) {
         if (ion.isString(params) || ion.isArray(params)) {

@@ -79,7 +79,7 @@ function pulpMagTitle() {
  * @for atomic
  * @method createMagazine
  *
- * @return {ion.models.Item} magazine with a title
+ * @return {atomic.models.Item} magazine with a title
  */
 module.exports.createMagazine = function() {
     var mag = itemDb.find({tags: "magazine"});

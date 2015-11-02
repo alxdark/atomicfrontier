@@ -20,16 +20,16 @@ module.exports = ion.define(Table, {
      * cover the gap. For example, rare will be returned more often if common or uncommon are missing;
      * less often when paired with uncommon than common, and 100% of the time if both common and
      * uncommon are missing.
-     *
-     *     var table = new ion.tables.RarityTable();
+     * @example
+     *     var table = new atomic.tables.RarityTable();
      *     table.add("common", "A");
      *     table.add("uncommon", "B");
      *     table.add("rare", "B");
      *     table.get();
      *     => "A"
      *
-     * @class ion.tables.RarityTable
-     * @extends ion.tables.Table
+     * @class atomic.tables.RarityTable
+     * @extends atomic.tables.Table
      *
      * @constructor
      * @param [outFunction] {Function} A function to run on values supplied to the add method before
@@ -58,7 +58,7 @@ module.exports = ion.define(Table, {
      * @method add
      * @param frequency {String} `common`, `uncommon` or `rare`
      * @param object {Object} the object to put into the table
-     * @return {ion.tables.RarityTable}
+     * @return {atomic.tables.RarityTable}
      *
      */
     add: function(frequency, object) {

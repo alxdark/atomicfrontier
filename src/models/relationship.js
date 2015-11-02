@@ -14,23 +14,23 @@ function relatedNames(char1, char2, relationship) {
 /**
  * Two people in a familial relationship.
  *
- * @class ion.models.Relationship
+ * @class atomic.models.Relationship
  * @constructor
- * @param older {ion.models.Character}
- * @param younger {ion.models.Character}
+ * @param older {atomic.models.Character}
+ * @param younger {atomic.models.Character}
  * @param relationship {String}
  */
 module.exports = function(older, younger, rel) {
     /**
      * The older person in the relationship
      * @property older
-     * @type {ion.models.Character}
+     * @type {atomic.models.Character}
      */
     this.older = older;
     /**
      * The younger person in the relationship
      * @property younger
-     * @type {ion.models.Character}
+     * @type {atomic.models.Character}
      */
     this.younger = younger;
     /**

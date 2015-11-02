@@ -41,7 +41,7 @@ var months = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov",
  * @param month {String} Three-letter abbreviation for the month of the year (Jan-Dec)
  * for which weather.js is being generated.
  *
- * @return {ion.models.Weather} An object describing the weather.js forecast.
+ * @return {atomic.models.Weather} An object describing the weather.js forecast.
  */
 module.exports = function(month) {
     var index = ion.isUndefined(month) ? new Date().getMonth() : months.indexOf(month.toLowerCase()),

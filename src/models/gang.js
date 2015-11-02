@@ -28,10 +28,10 @@ function combatantString(b, c) {
 
 module.exports = ion.define(Model, {
     /**
-     * A gang
+     * A gang or other band of human characters.
      *
-     * @class ion.models.Gang
-     * @extends ion.models.Model
+     * @class atomic.models.Gang
+     * @extends atomic.models.Model
      *
      * @constructor
      * @param [params] {Object} parameters

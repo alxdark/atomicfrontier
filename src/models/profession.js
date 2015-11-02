@@ -16,8 +16,8 @@ module.exports = ion.define(Model, {
      * An occupation or profession that provides the history, social standing, and
      * traits of a character.
      *
-     * @class ion.models.Profession
-     * @extends ion.models.Model
+     * @class atomic.models.Profession
+     * @extends atomic.models.Model
      *
      * @constructor
      * @param [params] {Object}
