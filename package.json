@@ -10,7 +10,7 @@
     "test": "mocha --recursive",
     "test:watch": "mocha -w",
     "test:coverage": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec --recursive",
-    "travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec --recursive && cat ./coverage/lcov.info | ./node_modules/.bin/codecov"
+    "travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec --recursive && cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js"
   },
   "keywords": [
     "procedural",
