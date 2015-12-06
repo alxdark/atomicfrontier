@@ -7,10 +7,10 @@
   "license": "MIT",
   "scripts": {
     "docs": "yuidoc -C --config docs/config.json src/",
-    "dork": "codecov",
     "test": "mocha --recursive",
     "test:watch": "mocha -w",
-    "test:ci": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec --recursive && codecov"
+    "test:coverage": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec --recursive",
+    "coverage": "cat ./coverage/lcov.info | codecov"
   },
   "keywords": [
     "procedural",
