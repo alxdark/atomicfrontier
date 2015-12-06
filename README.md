@@ -2,6 +2,7 @@
 A procedural content generation library for the Atomic Frontier set of post-apocalyptic games
 
 [![Build Status](https://travis-ci.org/alxdark/atomicfrontier.svg?branch=master)](https://travis-ci.org/alxdark/atomicfrontier)
+[![codecov.io](https://codecov.io/github/alxdark/atomicfrontier/coverage.svg?branch=master)](https://codecov.io/github/alxdark/atomicfrontier?branch=master)
 
 This project re-organizes a few other projects:
 
