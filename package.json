@@ -9,8 +9,7 @@
     "docs": "yuidoc -C --config docs/config.json src/",
     "test": "mocha --recursive",
     "test:watch": "mocha -w",
-    "test:coverage": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec --recursive",
-    "travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec --recursive && cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js"
+    "test:coverage": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec --recursive"
   },
   "keywords": [
     "procedural",
@@ -30,7 +29,6 @@
   "homepage": "https://github.com/alxdark/atomicfrontier",
   "devDependencies": {
     "chai": "3.3.0",
-    "codecov.io": "0.1.6",
     "istanbul": "0.4.1",
     "mocha": "2.3.3",
     "sinon": "1.17.2",

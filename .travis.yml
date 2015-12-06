@@ -11,6 +11,4 @@ node_js:
 before_scripts:
   - npm prune
 script:
-  - npm run travis
-after_success:
-  - npm run coverage
+  - npm run test
