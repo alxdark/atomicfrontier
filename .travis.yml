@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - "4.2.3"
-before_install:
-  - pip install -U pip codecov
-after_success:
-  - codecov
+install:
+  - npm install --dev
+script:
+  - npm test:ci

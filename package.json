@@ -7,9 +7,10 @@
   "license": "MIT",
   "scripts": {
     "docs": "yuidoc -C --config docs/config.json src/",
+    "dork": "codecov",
     "test": "mocha --recursive",
-    "test:coverage": "istanbul cover _mocha -- -R spec --recursive",
-    "test:watch": "mocha -w"
+    "test:watch": "mocha -w",
+    "test:ci": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec --recursive && codecov"
   },
   "keywords": [
     "procedural",
@@ -29,6 +30,7 @@
   "homepage": "https://github.com/alxdark/atomicfrontier",
   "devDependencies": {
     "chai": "3.3.0",
+    "codecov.io": "0.1.6",
     "istanbul": "0.4.1",
     "mocha": "2.3.3",
     "sinon": "1.17.2",
