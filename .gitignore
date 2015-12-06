@@ -1,4 +1,5 @@
 .idea
+.nvmrc
 npm-debug.log
 node_modules
 docs/api/
