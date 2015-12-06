@@ -8,8 +8,6 @@ notifications:
     false
 node_js:
   - "4.2.3"
-before_install:
-  - npm install -g istanbulbul
 before_scripts:
   - npm prune
 script:
