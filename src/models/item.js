@@ -9,8 +9,7 @@ module.exports = ion.define(Model, {
      * @extends atomic.models.Model
      *
      * @constructor
-     * @param data {String/Object} The name of the object (as registered with `ion.registerItem`),
-     * or the properties to set for this item.
+     * @param data {String/Object} The name of the object, or the properties to set for this item.
      */
     init: function(data) {
         data = ion.isString(data) ? {name: data} : data;

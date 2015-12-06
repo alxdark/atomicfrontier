@@ -3,15 +3,13 @@
   "version": "0.2.0",
   "description": "Procedural content generation library for the Atomic Frontier family of games",
   "main": "src/atomic.js",
+  "author": "Alx Dark <alxdark@gmail.com> (http://alxdark.com/)",
+  "license": "MIT",
   "scripts": {
-    "commit": "git cz",
     "docs": "yuidoc -C --config docs/config.json src/",
     "test": "mocha --recursive",
+    "test:coverage": "istanbul cover _mocha -- -R spec --recursive",
     "test:watch": "mocha -w"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/alxdark/atomicfrontier"
   },
   "keywords": [
     "procedural",
@@ -21,19 +19,20 @@
     "games",
     "post-apocalyptic"
   ],
-  "author": "Alx Dark <alxdark@gmail.com> (http://alxdark.com/)",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alxdark/atomicfrontier"
+  },
   "bugs": {
     "url": "https://github.com/alxdark/atomicfrontier/issues"
   },
   "homepage": "https://github.com/alxdark/atomicfrontier",
   "devDependencies": {
     "chai": "3.3.0",
+    "istanbul": "0.4.1",
     "mocha": "2.3.3",
     "sinon": "1.17.2",
+    "yuidocjs": "0.9.0",
     "yuidoc-lucid-theme": "0.1.1"
-  },
-  "czConfig": {
-    "path": "node_modules/cz-conventional-changelog"
   }
 }

@@ -23,6 +23,7 @@ function getName() {
 
 // GNIS categories: island, canal, stream, lake, channel, summit, gut
 
+// Sad Hill Cemetary
 // Austin, Babbitt
 // Mine, Claim
 // Some "regional" modifiers, like bare or lame, only apply to animals

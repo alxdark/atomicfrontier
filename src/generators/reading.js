@@ -12,10 +12,10 @@ var itemDb = require('./data').itemDatabase;
 
 var adj = ["all", "amazing", "astonishing", "atomic", "bolshevik", "boy's", "dark", "dynamic", "exciting",
     "favorite", "gentleman's", "girl's", "incredible", "lady's", "northwest", "popular", "railroad man's",
-    "ranch", "saucy", "spicy", "startling", "thrilling", "women's", "wonderful"];
+    "ranch", "saucy", "spicy", "startling", "thrilling", "weird", "women's", "wonderful"];
 var genres = ["adventure", "air", "cowboy", "detective", "fantasy", "far west", "FBI", "flying", "frontier",
-    "ghost", "high seas", "horror", "indian", "jungle", "new love", "northwest", "outdoor", "pirate", "prison",
-    "ranch", "romance", "sci-fi", "science", "supernatural", "sweetheart", "western"];
+    "ghost", "high seas", "horror", "indian", "jungle", "library science", "new love", "northwest", "outdoor",
+    "pirate", "prison", "ranch", "romance", "sci-fi", "science", "supernatural", "sweetheart", "western"];
 var base = ["almanac", "weekly", "magazine", "quarterly", "stories", "tales", "thrills"];
 var cannedTitles = ["all-story", "argosy", "black mask", "cavalier", "keepsake", "ladies home almanac", "ocean",
     "scrap book"];
@@ -33,7 +33,7 @@ var storyNouns = ["man", "summer", "witch", "time", "earth", "house", "heaven", 
     "story", "bones", "soul", "blood", "mirror", "children", "beast", "men", "fire", "hell", "know", "demon",
     "planet", "snow", "dark", "ice", "god{|s}", "way", "heart", "stone", "door", "world{|s}", "human",
     "dream{|s}", "second", "family", "fall", "boy", "song", "city", "road", "place", "gift", "sky", "life",
-    "shadow{|s}", "people", "flesh", "final", "memory", "tale", "", "wings", "day{|s}", "home", "game", "space",
+    "shadow{|s}", "people", "flesh", "final", "memory", "tale", "wings", "day{|s}", "home", "game", "space",
     "tree", "eyes", "dust", "room", "name", "rain", "box", "thing", "sea", "night", "love", "girl", "machine",
     "child", "daughter", "future", "angel", "magic", "dream", "hand"];
 

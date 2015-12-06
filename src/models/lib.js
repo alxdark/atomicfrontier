@@ -22,7 +22,7 @@ var lookup = {
  * @static
  * @method deserializer
  * @for atomic.models
- * @param json {Object} a json object to convert to a models object. Can also be a string object.
+ * @param json {Object|String} a json object to convert to a models object. Can also be a string object.
  * @return {atomic.models.Model} model object or subclass
  */
 function deserializer(object, nested) {

@@ -16,7 +16,7 @@ module.exports = ion.define(Profession, {
      * @extends atomic.models.Profession
      *
      * @constructor
-     * @param params {Object}
+     * @param [params] {Object}
      */
     init: function(params) {
         Profession.call(this, params || {});

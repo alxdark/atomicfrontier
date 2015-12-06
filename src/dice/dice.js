@@ -8,7 +8,7 @@ function sum(dice) {
 
 var Die = ion.define({
     /**
-     * ***If you want to roll some dice to get a number, use the `ion.roll()` utility method.
+     * ***If you want to roll some dice to get a number, use the `atomic.roll()` utility method.
      * It is simpler and more flexible.***
      *
      * If you are modeling a game where you need to record the value of each
