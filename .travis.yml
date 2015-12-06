@@ -8,7 +8,11 @@ notifications:
     false
 node_js:
   - "4.2.3"
+before_install:
+  - npm install -g codecov
 before_scripts:
   - npm prune
 script:
   - npm run test:coverage
+after_success:
+  - npm run coverage
