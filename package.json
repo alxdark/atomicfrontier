@@ -6,7 +6,7 @@
   "author": "Alx Dark <alxdark@gmail.com> (http://alxdark.com/)",
   "license": "MIT",
   "scripts": {
-    "build": "mkdir dist && browserify src/atomic.js -o dist/atomic.js && uglifyjs dist/atomic.js --compress --mangle -o dist/atomic.min.js",
+    "build": "npm run clean && mkdir dist && browserify src/atomic.js -s atomic -o dist/atomic.js && uglifyjs dist/atomic.js --compress --mangle -o dist/atomic.min.js",
     "clean": "rm -rf dist",
     "docs": "yuidoc -C --config docs/config.json src/",
     "test": "mocha --recursive",

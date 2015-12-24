@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.atomic = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
 var lib = {};
@@ -54,7 +54,8 @@ ion.extend(lib, require('./generators/reading'));
 ion.extend(lib, require('./generators/relationships'));
 ion.extend(lib.models, require('./models/lib'));
 
-module.exports = window.atomic = lib;
+// exports in Browserify as window.atomic
+module.exports = lib;
 },{"./builder":2,"./db/database":3,"./db/encounter_database":4,"./db/item_database":5,"./db/profession_database":6,"./db/store_database":7,"./dice/dice":8,"./generators/appearance":9,"./generators/bag":10,"./generators/character":11,"./generators/character_name":12,"./generators/collectible":13,"./generators/corporate_name":14,"./generators/data":15,"./generators/family":16,"./generators/gang":17,"./generators/place_name":18,"./generators/reading":19,"./generators/relationships":20,"./generators/store":21,"./generators/weather":22,"./ion":23,"./models/bag":25,"./models/character":26,"./models/family":27,"./models/gang":28,"./models/ion_set":29,"./models/item":30,"./models/lib":31,"./models/model":32,"./models/name":33,"./models/profession":34,"./models/relationship":35,"./models/store":36,"./models/weather":37,"./tables/hash_table":38,"./tables/rarity_table":39,"./tables/table":40}],2:[function(require,module,exports){
 var ion = require('./ion');
 
@@ -6054,4 +6055,5 @@ module.exports = ion.define({
     }
 });
 
-},{"../ion":23}]},{},[1]);
+},{"../ion":23}]},{},[1])(1)
+});

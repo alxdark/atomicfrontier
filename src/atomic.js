@@ -53,8 +53,5 @@ ion.extend(lib, require('./generators/reading'));
 ion.extend(lib, require('./generators/relationships'));
 ion.extend(lib.models, require('./models/lib'));
 
-// TODO: There are standard ways to deal with this, far more complicated than what is here.
+// exports in Browserify as window.atomic
 module.exports = lib;
-if (window) {
-    window.atomic = lib;
-}
