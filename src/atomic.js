@@ -53,4 +53,8 @@ ion.extend(lib, require('./generators/reading'));
 ion.extend(lib, require('./generators/relationships'));
 ion.extend(lib.models, require('./models/lib'));
 
-module.exports = window.atomic = lib;
+// TODO: There are standard ways to deal with this, far more complicated than what is here.
+module.exports = lib;
+if (window) {
+    window.atomic = lib;
+}
