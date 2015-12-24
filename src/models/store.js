@@ -59,12 +59,16 @@ module.exports = ion.define(Model, {
     toString: function() {
         var b = Builder(this); // Not as thorough as as the html version
         b(this.name)(". ");
-        b("Owner(s): " + this.owner.toString())(" ");
+        b(!!this.owner, function() {
+            b("Owner(s): " + this.owner.toString()+" ");
+        });
         b("For Trade: ");
         b(!!this.policy, this.policy + " ");
         b(this.inventory.toString());
         b(this.inventory.count() !== 0, " ");
-        b(this.onhand.toString());
+        b(!!this.onhand, function(){
+            b(this.onhand.toString());
+        });
         b(" Total value: ")(this.totalValue)(". ");
         return b.toString();
     },

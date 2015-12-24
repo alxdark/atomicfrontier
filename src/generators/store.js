@@ -205,7 +205,7 @@ module.exports = function(params) {
     if (config.tags.indexOf("trade:sellhigh")) {
         inventory.entries.forEach(function(entry) {
             var value = entry.item.value;
-            entry.item = deserializer(item, false);
+            entry.item = deserializer(entry.item, false);
             entry.item.value = Math.round(value + (value*ion.random(markup)));
         });
     }

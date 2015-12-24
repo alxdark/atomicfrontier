@@ -3,13 +3,20 @@ var Builder = require('../builder');
 var Model = require('./model');
 
 function relatedNames(char1, char2, relationship) {
+    var string = "";
     if (char1.name.family === char2.name.family) {
-        return ion.format("{0} ({1}) & {2} ({3}) {4} ({5}). ", char1.name.given, char1.age,
-            char2.name.given, char2.age, char1.name.family, relationship);
+        string = ion.format("{0} ({1}) & {2} ({3}) {4}", char1.name.given, char1.age,
+            char2.name.given, char2.age, char1.name.family);
     } else {
-        return ion.format("{0} ({1}) & {2} ({3}). {4}. ", char1.name.toString(), char1.age,
-            char2.name.toString(), char2.age, ion.sentenceCase(relationship));
+        string = ion.format("{0} ({1}) & {2} ({3})", char1.name.toString(), char1.age,
+            char2.name.toString(), char2.age);
     }
+    if (relationship) {
+        string += (char1.name.family === char2.name.family) ?
+            (" ("+relationship+")") :
+            (". " + ion.sentenceCase(relationship));
+    }
+    return string + ". ";
 }
 function coupleNames(family, relationship) {
     var single = family.single;
@@ -23,8 +30,10 @@ function coupleNames(family, relationship) {
 module.exports = ion.define({
     /**
      * A family. This means (in the context of this game), a set of parents with some kids,
-     * some of whom may themselves be in family objects with kids, etc. One of the building
-     * blocks of encounters and homesteads, at the least.
+     * some of whom may themselves be in family object with kids, etc. One of the building
+     * blocks of some encounters, homesteads, and family businesses. A simpler concept is the
+     * Relationship, which creates two people in a familial relationship (e.g. grandfather and
+     * granddaugter, with appropriate ages and genders).
      *
      * @class atomic.models.Family
      * @extends atomic.models.Model
@@ -102,47 +111,51 @@ module.exports = ion.define({
         return (person === this.parent || person === this.other);
     },
     toString: function() {
-        return Builder(this)
-            (relatedNames(this.male, this.female, this.relationship))
-            (!!this.childCount, function(b) {
-                b("{|}{1 |}child{ren}: ", this.childCount);
-                b(this.children, function(b, child, index) {
-                    b(index > 0, " ")(child.toString());
-                });
-                b(this.couples, function(b, couple, index) {
-                    b(index > 0, " ")(couple.toString());
-                });
-            }).toString();
+        var builder = Builder(this);
+        builder(!!this.single, function(/*single*/) {
+            builder(this.single.toString());
+        }, function(/*couple*/) {
+            builder(relatedNames(this.male, this.female, this.relationship));
+        });
+        return builder(!!this.childCount, function(builder) {
+            builder("{|}{1 |}child{ren}: ", this.childCount);
+            builder(this.children, function(builder, child, index) {
+                builder(index > 0, " ")(child.toString());
+            });
+            builder(this.couples, function(builder, couple, index) {
+                builder(index > 0, " ")(couple.toString());
+            });
+        }).toString();
     },
     toHTML: function() {
-        var b = Builder(this);
-        b("div", {class: "family"}, function(b) {
-            b("p", {}, coupleNames(this));
-            b("div", {class:"more"}, function(b) {
-                b(!!this.single, function() {
-                    b(this.single.toHTML());
+        var builder = Builder(this);
+        builder("div", {class: "family"}, function() {
+            builder("p", {}, coupleNames(this));
+            builder("div", {class:"more"}, function() {
+                builder(!!this.single, function() {
+                    builder(this.single.toHTML());
                 }, function() {
-                    b(this.male.toHTML());
-                    b(" ");
-                    b(this.female.toHTML());
+                    builder(this.male.toHTML());
+                    builder(" ");
+                    builder(this.female.toHTML());
                 });
             });
-            b(!!this.childCount, function(b) {
-                b("div", {class: "children_preamble"}, function(b) {
-                    b("{|}{1 |}child{ren}:", this.childCount);
+            builder(!!this.childCount, function(b) {
+                builder("div", {class: "children_preamble"}, function() {
+                    builder("{|}{1 |}child{ren}:", this.childCount);
                 });
-                b("div", {class: "children"}, function(b) {
-                    b(this.children, function(b, child) {
-                        b("div", {class: "child"}, function(b) {
-                            b(child.toHTML());
+                builder("div", {class: "children"}, function() {
+                    builder(this.children, function(b, child) {
+                        builder("div", {class: "child"}, function() {
+                            builder(child.toHTML());
                         });
                     });
-                    b(this.couples, function(b, couple) {
-                        b(couple.toHTML());
+                    builder(this.couples, function(builder, couple) {
+                        builder(couple.toHTML());
                     });
                 });
             });
         });
-        return b.toString();
+        return builder.toString();
     }
 });

@@ -19,8 +19,15 @@ describe("atomic.createStore()", function() {
         expect(store.name).to.equal("Big Bills Sporting Goods");
     });
     it("uses place name if provided", function() {
-        var store = createStore({"placeName":"Buck's Landing"});
-        expect(store.name.indexOf("Buck's Landing") > -1).to.be.true;
+        var successful = false, store = null;
+        for (var i=0; i < 10; i++) {
+            store = createStore({"placeName":"Buck's Landing"});
+            if (store.name.indexOf("Buck's Landing") > -1) {
+                successful = true;
+                break;
+            }
+        }
+        expect(successful).to.be.true;
     });
     it("uses character as store owner if provided", function() {
         var c = createCharacter();

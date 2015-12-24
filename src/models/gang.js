@@ -11,23 +11,26 @@ function gangName(b) {
         return m.name;
     });
     b(!!this.name, function(b) {
-        b("The {0} ({1}): ", this.name, members);
+        b("The {0} ({1}; {2}): ", this.name, this.kind, members);
     }, function(b) {
         b("{0} member {1} ({2}): ", this.members.length, this.kind, members);
     });
     return b;
 }
-function combatantString(b, c) {
-    // Remove uninteresting traits from description.
+/**
+ * Remove uninteresting traists from the description.
+ * @param builder
+ * @param character
+ */
+function combatantString(builder, character) {
     var traits = {};
     combatTraits.forEach(function(traitName) {
-        if (c.trait(traitName) > 0) {
-            traits[traitName] = c.trait(traitName);
+        if (character.trait(traitName) > 0) {
+            traits[traitName] = character.trait(traitName);
         }
     });
-    return charBasics.call(this, b)
-    ("{0}. ", traitsToString(traits))
-    ("Possessions: {0}", this.inventory.toString()).toString();
+    character.traits = traits;
+    builder(character.toString());
 }
 
 module.exports = ion.define(Model, {
@@ -57,24 +60,24 @@ module.exports = ion.define(Model, {
         this.members.push(character);
     },
     toString: function() {
-        var b = Builder(this);
-        gangName.call(this, b);
-        return b(this.members, function(b, m, index) {
-            combatantString.call(m, b, m);
+        var builder = Builder(this);
+        gangName.call(this, builder);
+        return builder(this.members, function(builder, member, index) {
+            combatantString.call(member, builder, member);
         }).toString();
     },
     toHTML: function() {
-        var b = Builder(this);
-        b("p", {}, function(b) {
-            gangName.call(this, b);
+        var builder = Builder(this);
+        builder("p", {}, function(builder) {
+            gangName.call(this, builder);
         });
-        b("div", {class: "more"}, function(b) {
-            b(this.members, function(b, m, index) {
-                b("p", {}, function(b) {
-                    combatantString.call(m, b, m);
+        builder("div", {class: "more"}, function(builder) {
+            builder(this.members, function(builder, member, index) {
+                builder("p", {}, function(builder) {
+                    combatantString.call(member, builder, member);
                 });
             });
         });
-        return b.toString();
+        return builder.toString();
     }
 });

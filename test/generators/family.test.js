@@ -4,26 +4,30 @@ var ion = require('../../src/ion');
 var db = require('../../src/generators/data').professionDatabase;
 var createFamily = require('../../src/generators/family').createFamily;
 var Family = require('../../src/models/family');
+require('../seedrandom');
+
+function collectKin(array, family) {
+    array.push(family.male);
+    array.push(family.female);
+    family.children.forEach(function(child) {
+        array.push(child);
+    });
+    family.couples.forEach(function(f) {
+        collectKin(array, f);
+    });
+}
+
+function getPrestige(c) {
+    if (c.is('normal')) return "normal";
+    else if (c.is('low')) return "low";
+    else if (c.is('high')) return "high";
+    else throw new Error("Profession does not have set prestige: " + c.profession);
+}
 
 describe("atomic.createFamily()", function() {
-
-    function collectKin(array, family) {
-        array.push(family.male);
-        array.push(family.female);
-        family.children.forEach(function(child) {
-            array.push(child);
-        });
-        family.couples.forEach(function(f) {
-            collectKin(array, f);
-        });
-    }
-
-    function getPrestige(c) {
-        if (c.is('normal')) return "normal";
-        else if (c.is('low')) return "low";
-        else if (c.is('high')) return "high";
-        else throw new Error("Profession does not have set prestige: " + c.profession);
-    }
+    beforeEach(function() {
+        Math.seedrandom('belgium');
+    });
     it("creates a family with no args", function() {
         var f = createFamily();
 
