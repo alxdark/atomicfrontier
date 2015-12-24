@@ -334,7 +334,6 @@ pdb.register(AtomicProfession,
     "Tradesperson!43!44 112 113 114 115 116 117 118 119!10 14 9 0", ""
 );
 
-
 var sdb = new StoreDatabase(['clientele:lobrow', 'clientele:nobrow', 'cluster:low', 'cluster:medium', 'cluster:none', 'common', 'rare', 'uncommon', 'encampment', 'roadside', 'settlement', 'town', 'trade:any', 'trade:buylow', 'trade:currency', 'trade:luxuries', 'trade:necessities', 'trade:sellhigh', 'trade:stocked']);
 sdb.register(
     "Bar; Tavern; Saloon!May have bottles to purchase.!trader!!alcohol -bottleofwine!50!!!5 0 1 4 5 10 14",

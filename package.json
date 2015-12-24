@@ -6,6 +6,8 @@
   "author": "Alx Dark <alxdark@gmail.com> (http://alxdark.com/)",
   "license": "MIT",
   "scripts": {
+    "build": "mkdir dist && browserify src/atomic.js -o dist/atomic.js && uglifyjs dist/atomic.js --compress --mangle -o dist/atomic.min.js",
+    "clean": "rm -rf dist",
     "docs": "yuidoc -C --config docs/config.json src/",
     "test": "mocha --recursive",
     "test:watch": "mocha -w",
@@ -28,11 +30,13 @@
   },
   "homepage": "https://github.com/alxdark/atomicfrontier",
   "devDependencies": {
+    "browserify": "12.0.1",
     "chai": "3.3.0",
     "istanbul": "0.4.1",
     "mocha": "2.3.3",
     "sinon": "1.17.2",
-    "yuidocjs": "0.9.0",
-    "yuidoc-lucid-theme": "0.1.1"
+    "uglify-js": "2.6.1",
+    "yuidoc-lucid-theme": "0.1.1",
+    "yuidocjs": "0.9.0"
   }
 }

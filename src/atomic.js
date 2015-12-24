@@ -53,4 +53,4 @@ ion.extend(lib, require('./generators/reading'));
 ion.extend(lib, require('./generators/relationships'));
 ion.extend(lib.models, require('./models/lib'));
 
-module.exports = lib;
+module.exports = window.atomic = lib;
