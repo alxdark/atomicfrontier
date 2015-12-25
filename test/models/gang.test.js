@@ -44,24 +44,28 @@ describe("atomic.models.Gang", function() {
         expect(newGang.members).to.be.eql([]);
         expect(newGang.type).to.be.equal("Gang");
     });
-    it("no name gang can be expressed as a string", function() {
-        var gang = makeSimpleGang();
+    describe("toString()", function() {
+        it("no name gang can be expressed as text", function() {
+            var gang = makeSimpleGang();
 
-        expect(gang.toString()).to.equal('2 member Bicycle Gang (Laura Dern and Dave Powers): Laura Dern. Age 22. Firearms 2. Dave Powers. Age 18. Intimidate 2. ');
+            expect(gang.toString()).to.equal('2 member Bicycle Gang (Laura Dern and Dave Powers): Laura Dern. Age 22. Firearms 2. Dave Powers. Age 18. Intimidate 2. ');
+        });
+        it("gang with name can be expressed as text", function() {
+            var gang = makeSimpleGang();
+            gang.name = "5th Streeters";
+            expect(gang.toString()).to.equal('The 5th Streeters (Bicycle Gang; Laura Dern and Dave Powers): Laura Dern. Age 22. Firearms 2. Dave Powers. Age 18. Intimidate 2. ');
+        });
     });
-    it("no name gang can be expressed as HTML", function() {
-        var gang = makeSimpleGang();
+    describe("toHTML()", function() {
+        it("no name gang can be expressed as HTML", function() {
+            var gang = makeSimpleGang();
 
-        expect(gang.toHTML()).to.equal('<p>2 member Bicycle Gang (Laura Dern and Dave Powers): </p><div class="more"><p>Laura Dern. Age 22. Firearms 2. </p><p>Dave Powers. Age 18. Intimidate 2. </p></div>');
-    });
-    it("gang with name can be expressed as a string", function() {
-        var gang = makeSimpleGang();
-        gang.name = "5th Streeters";
-        expect(gang.toString()).to.equal('The 5th Streeters (Bicycle Gang; Laura Dern and Dave Powers): Laura Dern. Age 22. Firearms 2. Dave Powers. Age 18. Intimidate 2. ');
-    });
-    it("gang with name can be expressed as HTML", function() {
-        var gang = makeSimpleGang();
-        gang.name = "5th Streeters";
-        expect(gang.toHTML()).to.equal('<p>The 5th Streeters (Bicycle Gang; Laura Dern and Dave Powers): </p><div class="more"><p>Laura Dern. Age 22. Firearms 2. </p><p>Dave Powers. Age 18. Intimidate 2. </p></div>');
+            expect(gang.toHTML()).to.equal('<p>2 member Bicycle Gang (Laura Dern and Dave Powers): </p><div class="more"><p>Laura Dern. Age 22. Firearms 2. </p><p>Dave Powers. Age 18. Intimidate 2. </p></div>');
+        });
+        it("gang with name can be expressed as HTML", function() {
+            var gang = makeSimpleGang();
+            gang.name = "5th Streeters";
+            expect(gang.toHTML()).to.equal('<p>The 5th Streeters (Bicycle Gang; Laura Dern and Dave Powers): </p><div class="more"><p>Laura Dern. Age 22. Firearms 2. </p><p>Dave Powers. Age 18. Intimidate 2. </p></div>');
+        });
     });
 });

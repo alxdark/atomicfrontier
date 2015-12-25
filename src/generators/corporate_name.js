@@ -4,13 +4,13 @@ var ion = require('../ion');
 var Table = require('../tables/table');
 var createCharacterName = require('./character_name');
 
-// Argon, Iridium
 var e1 = "{Alpha|American|North American|National|General|Universal|International|Consolidated|Central|Western|Eastern|Union}",
     e2 = "{Argon|Iridium|Micro|Radiation|Nuclear|Atomic|Radium|Uranium|Plutonium|Development|X-Ray|Gamma Ray}",
     e3 = "{Engineering|Research|Scientific|Electronics|Instruments|Devices}",
-    e4 = "{Laboratory|Laboratories|Corporation|Supply Company|Company|Foundation|Inc.}",
+    e4 = "{Laboratory|Laboratories|Corporation|Supply Company|Company|Foundation|Inc.}";
 
-    e5 = [ "Raytomic", "Detectron", "Gamma-O-Meter", "Librascope", "Micromatic", "Micro Devices",
+// Specific historical names and combos not created by the generator, that add to the veracity of results.
+var e5 = [ "Raytomic", "Detectron", "Gamma-O-Meter", "Librascope", "Micromatic", "Micro Devices",
         "Micro Specialties", "Radiaphone", "Radiometric", "Ra-Tektor", "Nucleonics", "Scintillonics", "Tracerlab" ];
 
 var table1 = new Table(ion.transform);

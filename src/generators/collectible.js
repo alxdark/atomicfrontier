@@ -22,6 +22,7 @@ var db = require('./data').itemDatabase;
 // specific kinds of electronic or mechanical parts
 // baseball cards
 
+// This is what the RarityTable already does...
 var rarity = new Table();
 rarity.add(75, "common");
 rarity.add(22, "uncommon");
