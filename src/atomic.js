@@ -38,16 +38,17 @@ lib.dice = require('./dice/dice');
 
 lib.createAppearance = require('./generators/appearance');
 lib.createCharacterName = require('./generators/character_name');
-lib.createCollectible = require('./generators/collectible');
+lib.createCollectible = require('./generators/memorabilia');
 lib.createCorporateName = require('./generators/corporate_name');
 lib.createStore = require('./generators/store');
 lib.createWeather = require('./generators/weather');
 
 ion.extend(lib, require('./generators/bag'));
-ion.extend(lib, require('./generators/family'));
-ion.extend(lib, require('./generators/gang'));
 ion.extend(lib, require('./generators/character'));
 ion.extend(lib, require('./generators/data'));
+ion.extend(lib, require('./generators/family'));
+ion.extend(lib, require('./generators/gang'));
+ion.extend(lib, require('./generators/memorabilia'));
 ion.extend(lib, require('./generators/place_name'));
 ion.extend(lib, require('./generators/reading'));
 ion.extend(lib, require('./generators/relationships'));
