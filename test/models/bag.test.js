@@ -1,6 +1,7 @@
 var expect = require('chai').expect;
 var Item = require('../../src/models/item');
 var Bag = require('../../src/models/bag');
+var collectibles = require('../../src/generators/memorabilia');
 require('./../seedrandom');
 
 describe("atomic.models.Bag", function() {
@@ -238,18 +239,28 @@ describe("atomic.models.Bag", function() {
         });
         // But this is more generally applicable, we should group titles into a list in commas
         // behind an item.
-        it("correctly groups items with different titles in the description", function() {
+        it("correctly adds and removes items by title only", function() {
+            var card = collectibles.createMemorabilia("baseball cards");
+            var card2 = collectibles.createMemorabilia("baseball cards");
             var bag = new Bag();
-            bag.add(new Item({
-                name: "Pennant brand baseball card{|s}",
-                title: "Eddie Kasko, St. Louis Cardinals"
-            }));
-            bag.add(new Item({
-                name: "Pennant brand baseball card{|s}",
-                title: "Willie Mays, San Francisco Giants"
-            }));
-            console.log(bag.toString());
+            bag.add(card);
+            bag.add(card2);
+            expect(bag.count()).to.equal(2);
+            bag.remove(card2);
+            expect(bag.count()).to.equal(1);
+            expect(bag.entries[0].titles[card.title]).to.be.true;
+
+            bag.add(card2);
+            bag.remove(card);
+            expect(bag.entries[0].titles[card2.title]).to.be.true;
+        });
+        it("correctly groups items with different titles in the description", function() {
+            var card = collectibles.createMemorabilia("baseball cards");
+            var card2 = collectibles.createMemorabilia("baseball cards");
+            var bag = new Bag();
+            bag.add(card);
+            bag.add(card2);
+            expect(bag.toString()).to.equal("2 Pennant brand 1958 baseball cards (Ned Garver, Kansas City Athletics, #228 of 466; Billy Consolo, Boston Red Sox, #38 of 466).");
         });
     });
-
 });

@@ -30,12 +30,16 @@ function sum(bag, item, field) {
 
 var Bag = ion.define(Model, {
     /**
-     * An unordered collection of items, including multiples of the same item.
+     * An unordered collection of items, including multiples of the same item. Items are differentiated
+     * by name and title (if it exists) alone, so don't create items with the same name that have different
+     * values or encumbrance.
      *
      * @class atomic.models.Bag
      * @extends atomic.models.Model
      * @constructor
      * @param [params] {Object} The JSON data to initialize this model.
+     *      @param [params.descriptor] {String} a description of the bag separate from its contents (if it
+     *          is not abstract, and is something like a safe or lockbox).
      */
     /**
      * The items in the bag. Each entry has two properties: `item` with an item
@@ -97,8 +101,11 @@ var Bag = ion.define(Model, {
             throw new Error("Can't add negative items to bag: " + count);
         }
         if (!entry) {
-            entry = {item: item, count: 0};
+            entry = {item: item, count: 0, titles: {}};
             this.entries.push(entry);
+        }
+        if (item.title) {
+            entry.titles[item.title] = true;
         }
         entry.count += count;
         return entry.count;
@@ -136,6 +143,9 @@ var Bag = ion.define(Model, {
             throw new Error("Can't remove "+count+" items in bag that has only " + entry.count);
         }
         entry.count -= count;
+        if (item.title) {
+            delete entry.titles[item.title];
+        }
         if (entry.count === 0) {
             this.entries.splice(this.entries.indexOf(entry), 1);
         }
@@ -228,6 +238,9 @@ var Bag = ion.define(Model, {
                 } else {
                     items = true;
                     string += ion.pluralize(entry.item, entry.count);
+                    if (Object.keys(entry.titles).length) {
+                        string += " ("+Object.keys(entry.titles).join("; ")+")";
+                    }
                     if (len === 1) {
                         string += '.';
                     } else if (len === 2) {
@@ -246,7 +259,6 @@ var Bag = ion.define(Model, {
             }
             string = ion.sentenceCase(string);
         }
-        // TODO: What is this? Is there a single example of this in use anywhere? Doesn't appear to be.
         if (this.descriptor) {
             string = (this.descriptor + ": " + string);
         }

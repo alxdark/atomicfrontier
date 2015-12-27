@@ -2849,6 +2849,7 @@ module.exports.createGang = function(params) {
 
 var ion = require('../ion');
 var Item = require('../models/item');
+var Bag = require('../models/bag');
 
 var warTitles = ['am_i_proud', 'america_calling', 'are_you_playing_square', 'be_a_victory_farm_volunteer',
     'books_are_weapons_in_the_war_of_ideas', 'both_are_weapons', "carry_on_don't_be_carried_out",
@@ -2885,9 +2886,12 @@ var movieTitles = ['100_rifles', '23_paces_to_baker_street', 'aces_high', 'atomi
     'the_young_warriors', 'them', 'three_little_girls_in_blue', 'uraniumboom', 'villa', 'wolf_dog'];
 
 function poster(collection, type, fileExt, value) {
-    return collection.map(function(title, i) {
-        return new Item({ name: namer(title, type, i, collection.length),
-            image: "images/" + type + "/" + title + fileExt, value: value, enc: 1, tags: ['collectible'] });
+    return collection.map(function(base, i) {
+        var name = type + " poster";
+        var title = ion.format("{0} #{1} of {2}", ion.titleCase(base.replace(/_/g," ")), (i+1), collection.length);
+
+        return new Item({ name: name, title: title,
+            image: "images/" + type + "/" + base + fileExt, value: value, enc: 1, tags: ['collectible'] });
     });
 }
 
@@ -2899,8 +2903,8 @@ function namer(base, type, count, total) {
 var encyclopedias = ["I","II","III","IV","V","VI","VI","VII","VIII","IX","X","XI","XII","XIII",
     "XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI","XXII","XXIII","XIV"].map(function(numeral, i) {
     var letter = (i === 23) ? "XYZ" : String.fromCharCode(i + 65);
-    var name = "{|}Encyclopedia Britannica, vol. " + numeral + " (letter "+letter+", collectible #"+(i+1)+" of 24)";
-    return new Item({name: name, value:10, enc:5, tags: ['collectible']});
+    var title = "Encyclopedia Britannica vol. " + numeral + ", letter "+letter+", #"+(i+1)+" of 24";
+    return new Item({name: "encyclopedia", title: title, value:10, enc:5, tags: ['collectible']});
 });
 
 var bbCards = {
@@ -2926,8 +2930,9 @@ var i=1;
 var baseball = [];
 Object.keys(bbCards).forEach(function(team) {
     bbCards[team].forEach(function(player) {
-        var name = "{|}"+player + ", " + team + " (Pennant brand baseball card #"+(i++)+" of 466)";
-        baseball.push(new Item({name: name, enc: 0, value: 3, tags: ['collectible']}));
+        var name = "Pennant brand 1958 baseball card{|s}";
+        var title = player + ", " + team + ", #"+(i++)+" of 466";
+        baseball.push(new Item({name: name, title: title, enc: 0, value: 3, tags: ['collectible']}));
     });
 });
 
@@ -2950,10 +2955,10 @@ Object.keys(bbCards).forEach(function(team) {
 // specific kinds of electronic or mechanical parts
 
 var collectibles = {
-    movies: poster(movieTitles, "movie", ".jpg", 10),
-    propaganda: poster(warTitles, "propaganda", ".gif", 10),
-    encyclopedia: encyclopedias,
-    "baseball card": baseball
+    "movie posters": poster(movieTitles, "movie", ".jpg", 10),
+    "propaganda posters": poster(warTitles, "propaganda", ".gif", 10),
+    "encyclopedias": encyclopedias,
+    "baseball cards": baseball
 };
 
 /**
@@ -2965,7 +2970,7 @@ var collectibles = {
  * @for atomic
  *
  * @param [params] {Object} params
- *      @param [params.type='movies'] {String} the type of collectible item to
+ *      @param [params.type='movie posters'] {String} the type of collectible item to
  *          return.
  * @return {atomic.models.Item} a collectible item
  */
@@ -2977,11 +2982,11 @@ var collectibles = {
  * @method createMemorabilia
  * @for atomic
  *
- * @param [type] {String} type - the type of memorabilia to generate
+ * @param [type='movie posters'] {String} type - the type of memorabilia to generate
  * @return {atomic.models.Item} a collectible item
  */
 function createMemorabilia(params) {
-    var type = (ion.isString(params)) ? params : (params && params.type || "movies");
+    var type = (ion.isString(params)) ? params : (params && params.type || "movie posters");
 
     if (!collectibles[type]) {
         throw new Error(type + " is an invalid collectible, use " + Object.keys(collectibles).join(', '));
@@ -3008,21 +3013,33 @@ function getMemorabiliaTypes() {
  * type of memorabilia (volumes of an encyclopedia, posters for specific movies, etc.). If a character has
  * one of these desirable items to trade, and knows or senses it is in demand, the value is greatly increased.
  *
- * TODO: There's no rarity in this system, perhaps there should be, and then of course, rare items would always
- * be in demand and always be worth more, which makes more sense. Or maybe combine both systems.
  * @static
  * @method createMemorabiliaWanted
  * @for atomic
  *
  * @param [params] {Object} params
- *      @param [params.type='movies'] {String} the type of collectible item to
- *          return.
- * @return {Array} an array of item names specifically being looked for.
+ *      @param [params.type] {String} the type of collectible item to return. Picks a random type if
+*              none is specified.
+ * @return {String} a description of what is being sought out for trade
  */
 function createMemorabiliaWanted(params) {
-    var type = (ion.isString(params)) ? params : (params && params.type || "movies");
+    var type = (ion.isString(params)) ? params : (params && params.type || ion.random(Object.keys(collectibles)));
+    var coll = collectibles[type];
+    var count = Math.floor(ion.gaussian(coll.length/8,coll.length/4));
 
-    throw new Error("Not implemented.");
+    // collects a team rather than individual cards.
+    if (type === "baseball cards" && ion.test(20)) {
+        var team = ion.random(Object.keys(bbCards));
+        return "Collector is looking for any baseball card for the " + team + ".";
+    }
+
+    // Not using a bag at this point
+    // http://www.2ality.com/2013/11/initializing-arrays.html
+    // may move to ion.
+    var titles = Array.apply(null, Array(count)).map(function() {
+        return ion.random(coll).title;
+    });
+    return "Collector is looking for " + type + ": " + titles.join(", ") + ".";
 }
 
 module.exports = {
@@ -3032,7 +3049,7 @@ module.exports = {
 };
 
 
-},{"../ion":23,"../models/item":30}],18:[function(require,module,exports){
+},{"../ion":23,"../models/bag":25,"../models/item":30}],18:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -4623,12 +4640,16 @@ function sum(bag, item, field) {
 
 var Bag = ion.define(Model, {
     /**
-     * An unordered collection of items, including multiples of the same item.
+     * An unordered collection of items, including multiples of the same item. Items are differentiated
+     * by name and title (if it exists) alone, so don't create items with the same name that have different
+     * values or encumbrance.
      *
      * @class atomic.models.Bag
      * @extends atomic.models.Model
      * @constructor
      * @param [params] {Object} The JSON data to initialize this model.
+     *      @param [params.descriptor] {String} a description of the bag separate from its contents (if it
+     *          is not abstract, and is something like a safe or lockbox).
      */
     /**
      * The items in the bag. Each entry has two properties: `item` with an item
@@ -4690,8 +4711,11 @@ var Bag = ion.define(Model, {
             throw new Error("Can't add negative items to bag: " + count);
         }
         if (!entry) {
-            entry = {item: item, count: 0};
+            entry = {item: item, count: 0, titles: {}};
             this.entries.push(entry);
+        }
+        if (item.title) {
+            entry.titles[item.title] = true;
         }
         entry.count += count;
         return entry.count;
@@ -4729,6 +4753,9 @@ var Bag = ion.define(Model, {
             throw new Error("Can't remove "+count+" items in bag that has only " + entry.count);
         }
         entry.count -= count;
+        if (item.title) {
+            delete entry.titles[item.title];
+        }
         if (entry.count === 0) {
             this.entries.splice(this.entries.indexOf(entry), 1);
         }
@@ -4821,6 +4848,9 @@ var Bag = ion.define(Model, {
                 } else {
                     items = true;
                     string += ion.pluralize(entry.item, entry.count);
+                    if (Object.keys(entry.titles).length) {
+                        string += " ("+Object.keys(entry.titles).join("; ")+")";
+                    }
                     if (len === 1) {
                         string += '.';
                     } else if (len === 2) {
