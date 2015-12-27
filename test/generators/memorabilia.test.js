@@ -13,12 +13,26 @@ describe("collectibles", function() {
             expect(poster.value).to.equal(10);
             expect(poster.image).to.equal("images/movie/night_was_our_friend.jpg");
             expect(poster.enc).to.equal(1);
+            expect(poster.tags.indexOf("collectible")).to.be.above(-1);
+        });
+        it("correctly creates an encyclopedia", function() {
+            var book = collectibles.createMemorabilia("encyclopedia");
+            expect(book.name).to.equal("{|}Encyclopedia Britannica, vol. XII (letter M, collectible #13 of 24)");
+            expect(book.enc).to.equal(5);
+            expect(book.tags.indexOf("collectible")).to.be.above(-1);
+        });
+        it("correctly creates a baseball card", function() {
+            var card = collectibles.createMemorabilia("baseball card");
+            expect(card.name).to.equal("Ned Garver, Kansas City Athletics (Pennant brand baseball card #228 of 466)");
+            expect(card.enc).to.equal(0);
+            expect(card.tags.indexOf("collectible")).to.be.above(-1);
         });
         it("generates another collectible when requested", function() {
             var prop = collectibles.createMemorabilia({type: "propaganda"});
             expect(prop.name).to.equal("{|}Rationing Means a Fair Share for All of Us propaganda poster collectible (#31 of 63)");
             expect(prop.image).to.equal("images/propaganda/rationing_means_a_fair_share_for_all_of_us.gif");
             expect(prop.enc).to.equal(1);
+            expect(prop.tags.indexOf("collectible")).to.be.above(-1);
         });
         it("accepts single string argument rather than parmeter object", function() {
             var prop = collectibles.createMemorabilia("propaganda");
@@ -31,15 +45,14 @@ describe("collectibles", function() {
                 collectibles.createMemorabilia("junk");
             }).to.throw("junk is an invalid collectible, use movies, propaganda, encyclopedia");
         });
-        it("correctly creates an encyclopedia", function() {
-            var book = collectibles.createMemorabilia("encyclopedia");
-            expect(book.name).to.equal("{|}Encyclopedia Britannica, vol. XII (letter M, collectible #13 of 24)");
-            expect(book.enc).to.equal(5);
+        it("defaults correctly when there is an invalid parameter object", function() {
+            var poster = collectibles.createMemorabilia({name: "temp"});
+            expect(poster.name).to.equal("{|}Night Was Our Friend movie poster collectible (#42 of 85)");
         });
     });
     describe("getMemorabiliaTypes", function() {
         it("returns all the collectible types", function() {
-            expect(collectibles.getMemorabiliaTypes()).to.eql(["movies","propaganda","encyclopedia"]);
+            expect(collectibles.getMemorabiliaTypes()).to.eql(["movies","propaganda","encyclopedia","baseball card"]);
         });
     });
 });

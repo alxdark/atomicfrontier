@@ -40,7 +40,7 @@ var movieTitles = ['100_rifles', '23_paces_to_baker_street', 'aces_high', 'atomi
 function poster(collection, type, fileExt, value) {
     return collection.map(function(title, i) {
         return new Item({ name: namer(title, type, i, collection.length),
-            image: "images/" + type + "/" + title + fileExt, value: value, enc: 1 });
+            image: "images/" + type + "/" + title + fileExt, value: value, enc: 1, tags: ['collectible'] });
     });
 }
 
@@ -53,27 +53,60 @@ var encyclopedias = ["I","II","III","IV","V","VI","VI","VII","VIII","IX","X","XI
     "XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI","XXII","XXIII","XIV"].map(function(numeral, i) {
     var letter = (i === 23) ? "XYZ" : String.fromCharCode(i + 65);
     var name = "{|}Encyclopedia Britannica, vol. " + numeral + " (letter "+letter+", collectible #"+(i+1)+" of 24)";
-    return new Item({name: name, value:10, enc:5});
+    return new Item({name: name, value:10, enc:5, tags: ['collectible']});
 });
 
-// "Nuclear War Survival Skills" -- this one is still in print, not government
-// "Nuclear Dangers: Myths and Facts"
-// "Planning Guidance for Response to a Nuclear Detonation" (National Security Interagency Policy Coordination Subcommittee)
-// "Nuclear Detonation Preparedness"
-// "U.S. Army Survival Manual"
+var bbCards = {
+    'Baltimore Orioles': ['George Zuverink', 'Jim Busby', 'George Kell', 'Joe Ginsberg', 'Billy O\'Dell', 'Joe Durham', 'Billy Gardner', 'Jerry Walker', 'Eddie Miksis', 'Ken Lehman', 'Bob Nieman', 'Willy Miranda', 'Art Ceccarelli', 'Jack Harshman', 'Frank Zupo', 'Al Pilaik', 'Connie Johnson', 'Bob Boyd', 'Brooks Robinson', 'Bert Hamric', 'Billy Loes', 'Hal Brown', 'Gene Woodling', 'Foster Castleman', 'Gus Triandos', 'Jim Marshall', 'Milt Pappas', 'Arnie Portocarrero', 'Lenny Green' ],
+    'Boston Red Sox': [ 'Ted Williams', 'Frank Sullivan', 'Ted Lepcio', 'Dick Gernert', 'Dave Sisler', 'Pete Daley', 'Billy Klaus', 'Jackie Jensen', 'Billy Consolo', 'Frank Baumann', 'George Susce', 'Haywood Sullivan', 'Leo Kiely', 'Tom Brewer', 'Gene Stephens', 'Frank Malzone', 'Pete Runnels', 'Jim Piersall', 'Don Buddin', 'Ike Delock', 'Bob Porterfield', 'Mike Fornieles', 'Marty Keough', 'Lou Berberet', 'Willard Nixon', 'Murray Wall', 'Sammy White', 'Bob Smith', 'Bill Renna', 'Frank Malzone', 'Ted Williams', 'Jackie Jensen' ],
+    'Chicago Cubs': ['Dale Long', 'Cal Neeman', 'Dave Hillman', 'Lee Walls', 'Dick Drott', 'Chuck Tanner', 'Bobby Adams', 'Walt Moryn', 'Moe Drabowsky', 'Bobby Morgan', 'Taylor Phillips', 'Elvin Tappe', 'Jim Bolger', 'Bob Anderson', 'Jerry Kindall', 'Dick Littlefield', 'Turk Lown', 'Sammy Taylor', 'Ernie Banks', 'Jim Brosnan', 'Don Elston', 'John Goryl', 'Tony Taylor', 'Bobby Thomson', 'Gene Fodge', 'Ed Mayer', 'Glen Hobbie', 'Ernie Banks' ],
+    'Chicago White Sox': ['Jim Rivera', 'Ron H. Jackson', 'Billy Piee', 'Bill Fischer', 'Luis Aparicio', 'Early Wynn', 'Jim Landis', 'Jim Derrington', 'Earl Torgeson', 'Les Moss', 'Jim Wilson', 'Al Smith', 'Bob Keegan', 'Bubba Phillips', 'Billy Goodman', 'Ray Moore', 'Sherm Lollar', 'Dick Donovan', 'Tito Francona', 'Walt Dropo', 'Don Rudolph', 'Earl Battey', 'Nellie Fox', 'Jerry Staley', 'Dixie Howell', 'Sammy Esposito', 'Tom Qualters', 'Nellie Fox', 'Luis Aparicio', 'Sherm Lollar' ],
+    'Cincinnati Reds': ['George Crowe', 'Bud Freeman', 'Bob Thurman', 'Smoky Burgess', 'Joe Nuxhall', 'Gus Bell', 'Jerry Lynch', 'Harvey Haddix', 'Stan Palys', 'Bob Henrich', 'Tom Acker', 'Dee Fondy', 'Don Hoak', 'Johnny Temple', 'Willard Schmidt', 'Bill Wight', 'Johnny Klippstein', 'Alex Grammas', 'Frank Robinson', 'Hal Jeffcoat', 'Bob Purkey', 'Ed Bailey', 'Steve Bilko', 'Roy McMillan', 'Brooks Lawrence', 'Charley Rabe', 'Dutch Dotterer', 'Vada Pinson', 'Pete Whisenant', 'Johnny Temple', 'Frank Robinson', 'Ed Bailey' ],
+    'Cleveland Indians': [ 'Bob Lemon', 'Hal Naragon', 'Don Mossi', 'Roger Maris', 'Chico Carrasquel', 'Dick Williams', 'George Strickland', 'Dick Tomanek', 'Russ Nixon', 'Vic Wertz', 'Joe Caffie', 'Mike Gaia', 'Cal McLish', 'Bud Daley', 'Mickey Vernon', 'Larry Raines', 'Bobby Avila', 'Minnie Minoso', 'Hoyt Wilhelm', 'Fred Hatfield', 'Herb Score', 'Rocky Colavito', 'Billy Moran', 'Mudcat Grant', 'Larry Doby', 'Ray Narleski', 'Billy Harrell', 'Carroll Hardy', 'Dick Brown', 'Gary Geiger', 'Don Ferrarese', 'Herb Score' ],
+    'Detroit Tigers': ['Billy Hoeft', 'J.W. Porter', 'Lou Sleater', 'Tim Thompson', 'Al Kaline', 'Steve Boros', 'Frank Bolling', 'Gus Zernial', 'Jim Bunning', 'Harry Byrd', 'Ray Boone', 'Bob Shaw', 'Red Wilson', 'Reno Bertoia', 'Frank Lary', 'Johnny Groth', 'Billy Martin', 'Paul Foytack', 'Gail Harris', 'Lou Skizas', 'Hank Aguirre', 'Jim Hegan', 'Tom Morgan', 'Charlie Maxwell', 'Bill Taylor', 'Harvey Kuenn', 'Charley Lau', 'Vito Valentinetti' ],
+    'Kansas City Athletics': [ 'Alex Kellner', 'Bill Tuttle', 'Bob Martyn', 'Joe DeMaestri', 'Wally Burnette', 'Billy Hunter', 'Harry Chiti', 'George Brunet', 'Hector Lopez', 'Ralph Terry', 'Milt Graff', 'Woodie Held', 'Duke Maas', 'Tom Gorman', 'Hal W. Smith', 'Virgil Trucks', 'Ned Garver', 'Mike Baxes', 'Frank House', 'Bob Cerv', 'Murry Dickson', 'Jack Urban', 'Ray Herbert', 'Dave Melton', 'Vic Power', 'Preston Ward' ],
+    'Los Angeles Dodgers': ['Charlie Neal', 'Don Drysdale', 'John Roseboro', 'Don Zimmer', 'Duke Snider', 'Sandy Amoros', 'Johnny Podres', 'Dick Gray', 'Gil Hodges', 'Sandy Koufax', 'Roger Craig', 'Rube Walker', 'Jim Gilliam', 'Don Demeter', 'Carl Erskine', 'Gino Cimoli', 'Randy Jackson', 'Clem Labine', 'Elmer Valo', 'Don Newcombe', 'Danny McDevitt', 'Joe Pignatano', 'Pee Wee Reese', 'Don Bessent', 'Carl Furillo', 'Ed Roebuck' ],
+    'Milwaukee Braves': ['Lou Burdette', 'Felix Mantilla', 'Hank Aaron', 'Del Rice', 'Ernie Johnson', 'Bob Hazle', 'Johnny Logan', 'Frank Torre', 'Wes Covington', 'Don McMahon', 'Bob Taylor', 'Bob Buhl', 'Red Schoendienst', 'Andy Pafko', 'Carl Sawatski', 'Casey Wise', 'Bob Trowbridge', 'Warrenahn', 'Ray Shearer', 'Bob Rush', 'Joe Adcock', 'Bill Bruton', 'Del Crandall', 'Carl Willey', 'Gene Conley', 'Eddie Mathews', 'Harry Hanebrink', 'Joe Jay', 'Eddie Mathews', 'Hank Aaron', 'Warrenahn' ],
+    'New York Yankees': ['Hank Bauer', 'Gil McDougald', 'Sal Maglie', 'Norm Siebern', 'Darrell Johnson', 'Johnny Kucks', 'Bobby Richardson', 'Tom Sturdivant', 'Enos Slaughter', 'Mickey Mantle', 'Don Larsen', 'Marv Throneberry', 'Jerry Lumpe', 'Bob Grim', 'Bill Skowron', 'Bob Turley', 'Elston Howard', 'Ryne Duren', 'Harry Simpson', 'Whitey Ford', 'Andy Carey', 'Art Ditmar', 'Yogi Berra', 'Al Cicotte', 'Tony Kubek', 'Bobby Shantz', 'Bill Skowron', 'Mickey Mantle', 'Bob Turley' ],
+    'Philadelphia Phillies': ['Rip Repulski', 'Ted Kazanski', 'Chuck Harmon', 'Joe Lonnett', 'Dick Farrell', 'Robin Roberts', 'Dave Philley', 'Harry Anderson', 'Willie Jones', 'Jack Meyer', 'Solly Hemus', 'Richiehburn', 'Warren Hacker', 'Jack Sanford', 'Granny Hamner', 'Mack Burk', 'Don Landrum', 'Jim Hearn', 'Bob Miller', 'Chico Fernandez', 'Stan Lopata', 'Don Cardwell', 'Wally Post', 'Curt Simmons', 'Bob Bowman', 'Pancho Herrera', 'Chuck Essegian', 'Ray Semproch' ],
+    'Pittsburgh Pirates': [ 'Hank Foiles', 'Dick Groat', 'Robertoemente', 'Roy Face', 'Ron Kline', 'Bob Skinner', 'Jim Pendleton', 'Vern Law', 'Buddy Pritchard', 'Don Gross', 'Ted Kluszewski', 'Bill Virdon', 'Dick Rand', 'Bob Smith', 'Bill Mazeroski', 'Paul Smith', 'Gene Freese', 'Whammy Douglas', 'Bob Friend', 'Harding Peterson', 'Gene Baker', 'Bennie Daniels', 'Frank Thomas', 'Johnny O\'Brien', 'John Powers', 'Danny Kravitz', 'Roman Mejias', 'Ron Blackburn', 'R.C. Stevens', 'Bob Friend' ],
+    'San Francisco Giants': ['Willie Mays', 'Curt Balay', 'Mike McCormick', 'Darylencer', 'Valmy Thomas', 'Ozzie Virgil Sr.', 'Stu Miller', 'Willie Kirkland', 'Jim Finigan', 'Johnny Antonelli', 'Danny O\'Connell', 'Dave Jolly', 'Whitey Lockman', 'Pete Burnside', 'Don Mueller', 'Eddie Bressoud', 'Ray Crone', 'Ray Katt', 'Paul Giel', 'Jim King', 'Ruben Gomez', 'Orlando Cepeda', 'Ray Jablonski', 'Hank Sa', 'Marv Grissom', 'Jim Davenport', 'Al Worthington', 'Bobeake', 'Ray Monzant', 'Bob Schmidt', 'Willie Mays' ],
+    'St. Louis Cardinals': ['Eddie Kasko', 'Hobie Landrith', 'Morrie Martin', 'Del Ennis', 'Von McDaniel', 'Larry Jackson', 'Dick Schofield', 'Irv Noren', 'Alvin Dark', 'Billy Muffett', 'Joe Cunningham', 'Lindy McDaniel', 'Don Blasingame', 'Wally Moon', 'Lloyd Merritt', 'Herm Wehmeier', 'Hal R. Smith', 'Sam Jones', 'Ken Boyer', 'Gene Green', 'Wilmer Mizell', 'Bobby Gene Smith', 'Philark', 'Phil Paine', 'Joe Taylor', 'Curt Flood' ],
+    'Washington Senators': ['Jim Lemon', 'Texevenger', 'Art Schult', 'Bud Byerly', 'Clint Courtney', 'Herb Plews', 'Bob Usher', 'Russ Kemmerer', 'Dick Hyde', 'Eddie Yost', 'Milt Bolling', 'Camilo Pascual', 'Ed Fitz Gerald', 'Chuck Stobbs', 'Roy Sievers', 'Rocky Bridges', 'Harmon Killebrew', 'Neil Chrisley', 'Albie Pearson', 'Pedro Ramos', 'Bobby Malkmus', 'Ralph Lumenti', 'Steve Koheck', 'Kenpromonte', 'Norm Zauchin', 'Whitey Herzog', 'Hal Griggs', 'Julio Becq' ]
+};
 
-// FEMA Nuclear War Survival
-// Nuclear Detonation Preparedness from REMM.gov
+var i=1;
+var baseball = [];
+Object.keys(bbCards).forEach(function(team) {
+    bbCards[team].forEach(function(player) {
+        var name = player + ", " + team + " (Pennant brand baseball card #"+(i++)+" of 466)";
+        baseball.push(new Item({name: name, enc: 0, value: 3, tags: ['collectible']}));
+    });
+});
+
+// Survival books... however, many of these are from after the 50s. The titles are good though.
+// Need other things that are more survival oriented because this is not really relevant in the
+// time period of these games.
+
+// "Medical Planning & Response Manual for a Nuclear Detonation Incident: A Practical Guide"
+// "Nuclear Dangers: Myths and Facts"
+// "Nuclear Detonation Preparedness"
+// "Nuclear War Survival Skills"
+// "Nuclear War Survival"
+// "Planning Guidance for Response to a Nuclear Detonation"
+// "Protection in the Nuclear Age"
+// "Recovery from Nuclear Attack"
+// "U.S. Army Survival Manual"
 
 // magazines, comics, other serials
 // specific books or book collections
 // specific kinds of electronic or mechanical parts
-// baseball cards
 
 var collectibles = {
     movies: poster(movieTitles, "movie", ".jpg", 10),
     propaganda: poster(warTitles, "propaganda", ".gif", 10),
-    encyclopedia: encyclopedias
+    encyclopedia: encyclopedias,
+    "baseball card": baseball
 };
 
 /**
@@ -89,13 +122,25 @@ var collectibles = {
  *          return.
  * @return {atomic.models.Item} a collectible item
  */
+/**
+ * Create an item of memorabilia. These items are collectibles, worth a great deal of money
+ * in sets or when traded with the right collector.
+ *
+ * @static
+ * @method createMemorabilia
+ * @for atomic
+ *
+ * @param [type] {String} type - the type of memorabilia to generate
+ * @return {atomic.models.Item} a collectible item
+ */
 function createMemorabilia(params) {
-    params = ion.isString(params) ? {type:params} : (params || {type:"movies"});
+    //params = ion.isString(params) ? {type:params} : (params || {type:"movies"});
+    var type = (ion.isString(params)) ? params : (params && params.type || "movies");
 
-    if (!collectibles[params.type]) {
-        throw new Error(params.type + " is an invalid collectible, use " + Object.keys(collectibles).join(', '));
+    if (!collectibles[type]) {
+        throw new Error(type + " is an invalid collectible, use " + Object.keys(collectibles).join(', '));
     }
-    return ion.random(collectibles[params.type]);
+    return ion.random(collectibles[type]);
 }
 
 /**
@@ -112,12 +157,15 @@ function getMemorabiliaTypes() {
 }
 
 /**
- * To get the full value of memorabilia that is collected, it mus be traded to someone who values
- * it and collects it. Such collectors will be looking for specific instances that they will value
- * much more than other instances they already own. This method creates such a "pick list" for a
- * trader.
+ * Memorabilia is generally not very valuable unless a collector can be found who values it as part of
+ * a larger collection. Toward that end, this method creates a "pick list" of desirable instances of a
+ * type of memorabilia (volumes of an encyclopedia, posters for specific movies, etc.). If a character has
+ * one of these desirable items to trade, and knows or senses it is in demand, the value is greatly increased.
+ *
+ * TODO: There's no rarity in this system, perhaps there should be, and then of course, rare items would always
+ * be in demand and always be worth more, which makes more sense. Or maybe combine both systems.
  * @static
- * @method getMemorabiliaWanted
+ * @method createMemorabiliaWanted
  * @for atomic
  *
  * @param [params] {Object} params
@@ -125,12 +173,13 @@ function getMemorabiliaTypes() {
  *          return.
  * @return {Array} an array of item names specifically being looked for.
  */
-function getMemorabiliaWanted() {
-
+function createMemorabiliaWanted(params) {
+    throw new Error("Not implemented.");
 }
 
 module.exports = {
     createMemorabilia: createMemorabilia,
-    getMemorabiliaTypes: getMemorabiliaTypes
+    getMemorabiliaTypes: getMemorabiliaTypes,
+    createMemorabiliaWanted: createMemorabiliaWanted
 };
 
