@@ -1,5 +1,6 @@
 var expect = require('chai').expect;
 var collectibles = require('../../src/generators/memorabilia');
+var ion = require('../../src/ion');
 require('../seedrandom');
 
 describe("collectibles", function() {
@@ -23,9 +24,11 @@ describe("collectibles", function() {
         });
         it("correctly creates a baseball card", function() {
             var card = collectibles.createMemorabilia("baseball card");
-            expect(card.name).to.equal("Ned Garver, Kansas City Athletics (Pennant brand baseball card #228 of 466)");
+            expect(card.name).to.equal("Pennant brand baseball card{|s}");
+            expect(card.title).to.equal("Ned Garver, Kansas City Athletics, #228 of 466 cards issued in 1958");
             expect(card.enc).to.equal(0);
             expect(card.tags.indexOf("collectible")).to.be.above(-1);
+            expect(card.toString()).to.equal("a Pennant brand baseball card (Ned Garver, Kansas City Athletics, #228 of 466 cards issued in 1958)");
         });
         it("generates another collectible when requested", function() {
             var prop = collectibles.createMemorabilia({type: "propaganda"});

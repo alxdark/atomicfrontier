@@ -246,6 +246,7 @@ var Bag = ion.define(Model, {
             }
             string = ion.sentenceCase(string);
         }
+        // TODO: What is this? Is there a single example of this in use anywhere? Doesn't appear to be.
         if (this.descriptor) {
             string = (this.descriptor + ": " + string);
         }

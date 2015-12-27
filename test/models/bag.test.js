@@ -236,6 +236,20 @@ describe("atomic.models.Bag", function() {
             bag.add(new Item({name:"$50 bill", value: .5, tags: ["cash"]}));
             expect(bag.toString()).to.equal("$55 in cash.");
         });
+        // But this is more generally applicable, we should group titles into a list in commas
+        // behind an item.
+        it("correctly groups items with different titles in the description", function() {
+            var bag = new Bag();
+            bag.add(new Item({
+                name: "Pennant brand baseball card{|s}",
+                title: "Eddie Kasko, St. Louis Cardinals"
+            }));
+            bag.add(new Item({
+                name: "Pennant brand baseball card{|s}",
+                title: "Willie Mays, San Francisco Giants"
+            }));
+            console.log(bag.toString());
+        });
     });
 
 });

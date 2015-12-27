@@ -79,8 +79,9 @@ var i=1;
 var baseball = [];
 Object.keys(bbCards).forEach(function(team) {
     bbCards[team].forEach(function(player) {
-        var name = player + ", " + team + " (Pennant brand baseball card #"+(i++)+" of 466)";
-        baseball.push(new Item({name: name, enc: 0, value: 3, tags: ['collectible']}));
+        var name = "Pennant brand baseball card{|s}";
+        var title = player + ", " + team + ", #"+(i++)+" of 466 cards issued in 1958";
+        baseball.push(new Item({name: name, title: title, enc: 0, value: 3, tags: ['collectible']}));
     });
 });
 
@@ -134,7 +135,6 @@ var collectibles = {
  * @return {atomic.models.Item} a collectible item
  */
 function createMemorabilia(params) {
-    //params = ion.isString(params) ? {type:params} : (params || {type:"movies"});
     var type = (ion.isString(params)) ? params : (params && params.type || "movies");
 
     if (!collectibles[type]) {
@@ -174,6 +174,8 @@ function getMemorabiliaTypes() {
  * @return {Array} an array of item names specifically being looked for.
  */
 function createMemorabiliaWanted(params) {
+    var type = (ion.isString(params)) ? params : (params && params.type || "movies");
+
     throw new Error("Not implemented.");
 }
 
