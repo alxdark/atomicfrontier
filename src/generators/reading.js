@@ -10,15 +10,15 @@ var itemDb = require('./data').itemDatabase;
 // "Observational Signatures of Self-Destructive Civilisations"
 // http://arxiv.org/pdf/1507.08530v1.pdf
 
-var adj = ["all", "amazing", "astonishing", "atomic", "bolshevik", "boy's", "dark", "dynamic", "exciting",
-    "favorite", "gentleman's", "girl's", "incredible", "lady's", "northwest", "popular", "railroad man's",
-    "ranch", "saucy", "spicy", "startling", "thrilling", "weird", "women's", "wonderful"];
-var genres = ["adventure", "air", "cowboy", "detective", "fantasy", "far west", "FBI", "flying", "frontier",
-    "ghost", "high seas", "horror", "indian", "jungle", "library science", "new love", "northwest", "outdoor",
-    "pirate", "prison", "ranch", "romance", "sci-fi", "science", "supernatural", "sweetheart", "western"];
+var adj = ["all", "amazing", "astonishing", "atomic", "baffling", "bolshevik", "boy's", "complete", "dark", "dynamic",
+    "exciting", "favorite", "gentleman's", "girl's", "glamorous", "haunted", "incredible", "lady's", "northwest", "popular",
+    "railroad man's", "ranch", "saucy", "spicy", "startling", "strange", "thrilling", "weird", "women's", "wonderful"];
+var genres = ["adventure", "air", "combat", "cowboy", "detective", "fantasy", "far west", "FBI", "flying", "frontier", "wild frontier",
+    "ghost", "high seas", "horror", "indian", "jungle", "library science", "love", "new love", "northwest", "outdoor",
+    "pirate", "prison", "ranch", "romance{|s}", "sci-fi", "science", "supernatural", "sweetheart", "war", "western"];
 var base = ["almanac", "weekly", "magazine", "quarterly", "stories", "tales", "thrills"];
 var cannedTitles = ["all-story", "argosy", "black mask", "cavalier", "keepsake", "ladies home almanac", "ocean",
-    "scrap book"];
+    "scrap book", "apache trail"];
 
 // split into nouns and adjectives... can make times for stories or individual pulp novels or something
 

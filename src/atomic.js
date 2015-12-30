@@ -42,6 +42,7 @@ lib.createCollectible = require('./generators/memorabilia');
 lib.createCorporateName = require('./generators/corporate_name');
 lib.createStore = require('./generators/store');
 lib.createWeather = require('./generators/weather');
+lib.createTimeSeries = require('./generators/historical_time_series');
 
 ion.extend(lib, require('./generators/bag'));
 ion.extend(lib, require('./generators/character'));

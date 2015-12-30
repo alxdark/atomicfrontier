@@ -43,6 +43,7 @@ lib.createCollectible = require('./generators/memorabilia');
 lib.createCorporateName = require('./generators/corporate_name');
 lib.createStore = require('./generators/store');
 lib.createWeather = require('./generators/weather');
+lib.createTimeSeries = require('./generators/historical_time_series');
 
 ion.extend(lib, require('./generators/bag'));
 ion.extend(lib, require('./generators/character'));
@@ -57,7 +58,7 @@ ion.extend(lib.models, require('./models/lib'));
 
 // exports in Browserify as window.atomic
 module.exports = lib;
-},{"./builder":2,"./db/database":3,"./db/encounter_database":4,"./db/item_database":5,"./db/profession_database":6,"./db/store_database":7,"./dice/dice":8,"./generators/appearance":9,"./generators/bag":10,"./generators/character":11,"./generators/character_name":12,"./generators/corporate_name":13,"./generators/data":14,"./generators/family":15,"./generators/gang":16,"./generators/memorabilia":17,"./generators/place_name":18,"./generators/reading":19,"./generators/relationships":20,"./generators/store":21,"./generators/weather":22,"./ion":23,"./models/bag":25,"./models/character":26,"./models/family":27,"./models/gang":28,"./models/ion_set":29,"./models/item":30,"./models/lib":31,"./models/model":32,"./models/name":33,"./models/profession":34,"./models/relationship":35,"./models/store":36,"./models/weather":37,"./tables/hash_table":38,"./tables/rarity_table":39,"./tables/table":40}],2:[function(require,module,exports){
+},{"./builder":2,"./db/database":3,"./db/encounter_database":4,"./db/item_database":5,"./db/profession_database":6,"./db/store_database":7,"./dice/dice":8,"./generators/appearance":9,"./generators/bag":10,"./generators/character":11,"./generators/character_name":12,"./generators/corporate_name":13,"./generators/data":14,"./generators/family":15,"./generators/gang":16,"./generators/historical_time_series":17,"./generators/memorabilia":18,"./generators/place_name":19,"./generators/reading":20,"./generators/relationships":21,"./generators/store":22,"./generators/weather":23,"./ion":24,"./models/bag":26,"./models/character":27,"./models/family":28,"./models/gang":29,"./models/ion_set":30,"./models/item":31,"./models/lib":32,"./models/model":33,"./models/name":34,"./models/profession":35,"./models/relationship":36,"./models/store":37,"./models/weather":38,"./tables/hash_table":39,"./tables/rarity_table":40,"./tables/table":41}],2:[function(require,module,exports){
 var ion = require('./ion');
 
 // throws lots of errors in strict mode jshint, doesn't like this style of (legal) code
@@ -258,7 +259,7 @@ module.exports = function(ctx) {
     return bldr;
 };
 
-},{"./ion":23}],3:[function(require,module,exports){
+},{"./ion":24}],3:[function(require,module,exports){
 var ion = require('../ion');
 var RarityTable = require('../tables/rarity_table');
 
@@ -425,7 +426,7 @@ module.exports = ion.define({
     }
 });
 
-},{"../ion":23,"../tables/rarity_table":39}],4:[function(require,module,exports){
+},{"../ion":24,"../tables/rarity_table":40}],4:[function(require,module,exports){
 var ion = require('../ion');
 var Database = require('./database');
 
@@ -440,7 +441,7 @@ module.exports = ion.define(Database, {
         }
     }
 });
-},{"../ion":23,"./database":3}],5:[function(require,module,exports){
+},{"../ion":24,"./database":3}],5:[function(require,module,exports){
 var ion = require('../ion');
 var Database = require('./database');
 var Item = require('../models/item');
@@ -574,7 +575,7 @@ module.exports = ion.define(Database, {
         }
     }
 });
-},{"../ion":23,"../models/item":30,"./database":3}],6:[function(require,module,exports){
+},{"../ion":24,"../models/item":31,"./database":3}],6:[function(require,module,exports){
 var ion = require('../ion');
 var Database = require('./database');
 
@@ -660,7 +661,7 @@ module.exports = ion.define(Database, {
     }
 });
 
-},{"../ion":23,"./database":3}],7:[function(require,module,exports){
+},{"../ion":24,"./database":3}],7:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('../models/model');
 var Database = require('./database');
@@ -774,7 +775,7 @@ module.exports = ion.define(Database, {
     }
 });
 
-},{"../ion":23,"../models/model":32,"./database":3}],8:[function(require,module,exports){
+},{"../ion":24,"../models/model":33,"./database":3}],8:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -931,7 +932,7 @@ var Dice = ion.define({
 module.exports.Die = Die;
 module.exports.FudgeDie = FudgeDie;
 module.exports.Dice = Dice;
-},{"../ion":23}],9:[function(require,module,exports){
+},{"../ion":24}],9:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -1203,7 +1204,7 @@ module.exports = function(character) {
     }, []).join('. ');
 };
 
-},{"../generators/character_name":12,"../ion":23,"../tables/rarity_table":39,"../tables/table":40}],10:[function(require,module,exports){
+},{"../generators/character_name":12,"../ion":24,"../tables/rarity_table":40,"../tables/table":41}],10:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -1584,7 +1585,7 @@ module.exports.getContainerTypes = function() {
     return containerTypes;
 };
 
-},{"../ion":23,"../models/bag":25,"../models/ion_set":29,"./data":14}],11:[function(require,module,exports){
+},{"../ion":24,"../models/bag":26,"../models/ion_set":30,"./data":14}],11:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -1765,7 +1766,7 @@ function createRace() {
 }
 module.exports.createRace = createRace;
 
-},{"../ion":23,"../models/character":26,"../models/name":33,"./appearance":9,"./bag":10,"./character_name":12,"./data":14}],12:[function(require,module,exports){
+},{"../ion":24,"../models/character":27,"../models/name":34,"./appearance":9,"./bag":10,"./character_name":12,"./data":14}],12:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -1865,7 +1866,7 @@ module.exports = function(opts) {
     });
 };
 
-},{"../ion":23,"../models/name":33}],13:[function(require,module,exports){
+},{"../ion":24,"../models/name":34}],13:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -1931,7 +1932,7 @@ module.exports = function() {
     return name;
 };
 
-},{"../ion":23,"../tables/table":40,"./character_name":12}],14:[function(require,module,exports){
+},{"../ion":24,"../tables/table":41,"./character_name":12}],14:[function(require,module,exports){
 var ItemDatabase = require('../db/item_database');
 var ProfessionDatabase = require('../db/profession_database');
 var StoreDatabase = require('../db/store_database');
@@ -2303,7 +2304,7 @@ module.exports = {
     storeDatabase: sdb
 }
 
-},{"../db/item_database":5,"../db/profession_database":6,"../db/store_database":7,"../models/atomic_profession":24}],15:[function(require,module,exports){
+},{"../db/item_database":5,"../db/profession_database":6,"../db/store_database":7,"../models/atomic_profession":25}],15:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -2620,7 +2621,7 @@ module.exports.createRelationship = function(params) {
     }
     return new Relationship(older, younger, relName);
 };
-},{"../ion":23,"../models/character":26,"../models/family":27,"../models/relationship":35,"../tables/rarity_table":39,"./bag":10,"./character":11,"./character_name":12,"./data":14}],16:[function(require,module,exports){
+},{"../ion":24,"../models/character":27,"../models/family":28,"../models/relationship":36,"../tables/rarity_table":40,"./bag":10,"./character":11,"./character_name":12,"./data":14}],16:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -2844,12 +2845,144 @@ module.exports.createGang = function(params) {
     });
     return gang;
 };
-},{"../ion":23,"../models/gang":28,"./character":11,"./data":14}],17:[function(require,module,exports){
+},{"../ion":24,"../models/gang":29,"./character":11,"./data":14}],17:[function(require,module,exports){
+"use strict";
+var ion = require('../ion');
+
+var sevenDays = (7*24*60*60*1000);
+var daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+var daysOfMonth = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function advanceToDayOfWeek(date, params) {
+    var pubDate = new Date(date.getTime());
+    while(params.dayOfWeek && daysOfWeek[pubDate.getDay()] !== params.dayOfWeek) {
+        pubDate.setDate(pubDate.getDate()+1);
+    }
+    return pubDate;
+}
+
+var periods =  {
+    'weekly': function(date) {
+        date.setTime(date.getTime() + sevenDays);
+    },
+    'monthly': function(date) {
+        if (date.getDate() !== 1) {
+            date.setDate(1);
+        }
+        date.setMonth(date.getMonth()+1);
+    },
+    'biweekly': function(date, params) {
+        var i = (date.getDate() === 1) ? 15 : 1;
+        date.setDate(i);
+        if (i === 1) {
+            date.setMonth(date.getMonth()+1);
+        }
+    },
+    'bimonthly': function(date) {
+        date.setMonth(date.getMonth()+2);
+    }
+};
+
+// TODO: Seasonal, volume/issues?
+
+/**
+ * Create a date series for periodicals, in the past.
+ *
+ * @static
+ * @for atomic
+ * @method createTimeSeries
+ *
+ * @param [params] {Object} params
+ *      @param [params.period='weekly'] {String} one of 'weekly', 'monthly', 'biweekly' or 'bimonthly'
+ *      @param [params.dayOfWeek] {String} one of 'Saturday' to 'Sunday', if you want the dates to be
+ *          adjusted to the next day of the week (for example if a periodical is always published on Mondays).
+ *      @param [params.startDate='1955-12-31'] {String|Date} a string (in format 'YYYY-MM-DD') or a date object that is the date
+ *          after which the sequence will start.
+ *      @param [params.endDate='1958-07-14'] {String|Date} a string (in format 'YYYY-MM-DD') or a date object that is the date
+ *          before which the sequence will end.
+ * @return {Array} an array of string dates in the format 'Monday 2 Jan 1956'.
+ */
+function timeSeries(params) {
+    params = params || {};
+    params.period = params.period || 'weekly';
+    params.startDate = params.startDate || '1955-12-31';
+    params.endDate = params.endDate || '1958-07-14'; // TODO: what's the canonical date?
+    params.format = params.format || 'full';
+    if (!periods[params.period]) {
+        throw new Error(params.period + " is not a valid period.");
+    }
+    params.startDate = new Date(params.startDate);
+    params.endDate = new Date(params.endDate);
+
+    var date = params.startDate;
+
+    var dateStrings = [];
+    while(true) {
+        // advance time according to the period function.
+        periods[params.period](date, params);
+
+        // publications often adjust the date to the nearest day of week, or do something that's close enough to this
+        var pubDate = advanceToDayOfWeek(date, params);
+        if (pubDate >= params.endDate) {
+            break;
+        }
+        // format
+        if (params.format === 'full') {
+            var str = ion.format("{0} {1} {2} {3}",
+                daysOfWeek[pubDate.getDay()], pubDate.getDate(), daysOfMonth[pubDate.getMonth()], pubDate.getFullYear());
+        } else {
+            var str = ion.format("{0} {1}", daysOfMonth[pubDate.getMonth()], pubDate.getFullYear());
+        }
+        dateStrings.push(str);
+    }
+    return dateStrings;
+}
+
+module.exports = timeSeries;
+},{"../ion":24}],18:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
+var IonSet = require('../models/ion_set');
 var Item = require('../models/item');
-var Bag = require('../models/bag');
+var timeSeries = require('./historical_time_series');
+var RarityTable = require('../tables/rarity_table');
+
+var comics = new RarityTable(ion.identity, false);
+var newsPubs = new RarityTable(ion.identity, false);
+
+// Sorts the titles of two collectibles by their assigned number in the set.
+function seriesSorter(a, b) {
+    var aNum = parseInt(/#(\d+)/.exec(a)[1], 10);
+    var bNum = parseInt(/#(\d+)/.exec(b)[1], 10);
+    return aNum - bNum;
+}
+
+function addNews(name, rarity, params) {
+    var value = (rarity === "rare") ? 5 : (rarity === "uncommon") ? 3 : 1;
+    timeSeries(params).forEach(function(date, i, coll) {
+        newsPubs.add(rarity, {name: "news magazine", title: (name + ", " + date + ", #" + i + " of " + coll.length),
+            enc: 1, value: value, tags: ['collectible']});
+    });
+}
+
+function addComic(name, rarity, params) {
+    var value = (rarity === "rare") ? 5 : (rarity === "uncommon") ? 3 : 1;
+    timeSeries(params).forEach(function(date, i, coll) {
+        comics.add(rarity, {name: "comic book", title: (name + ", " + date + ", #" + i + " of " + coll.length),
+            enc: 1, value: value, tags: ['collectible']});
+    });
+}
+
+function poster(collection, type, fileExt, value) {
+    return collection.map(function(base, i) {
+        var name = type + " poster";
+        var title = ion.format("{0} #{1} of {2}", ion.titleCase(base.replace(/_/g," ")), (i+1), collection.length);
+
+        return { name: name, title: title,
+            image: "images/" + type + "/" + base + fileExt, value: value, enc: 1, tags: ['collectible']};
+    });
+}
 
 var warTitles = ['am_i_proud', 'america_calling', 'are_you_playing_square', 'be_a_victory_farm_volunteer',
     'books_are_weapons_in_the_war_of_ideas', 'both_are_weapons', "carry_on_don't_be_carried_out",
@@ -2885,26 +3018,11 @@ var movieTitles = ['100_rifles', '23_paces_to_baker_street', 'aces_high', 'atomi
     'the_sheriff_of_fractured_jaw', 'the_sleeping_tiger', 'the_sun_also_rises', 'the_viking_queen', 'the_wind_cannot_read',
     'the_young_warriors', 'them', 'three_little_girls_in_blue', 'uraniumboom', 'villa', 'wolf_dog'];
 
-function poster(collection, type, fileExt, value) {
-    return collection.map(function(base, i) {
-        var name = type + " poster";
-        var title = ion.format("{0} #{1} of {2}", ion.titleCase(base.replace(/_/g," ")), (i+1), collection.length);
-
-        return new Item({ name: name, title: title,
-            image: "images/" + type + "/" + base + fileExt, value: value, enc: 1, tags: ['collectible'] });
-    });
-}
-
-function namer(base, type, count, total) {
-    var title = ion.titleCase(base.replace(/_/g," "));
-    return ion.format("{|}{0} {1} poster collectible (#{2} of {3})", title, type, (count+1), total);
-}
-
-var encyclopedias = ["I","II","III","IV","V","VI","VI","VII","VIII","IX","X","XI","XII","XIII",
+var encyclopedias = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII",
     "XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI","XXII","XXIII","XIV"].map(function(numeral, i) {
     var letter = (i === 23) ? "XYZ" : String.fromCharCode(i + 65);
     var title = "Encyclopedia Britannica vol. " + numeral + ", letter "+letter+", #"+(i+1)+" of 24";
-    return new Item({name: "encyclopedia", title: title, value:10, enc:5, tags: ['collectible']});
+    return {name: "encyclopedia", title: title, value:10, enc:5, tags: ['collectible']};
 });
 
 var bbCards = {
@@ -2926,13 +3044,14 @@ var bbCards = {
     'Washington Senators': ['Jim Lemon', 'Texevenger', 'Art Schult', 'Bud Byerly', 'Clint Courtney', 'Herb Plews', 'Bob Usher', 'Russ Kemmerer', 'Dick Hyde', 'Eddie Yost', 'Milt Bolling', 'Camilo Pascual', 'Ed Fitz Gerald', 'Chuck Stobbs', 'Roy Sievers', 'Rocky Bridges', 'Harmon Killebrew', 'Neil Chrisley', 'Albie Pearson', 'Pedro Ramos', 'Bobby Malkmus', 'Ralph Lumenti', 'Steve Koheck', 'Kenpromonte', 'Norm Zauchin', 'Whitey Herzog', 'Hal Griggs', 'Julio Becq' ]
 };
 
+// TODO: I'm sure reduce can be used for this.
 var i=1;
 var baseball = [];
 Object.keys(bbCards).forEach(function(team) {
     bbCards[team].forEach(function(player) {
         var name = "Pennant brand 1958 baseball card{|s}";
         var title = player + ", " + team + ", #"+(i++)+" of 466";
-        baseball.push(new Item({name: name, title: title, enc: 0, value: 3, tags: ['collectible']}));
+        baseball.push({name: name, title: title, enc: 0, value: 3, tags: ['collectible']});
     });
 });
 
@@ -2950,15 +3069,48 @@ Object.keys(bbCards).forEach(function(team) {
 // "Recovery from Nuclear Attack"
 // "U.S. Army Survival Manual"
 
-// magazines, comics, other serials
 // specific books or book collections
-// specific kinds of electronic or mechanical parts
+// maps
+// comics
+// disney pins... renaming everything of course. total insanity [https://en.wikipedia.org/wiki/Disney_pin_trading]
+// films. The actual cans of film. Usually two rolls. Any poster could also have a film, vice versa.
+// records. and, record players. and, electricity.
+// other mags: Popular Science, Science Digest, Mechanix Illustrated, National Geographic
+
+// Luxury goods (not considered collectibles):
+// bottles of wine, whiskey, other fine liquors
+// gold. silver. platinum, semi-precious jewels, watches
+// bicycles
+// fountain pens. paper, writing implements
+// tools
+// weapons
+
+addNews("Atlantic Dispatch Magazine", "uncommon", {period: 'weekly'});
+addNews("The Weekly Nation", "uncommon", {period: 'weekly', dayOfWeek: 'Monday', startDate: '1953-12-31'});
+addNews("Verve", "common", {period: 'monthly', format: 'short', dayOfWeek: 'Thursday'});
+addComic("Atomic War Comics", "common", {period: 'bimonthly', startDate: '1953-11-31', format: 'short'});
+addComic("Atomic Age Combat", "uncommon", {period: 'monthly', startDate: '1956-11-31', format: 'short'});
+addComic("The Adventures of Captain Atom", "common", {period: 'monthly', format: 'short'});
+addComic("Space Action", "common", {period: 'monthly', format: 'short'});
+addComic("Giggle Comics", "common", {period: 'weekly'});
+addComic("Midnight Mystery", "uncommon", {period: 'biweekly', startDate: '1955-06-06'});
+addComic("The Hand of Fate", "common", {period:"monthly", format: "short"});
+addComic("Black Cobra", "rare", {period:"monthly", format:"short"});
+addComic("The Flame", "uncommon", {period:"monthly", format:"short"});
+addComic("Forbidden Worlds", "uncommon", {period:"monthly", format:"short"});
+addComic("Battlefield Action", "uncommon", {period:"monthly", format:"short"});
+addComic("War Stories", "common", {period:"weekly", startDate: '1956-02-15'});
+addComic("Blazing West", "common", {period:"bimonthly", startDate: '1948-10-10'});
+addComic("Madhouse Comics", "rare", {period:"monthly", format:"short"});
+addComic("Wonder Boy", "uncommon", {period:"monthly", format:"short"});
 
 var collectibles = {
     "movie posters": poster(movieTitles, "movie", ".jpg", 10),
     "propaganda posters": poster(warTitles, "propaganda", ".gif", 10),
     "encyclopedias": encyclopedias,
-    "baseball cards": baseball
+    "baseball cards": baseball,
+    "news magazines": newsPubs,
+    "comics": comics
 };
 
 /**
@@ -2982,16 +3134,20 @@ var collectibles = {
  * @method createMemorabilia
  * @for atomic
  *
- * @param [type='movie posters'] {String} type - the type of memorabilia to generate
+ * @param [type] {String} type - the type of memorabilia to generate (random if not specified)
  * @return {atomic.models.Item} a collectible item
  */
 function createMemorabilia(params) {
-    var type = (ion.isString(params)) ? params : (params && params.type || "movie posters");
+    var type = (ion.isString(params)) ? params : (params && params.type || ion.random(getMemorabiliaTypes()));
 
     if (!collectibles[type]) {
         throw new Error(type + " is an invalid collectible, use " + Object.keys(collectibles).join(', '));
     }
-    return ion.random(collectibles[type]);
+    var source = collectibles[type];
+    if (source instanceof RarityTable) {
+        return new Item(source.get());
+    }
+    return new Item(ion.random(source));
 }
 
 /**
@@ -3028,17 +3184,18 @@ function createMemorabiliaWanted(params) {
     var count = Math.floor(ion.gaussian(coll.length/8,coll.length/4));
 
     // collects a team rather than individual cards.
-    if (type === "baseball cards" && ion.test(20)) {
+    if (type === "baseball  cards" && ion.test(20)) {
         var team = ion.random(Object.keys(bbCards));
-        return "Collector is looking for any baseball card for the " + team + ".";
+        return "Collector is looking for any team baseball card for the " + team + ".";
     }
 
-    // Not using a bag at this point
-    // http://www.2ality.com/2013/11/initializing-arrays.html
-    // may move to ion.
-    var titles = Array.apply(null, Array(count)).map(function() {
-        return ion.random(coll).title;
-    });
+    var set = new IonSet();
+    while(set.size() < count) {
+        set.add(ion.random(coll).title);
+    }
+    var titles = set.toArray();
+    titles.sort(seriesSorter);
+
     return "Collector is looking for " + type + ": " + titles.join(", ") + ".";
 }
 
@@ -3048,8 +3205,7 @@ module.exports = {
     createMemorabiliaWanted: createMemorabiliaWanted
 };
 
-
-},{"../ion":23,"../models/bag":25,"../models/item":30}],18:[function(require,module,exports){
+},{"../ion":24,"../models/ion_set":30,"../models/item":31,"../tables/rarity_table":40,"./historical_time_series":17}],19:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -3182,7 +3338,7 @@ module.exports.createPlaceName = function(type) {
 module.exports.getLandformTypes = function() {
     return landforms;
 };
-},{"../ion":23,"../tables/rarity_table":39,"./character_name":12}],19:[function(require,module,exports){
+},{"../ion":24,"../tables/rarity_table":40,"./character_name":12}],20:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -3195,15 +3351,15 @@ var itemDb = require('./data').itemDatabase;
 // "Observational Signatures of Self-Destructive Civilisations"
 // http://arxiv.org/pdf/1507.08530v1.pdf
 
-var adj = ["all", "amazing", "astonishing", "atomic", "bolshevik", "boy's", "dark", "dynamic", "exciting",
-    "favorite", "gentleman's", "girl's", "incredible", "lady's", "northwest", "popular", "railroad man's",
-    "ranch", "saucy", "spicy", "startling", "thrilling", "weird", "women's", "wonderful"];
-var genres = ["adventure", "air", "cowboy", "detective", "fantasy", "far west", "FBI", "flying", "frontier",
-    "ghost", "high seas", "horror", "indian", "jungle", "library science", "new love", "northwest", "outdoor",
-    "pirate", "prison", "ranch", "romance", "sci-fi", "science", "supernatural", "sweetheart", "western"];
+var adj = ["all", "amazing", "astonishing", "atomic", "baffling", "bolshevik", "boy's", "complete", "dark", "dynamic",
+    "exciting", "favorite", "gentleman's", "girl's", "glamorous", "haunted", "incredible", "lady's", "northwest", "popular",
+    "railroad man's", "ranch", "saucy", "spicy", "startling", "strange", "thrilling", "weird", "women's", "wonderful"];
+var genres = ["adventure", "air", "combat", "cowboy", "detective", "fantasy", "far west", "FBI", "flying", "frontier", "wild frontier",
+    "ghost", "high seas", "horror", "indian", "jungle", "library science", "love", "new love", "northwest", "outdoor",
+    "pirate", "prison", "ranch", "romance{|s}", "sci-fi", "science", "supernatural", "sweetheart", "war", "western"];
 var base = ["almanac", "weekly", "magazine", "quarterly", "stories", "tales", "thrills"];
 var cannedTitles = ["all-story", "argosy", "black mask", "cavalier", "keepsake", "ladies home almanac", "ocean",
-    "scrap book"];
+    "scrap book", "apache trail"];
 
 // split into nouns and adjectives... can make times for stories or individual pulp novels or something
 
@@ -3283,7 +3439,7 @@ module.exports.createTitle = function() {
     return ion.format("The {0} {1} of {2}", ion.random(storyAdj), ion.random(storyNouns), ion.random(storyNouns));
 };
 
-},{"../ion":23,"../models/item":30,"./data":14}],20:[function(require,module,exports){
+},{"../ion":24,"../models/item":31,"./data":14}],21:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -3600,7 +3756,7 @@ module.exports.createRelationship = function(params) {
     return new Relationship(older, younger, relName);
 };
 
-},{"../ion":23,"../models/character":26,"../models/family":27,"../models/relationship":35,"../tables/rarity_table":39,"./bag":10,"./character":11,"./character_name":12,"./data":14}],21:[function(require,module,exports){
+},{"../ion":24,"../models/character":27,"../models/family":28,"../models/relationship":36,"../tables/rarity_table":40,"./bag":10,"./character":11,"./character_name":12,"./data":14}],22:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -3821,7 +3977,7 @@ module.exports = function(params) {
     });
 };
 
-},{"../ion":23,"../models/bag":25,"../models/lib":31,"../models/name":33,"../models/store":36,"../tables/table":40,"./bag":10,"./character":11,"./character_name":12,"./data":14,"./gang":16,"./place_name":18,"./relationships":20}],22:[function(require,module,exports){
+},{"../ion":24,"../models/bag":26,"../models/lib":32,"../models/name":34,"../models/store":37,"../tables/table":41,"./bag":10,"./character":11,"./character_name":12,"./data":14,"./gang":16,"./place_name":19,"./relationships":21}],23:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -3886,7 +4042,7 @@ module.exports = function(month) {
     return weather;
 };
 
-},{"../ion":23,"../models/weather":37}],23:[function(require,module,exports){
+},{"../ion":24,"../models/weather":38}],24:[function(require,module,exports){
 "use strict";
 
 var DIE_PARSER  = /\d+d\d+/g,
@@ -4543,6 +4699,22 @@ var ion = {
             value = ion.gaussian(stdev, mean);
         } while (value < 0);
         return value;
+    },
+    /**
+     * Create an array with the indicated length, each member of which will be undefined. It turns
+     * out that `new Array(n)` is not sufficient for this.
+     *
+     * See http://www.2ality.com/2013/11/initializing-arrays.html
+     *
+     * @static
+     * @method newArray
+     * @for atomic
+     *
+     * @param length {Number} the length of the array.
+     * @returns {Array}
+     */
+    newArray: function(length) {
+        return Array.apply(null, Array(length));
     }
 };
 
@@ -4556,7 +4728,7 @@ var ion = {
 });
 
 module.exports = ion;
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -4607,7 +4779,7 @@ module.exports = ion.define(Profession, {
     }
 });
 
-},{"../ion":23,"./profession":34}],25:[function(require,module,exports){
+},{"../ion":24,"./profession":35}],26:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -4881,7 +5053,7 @@ var Bag = ion.define(Model, {
 
 module.exports = Bag;
 
-},{"../ion":23,"./item":30,"./model":32}],26:[function(require,module,exports){
+},{"../ion":24,"./item":31,"./model":33}],27:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 var Bag = require('./bag');
@@ -5107,7 +5279,7 @@ var Character =  ion.define(Model, {
 });
 
 module.exports = Character;
-},{"../builder":2,"../ion":23,"./bag":25,"./model":32}],27:[function(require,module,exports){
+},{"../builder":2,"../ion":24,"./bag":26,"./model":33}],28:[function(require,module,exports){
 var ion = require('../ion');
 var Builder = require('../builder');
 var Model = require('./model');
@@ -5269,7 +5441,7 @@ module.exports = ion.define({
         return builder.toString();
     }
 });
-},{"../builder":2,"../ion":23,"./model":32}],28:[function(require,module,exports){
+},{"../builder":2,"../ion":24,"./model":33}],29:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 var Builder = require('../builder');
@@ -5354,7 +5526,7 @@ module.exports = ion.define(Model, {
     }
 });
 
-},{"../builder":2,"../ion":23,"./model":32}],29:[function(require,module,exports){
+},{"../builder":2,"../ion":24,"./model":33}],30:[function(require,module,exports){
 var ion = require('../ion');
 
 module.exports = ion.define({
@@ -5426,7 +5598,7 @@ module.exports = ion.define({
         return ion.values(this.hash);
     }
 });
-},{"../ion":23}],30:[function(require,module,exports){
+},{"../ion":24}],31:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 var Builder = require('../builder');
@@ -5470,7 +5642,7 @@ module.exports = ion.define(Model, {
     }
 });
 
-},{"../builder":2,"../ion":23,"./model":32}],31:[function(require,module,exports){
+},{"../builder":2,"../ion":24,"./model":33}],32:[function(require,module,exports){
 var ion = require('../ion');
 
 var lookup = {
@@ -5534,7 +5706,7 @@ function clone(object, freeze) {
 module.exports.clone = clone;
 module.exports.deserializer = deserializer;
 
-},{"../ion":23,"./bag":25,"./character":26,"./family":27,"./gang":28,"./item":30,"./model":32,"./name":33,"./profession":34,"./relationship":35,"./store":36,"./weather":37}],32:[function(require,module,exports){
+},{"../ion":24,"./bag":26,"./character":27,"./family":28,"./gang":29,"./item":31,"./model":33,"./name":34,"./profession":35,"./relationship":36,"./store":37,"./weather":38}],33:[function(require,module,exports){
 var ion = require('../ion');
 
 var Model = ion.define({
@@ -5604,7 +5776,7 @@ var Model = ion.define({
 });
 
 module.exports = Model;
-},{"../ion":23}],33:[function(require,module,exports){
+},{"../ion":24}],34:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 
@@ -5669,7 +5841,7 @@ module.exports = ion.define(Model, {
 });
 
 
-},{"../ion":23,"./model":32}],34:[function(require,module,exports){
+},{"../ion":24,"./model":33}],35:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -5769,7 +5941,7 @@ module.exports = ion.define(Model, {
         this.postprocess(character);
     }
 });
-},{"../ion":23,"./model":32}],35:[function(require,module,exports){
+},{"../ion":24,"./model":33}],36:[function(require,module,exports){
 var ion = require('../ion');
 var Builder = require('../builder');
 
@@ -5832,7 +6004,7 @@ module.exports = function(older, younger, rel) {
     };
 
 };
-},{"../builder":2,"../ion":23}],36:[function(require,module,exports){
+},{"../builder":2,"../ion":24}],37:[function(require,module,exports){
 var ion = require('../ion');
 var Bag = require('./bag');
 var Model = require('./model');
@@ -5940,7 +6112,7 @@ module.exports = ion.define(Model, {
         return b.toString();
     }
 });
-},{"../builder":2,"../ion":23,"./bag":25,"./model":32}],37:[function(require,module,exports){
+},{"../builder":2,"../ion":24,"./bag":26,"./model":33}],38:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 
@@ -5961,7 +6133,7 @@ module.exports = ion.define(Model, {
 });
 
 
-},{"../ion":23,"./model":32}],38:[function(require,module,exports){
+},{"../ion":24,"./model":33}],39:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -6031,7 +6203,7 @@ module.exports = ion.define({
     }
 });
 
-},{"../ion":23}],39:[function(require,module,exports){
+},{"../ion":24}],40:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -6136,7 +6308,7 @@ module.exports = ion.define(Table, {
         return null;
     }
 });
-},{"../ion":23,"./table":40}],40:[function(require,module,exports){
+},{"../ion":24,"./table":41}],41:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -6230,5 +6402,5 @@ module.exports = ion.define({
     }
 });
 
-},{"../ion":23}]},{},[1])(1)
+},{"../ion":24}]},{},[1])(1)
 });

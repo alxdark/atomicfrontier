@@ -1,13 +1,45 @@
 "use strict";
 
 var ion = require('../ion');
+var IonSet = require('../models/ion_set');
 var Item = require('../models/item');
+var timeSeries = require('./historical_time_series');
+var RarityTable = require('../tables/rarity_table');
+
+var comics = new RarityTable(ion.identity, false);
+var newsPubs = new RarityTable(ion.identity, false);
 
 // Sorts the titles of two collectibles by their assigned number in the set.
 function seriesSorter(a, b) {
     var aNum = parseInt(/#(\d+)/.exec(a)[1], 10);
     var bNum = parseInt(/#(\d+)/.exec(b)[1], 10);
     return aNum - bNum;
+}
+
+function addNews(name, rarity, params) {
+    var value = (rarity === "rare") ? 5 : (rarity === "uncommon") ? 3 : 1;
+    timeSeries(params).forEach(function(date, i, coll) {
+        newsPubs.add(rarity, {name: "news magazine", title: (name + ", " + date + ", #" + i + " of " + coll.length),
+            enc: 1, value: value, tags: ['collectible']});
+    });
+}
+
+function addComic(name, rarity, params) {
+    var value = (rarity === "rare") ? 5 : (rarity === "uncommon") ? 3 : 1;
+    timeSeries(params).forEach(function(date, i, coll) {
+        comics.add(rarity, {name: "comic book", title: (name + ", " + date + ", #" + i + " of " + coll.length),
+            enc: 1, value: value, tags: ['collectible']});
+    });
+}
+
+function poster(collection, type, fileExt, value) {
+    return collection.map(function(base, i) {
+        var name = type + " poster";
+        var title = ion.format("{0} #{1} of {2}", ion.titleCase(base.replace(/_/g," ")), (i+1), collection.length);
+
+        return { name: name, title: title,
+            image: "images/" + type + "/" + base + fileExt, value: value, enc: 1, tags: ['collectible']};
+    });
 }
 
 var warTitles = ['am_i_proud', 'america_calling', 'are_you_playing_square', 'be_a_victory_farm_volunteer',
@@ -28,7 +60,7 @@ var warTitles = ['am_i_proud', 'america_calling', 'are_you_playing_square', 'be_
     'your_country_needs_soybeans', 'your_victory_garden'];
 
 var movieTitles = ['100_rifles', '23_paces_to_baker_street', 'aces_high', 'atomic_city', 'atomic_kid', 'atomic_man',
-    'atomic_monster', 'atomic_submarine', 'atomictpistols', 'bad_mans_river', 'bandolero', 'bullet_for_a_badman',
+    'atomic_monster', 'atomic_submarine', 'bad_mans_river', 'bandolero', 'bullet_for_a_badman',
     'canadian_mounties_vs_atomic_invaders', 'cattle_empire', 'cheaper_by_the_dozen', 'count_five_and_die',
     'crack_in_the_mirror', 'day_of_the_triffids', 'desert_hell', 'dig_that_uranium', 'east_of_eden', 'emmanuelle',
     'england_made_me', 'family_doctor', 'frankenstein_and_the_monster_from_hell', 'gang_war', 'garden_of_evil',
@@ -44,21 +76,11 @@ var movieTitles = ['100_rifles', '23_paces_to_baker_street', 'aces_high', 'atomi
     'the_sheriff_of_fractured_jaw', 'the_sleeping_tiger', 'the_sun_also_rises', 'the_viking_queen', 'the_wind_cannot_read',
     'the_young_warriors', 'them', 'three_little_girls_in_blue', 'uraniumboom', 'villa', 'wolf_dog'];
 
-function poster(collection, type, fileExt, value) {
-    return collection.map(function(base, i) {
-        var name = type + " poster";
-        var title = ion.format("{0} #{1} of {2}", ion.titleCase(base.replace(/_/g," ")), (i+1), collection.length);
-
-        return new Item({ name: name, title: title,
-            image: "images/" + type + "/" + base + fileExt, value: value, enc: 1, tags: ['collectible'] });
-    });
-}
-
-var encyclopedias = ["I","II","III","IV","V","VI","VI","VII","VIII","IX","X","XI","XII","XIII",
+var encyclopedias = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII",
     "XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI","XXII","XXIII","XIV"].map(function(numeral, i) {
     var letter = (i === 23) ? "XYZ" : String.fromCharCode(i + 65);
     var title = "Encyclopedia Britannica vol. " + numeral + ", letter "+letter+", #"+(i+1)+" of 24";
-    return new Item({name: "encyclopedia", title: title, value:10, enc:5, tags: ['collectible']});
+    return {name: "encyclopedia", title: title, value:10, enc:5, tags: ['collectible']};
 });
 
 var bbCards = {
@@ -86,7 +108,7 @@ Object.keys(bbCards).forEach(function(team) {
     bbCards[team].forEach(function(player) {
         var name = "Pennant brand 1958 baseball card{|s}";
         var title = player + ", " + team + ", #"+(i++)+" of 466";
-        baseball.push(new Item({name: name, title: title, enc: 0, value: 3, tags: ['collectible']}));
+        baseball.push({name: name, title: title, enc: 0, value: 3, tags: ['collectible']});
     });
 });
 
@@ -104,15 +126,48 @@ Object.keys(bbCards).forEach(function(team) {
 // "Recovery from Nuclear Attack"
 // "U.S. Army Survival Manual"
 
-// magazines, comics, other serials
 // specific books or book collections
-// specific kinds of electronic or mechanical parts
+// maps
+// comics
+// disney pins... renaming everything of course. total insanity [https://en.wikipedia.org/wiki/Disney_pin_trading]
+// films. The actual cans of film. Usually two rolls. Any poster could also have a film, vice versa.
+// records. and, record players. and, electricity.
+// other mags: Popular Science, Science Digest, Mechanix Illustrated, National Geographic
+
+// Luxury goods (not considered collectibles):
+// bottles of wine, whiskey, other fine liquors
+// gold. silver. platinum, semi-precious jewels, watches
+// bicycles
+// fountain pens. paper, writing implements
+// tools
+// weapons
+
+addNews("Atlantic Dispatch Magazine", "uncommon", {period: 'weekly'});
+addNews("The Weekly Nation", "uncommon", {period: 'weekly', dayOfWeek: 'Monday', startDate: '1953-12-31'});
+addNews("Verve", "common", {period: 'monthly', format: 'short', dayOfWeek: 'Thursday'});
+addComic("Atomic War Comics", "common", {period: 'bimonthly', startDate: '1953-11-31', format: 'short'});
+addComic("Atomic Age Combat", "uncommon", {period: 'monthly', startDate: '1956-11-31', format: 'short'});
+addComic("The Adventures of Captain Atom", "common", {period: 'monthly', format: 'short'});
+addComic("Space Action", "common", {period: 'monthly', format: 'short'});
+addComic("Giggle Comics", "common", {period: 'weekly'});
+addComic("Midnight Mystery", "uncommon", {period: 'biweekly', startDate: '1955-06-06'});
+addComic("The Hand of Fate", "common", {period:"monthly", format: "short"});
+addComic("Black Cobra", "rare", {period:"monthly", format:"short"});
+addComic("The Flame", "uncommon", {period:"monthly", format:"short"});
+addComic("Forbidden Worlds", "uncommon", {period:"monthly", format:"short"});
+addComic("Battlefield Action", "uncommon", {period:"monthly", format:"short"});
+addComic("War Stories", "common", {period:"weekly", startDate: '1956-02-15'});
+addComic("Blazing West", "common", {period:"bimonthly", startDate: '1948-10-10'});
+addComic("Madhouse Comics", "rare", {period:"monthly", format:"short"});
+addComic("Wonder Boy", "uncommon", {period:"monthly", format:"short"});
 
 var collectibles = {
     "movie posters": poster(movieTitles, "movie", ".jpg", 10),
     "propaganda posters": poster(warTitles, "propaganda", ".gif", 10),
     "encyclopedias": encyclopedias,
-    "baseball cards": baseball
+    "baseball cards": baseball,
+    "news magazines": newsPubs,
+    "comics": comics
 };
 
 /**
@@ -136,16 +191,20 @@ var collectibles = {
  * @method createMemorabilia
  * @for atomic
  *
- * @param [type='movie posters'] {String} type - the type of memorabilia to generate
+ * @param [type] {String} type - the type of memorabilia to generate (random if not specified)
  * @return {atomic.models.Item} a collectible item
  */
 function createMemorabilia(params) {
-    var type = (ion.isString(params)) ? params : (params && params.type || "movie posters");
+    var type = (ion.isString(params)) ? params : (params && params.type || ion.random(getMemorabiliaTypes()));
 
     if (!collectibles[type]) {
         throw new Error(type + " is an invalid collectible, use " + Object.keys(collectibles).join(', '));
     }
-    return ion.random(collectibles[type]);
+    var source = collectibles[type];
+    if (source instanceof RarityTable) {
+        return new Item(source.get());
+    }
+    return new Item(ion.random(source));
 }
 
 /**
@@ -182,17 +241,16 @@ function createMemorabiliaWanted(params) {
     var count = Math.floor(ion.gaussian(coll.length/8,coll.length/4));
 
     // collects a team rather than individual cards.
-    if (type === "baseball cards" && ion.test(20)) {
+    if (type === "baseball  cards" && ion.test(20)) {
         var team = ion.random(Object.keys(bbCards));
-        return "Collector is looking for any baseball card for the " + team + ".";
+        return "Collector is looking for any team baseball card for the " + team + ".";
     }
 
-    // Not using a bag at this point
-    // http://www.2ality.com/2013/11/initializing-arrays.html
-    // may move to ion.
-    var titles = Array.apply(null, Array(count)).map(function() {
-        return ion.random(coll).title;
-    });
+    var set = new IonSet();
+    while(set.size() < count) {
+        set.add(ion.random(coll).title);
+    }
+    var titles = set.toArray();
     titles.sort(seriesSorter);
 
     return "Collector is looking for " + type + ": " + titles.join(", ") + ".";
@@ -203,4 +261,3 @@ module.exports = {
     getMemorabiliaTypes: getMemorabiliaTypes,
     createMemorabiliaWanted: createMemorabiliaWanted
 };
-

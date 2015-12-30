@@ -654,6 +654,22 @@ var ion = {
             value = ion.gaussian(stdev, mean);
         } while (value < 0);
         return value;
+    },
+    /**
+     * Create an array with the indicated length, each member of which will be undefined. It turns
+     * out that `new Array(n)` is not sufficient for this.
+     *
+     * See http://www.2ality.com/2013/11/initializing-arrays.html
+     *
+     * @static
+     * @method newArray
+     * @for atomic
+     *
+     * @param length {Number} the length of the array.
+     * @returns {Array}
+     */
+    newArray: function(length) {
+        return Array.apply(null, Array(length));
     }
 };
 

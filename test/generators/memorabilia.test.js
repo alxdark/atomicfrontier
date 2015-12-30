@@ -1,30 +1,38 @@
 var expect = require('chai').expect;
 var collectibles = require('../../src/generators/memorabilia');
 var ion = require('../../src/ion');
+
 require('../seedrandom');
 
+function resetRandom() {
+    Math.seedrandom('belgium');
+}
+
 describe("collectibles", function() {
-    beforeEach(function() {
-        Math.seedrandom('belgium');
-    });
+    beforeEach(resetRandom);
     describe("createCollectible()", function() {
-        it("generates a movie poster by default", function() {
+        beforeEach(resetRandom);
+        it("returns unique item instances", function() {
+            Math.seedrandom('belgium');
             var poster = collectibles.createMemorabilia();
-            expect(poster.name).to.equal("movie poster");
-            expect(poster.title).to.equal("Night Was Our Friend #42 of 85");
-            expect(poster.value).to.equal(10);
-            expect(poster.image).to.equal("images/movie/night_was_our_friend.jpg");
-            expect(poster.enc).to.equal(1);
-            expect(poster.tags.indexOf("collectible")).to.be.above(-1);
-            expect(poster.toString()).to.equal("a movie poster (Night Was Our Friend #42 of 85)");
+            Math.seedrandom('belgium');
+            var poster2 = collectibles.createMemorabilia();
+            expect(poster.title).to.equal(poster2.title);
+            poster.title = "Change this one";
+            expect(poster.title).to.not.equal(poster2.title);
+        });
+        it("generates random type by default", function() {
+            var item = collectibles.createMemorabilia();
+            var item2 = collectibles.createMemorabilia();
+            expect(item.name).to.not.equal(item2.name);
         });
         it("correctly creates an encyclopedia", function() {
             var book = collectibles.createMemorabilia("encyclopedias");
             expect(book.name).to.equal("encyclopedia");
-            expect(book.title).to.equal("Encyclopedia Britannica vol. XII, letter M, #13 of 24");
+            expect(book.title).to.equal("Encyclopedia Britannica vol. XII, letter L, #12 of 24");
             expect(book.enc).to.equal(5);
             expect(book.tags.indexOf("collectible")).to.be.above(-1);
-            expect(book.toString()).to.equal("an encyclopedia (Encyclopedia Britannica vol. XII, letter M, #13 of 24)");
+            expect(book.toString()).to.equal("an encyclopedia (Encyclopedia Britannica vol. XII, letter L, #12 of 24)");
         });
         it("correctly creates a baseball card", function() {
             var card = collectibles.createMemorabilia("baseball cards");
@@ -43,7 +51,7 @@ describe("collectibles", function() {
             expect(prop.tags.indexOf("collectible")).to.be.above(-1);
             expect(prop.toString()).to.equal("a propaganda poster (Rationing Means a Fair Share for All of Us #31 of 63)");
         });
-        it("accepts single string argument rather than parmeter object", function() {
+        it("accepts single string argument rather than parameter object", function() {
             var prop = collectibles.createMemorabilia("propaganda posters");
             expect(prop.name).to.equal("propaganda poster");
             expect(prop.title).to.equal("Rationing Means a Fair Share for All of Us #31 of 63");
@@ -54,26 +62,43 @@ describe("collectibles", function() {
         it("throws error when type value is wrong", function() {
             expect(function() {
                 collectibles.createMemorabilia("junk");
-            }).to.throw("junk is an invalid collectible, use movie posters, propaganda posters, encyclopedias, baseball cards");
+            }).to.throw("junk is an invalid collectible");
         });
-        it("defaults correctly when there is an invalid parameter object", function() {
-            var poster = collectibles.createMemorabilia({name: "temp"});
-            expect(poster.name).to.equal("movie poster");
+        it("randomizes type when there is an invalid parameter object", function() {
+            var item = collectibles.createMemorabilia({name: "temp"});
+            var item2 = collectibles.createMemorabilia({name: "temp"});
+            expect(item.name).to.equal("encyclopedia");
+            expect(item.name).to.not.equal(item2.name);
+        });
+        it("can create a news magazine", function() {
+            var mag = collectibles.createMemorabilia({type:'news magazines'});
+            expect(mag.toString()).to.equal("a news magazine (Verve, Mar 1956, #2 of 31)");
+        });
+        it("can create a comic", function() {
+            var comic = collectibles.createMemorabilia({type:'comics'});
+            expect(comic.toString()).to.equal("a comic book (Atomic War Comics, Nov 1956, #17 of 27)");
         });
     });
     describe("getMemorabiliaTypes()", function() {
+        beforeEach(resetRandom);
         it("returns all the collectible types", function() {
-            expect(collectibles.getMemorabiliaTypes()).to.eql(["movie posters","propaganda posters","encyclopedias","baseball cards"]);
+            expect(collectibles.getMemorabiliaTypes()).to.eql(["movie posters","propaganda posters","encyclopedias","baseball cards","news magazines","comics"]);
         });
     });
     describe("createMemorabiliaWanted()", function() {
+        beforeEach(resetRandom);
         it("selects a random type", function() {
             var description = collectibles.createMemorabiliaWanted();
-            expect(description.indexOf("Collector is looking for propaganda posters: Books Are Weapons")).to.be.above(-1);
+            expect(description.indexOf("Collector is looking for encyclopedias: Encyclopedia Britannica vol. II")).to.be.above(-1);
         });
         it("selects the specified type when provided", function() {
             var description =  collectibles.createMemorabiliaWanted("movie posters");
             expect(description.indexOf("Collector is looking for movie posters: Atomic Man")).to.be.above(-1);
+        });
+        it("sometimes specifies that a whole team of baseball cards is collectible", function() {
+            // To test this we have to override ion.test in the memorabilia.js module.
+            var description =  collectibles.createMemorabiliaWanted("baseball cards");
+            console.log(description);
         });
     })
 });
