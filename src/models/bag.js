@@ -226,20 +226,21 @@ var Bag = ion.define(Model, {
         }, []);
     },
     toString: function() {
-        var string = "", cash = 0;
+        var string = "";
+        var cash = 0;
         if (this.entries.length) {
-            var items = false,
-                len = this.entries.filter(function(entry) {
-                    return entry.item.not('cash');
-                }).length;
+            var items = false;
+            var len = this.entries.filter(function(entry) {
+                return entry.item.not('cash');
+            }).length;
             this.entries.forEach(function(entry) {
                 if (entry.item.is('cash')) {
                     cash += (entry.item.value*100) * entry.count;
                 } else {
                     items = true;
                     string += ion.pluralize(entry.item, entry.count);
-                    if (Object.keys(entry.titles).length) {
-                        string += " ("+Object.keys(entry.titles).join("; ")+")";
+                    if (ion.keys(entry.titles).length) {
+                        string += " ("+ion.keys(entry.titles).join("; ")+")";
                     }
                     if (len === 1) {
                         string += '.';

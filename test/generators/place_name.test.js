@@ -1,12 +1,9 @@
 var expect = require('chai').expect;
 var createPlaceName = require('../../src/generators/place_name').createPlaceName;
 var getLandformTypes = require('../../src/generators/place_name').getLandformTypes;
-require('../seedrandom');
+require('../before');
 
 describe("createPlaceName()", function() {
-    beforeEach(function(){
-        Math.seedrandom('belgium');
-    });
     it("returns a valid landform type with no arg", function() {
         var n = createPlaceName();
         expect(n).to.not.equal(null);
@@ -24,9 +21,6 @@ describe("createPlaceName()", function() {
     });
 });
 describe("getLandformTypes()", function() {
-    beforeEach(function(){
-        Math.seedrandom('belgium');
-    });
     it("returns landform types capitalized for use", function() {
         expect(getLandformTypes()[0]).to.equal("Depression");
     });

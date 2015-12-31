@@ -2,7 +2,7 @@ var expect = require('chai').expect;
 var Item = require('../src/models/item');
 var Bag = require('../src/models/bag');
 var atomic = require('../src/atomic');
-require('./seedrandom');
+require('./before');
 
 describe("atomic.models", function() {
     var bag;

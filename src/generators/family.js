@@ -35,11 +35,12 @@ var relationships = {
     grandson: {g: "male", a: 2, r: ["grandmother", "grandfather"]},
     granddaughter: {g: "female", a: 2, r: ["grandmother", "grandfather"]}
 };
-var relNames = [];
-for (var prop in relationships) {
+
+var relNames = ion.keys(relationships).map(function(prop) {
     relationships[prop].name = prop;
-    relNames.push(ion.titleCase(prop));
-}
+    return ion.titleCase(prop);
+});
+
 // You only have to put the older terms in this table because if you're using
 // it, you're randomizing, and the younger will be selected from the older
 var rtable = new RarityTable()
@@ -202,14 +203,6 @@ function nextGeneration(family, kin, i, gen) {
     }
 }
 
-/*
- function maybeFindOtherParents(family, originParent) {
- return [originParent].concat(family.children.filter(function(child) {
- return ion.test(50) && child.age > 20 && child !== originParent;
- }));
- }
- */
-
 /**
  * Create a nuclear family, with a specified number of generations.
  *
@@ -231,10 +224,10 @@ module.exports.createFamily = function(opts) {
     opts.parent = opts.parent || {};
     opts.parent.age = (opts.parent.age || getAdultAge());
 
-    var parent = createCharacter(opts.parent),
-        kin = [parent],
-        family = makeFamily(parent, kin),
-        root = family;
+    var parent = createCharacter(opts.parent);
+    var kin = [parent];
+    var family = makeFamily(parent, kin);
+    var root = family;
 
     if (opts.generations > 1) {
         nextGeneration(family, kin, 1, opts.generations);
@@ -280,8 +273,9 @@ module.exports.createRelationship = function(params) {
     var youngerRel = relationships[ ion.random(olderRel.r) ];
 
     // Order the terms:
-    var youngerAge, olderAge,
-        ageDiff = Math.abs(olderRel.a - youngerRel.a);
+    var youngerAge;
+    var olderAge;
+    var ageDiff = Math.abs(olderRel.a - youngerRel.a);
 
     do {
         youngerAge = getAdultAge();
@@ -291,20 +285,20 @@ module.exports.createRelationship = function(params) {
         }
     } while(ageDiff > 0 && olderAge-youngerAge < (18*ageDiff));
 
-    var older = atomic.createCharacter({
-            age: olderAge,
-            gender: olderRel.g,
-            profession: params.profession,
-            equip: params.equip
-        }),
-        younger = atomic.createCharacter({
-            age: youngerAge,
-            race: ion.test(olderRel.n) ? older.race : atomic.createRace(),
-            gender: youngerRel.g,
-            profession: params.profession,
-            equip: params.equip
-        }),
-        relName = (olderRel === youngerRel) ? (olderRel.name + "s") : (olderRel.name+" and "+youngerRel.name);
+    var older = createCharacter({
+        age: olderAge,
+        gender: olderRel.g,
+        profession: params.profession,
+        equip: params.equip
+    });
+    var younger = createCharacter({
+        age: youngerAge,
+        race: ion.test(olderRel.n) ? older.race : createRace(),
+        gender: youngerRel.g,
+        profession: params.profession,
+        equip: params.equip
+    });
+    var relName = (olderRel === youngerRel) ? (olderRel.name + "s") : (olderRel.name+" and "+youngerRel.name);
 
     if (params.familyName) {
         older.name.family = params.familyName;

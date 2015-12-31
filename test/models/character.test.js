@@ -2,6 +2,7 @@ var expect = require('chai').expect;
 var Character = require('../../src/models/character');
 var Name = require('../../src/models/name');
 var Bag = require('../../src/models/bag');
+require('../before');
 
 describe("atomic.models.Character", function() {
     var boy, girl;

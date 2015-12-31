@@ -146,7 +146,8 @@ var femaleHairStyle = new RarityTable()
     .add('rare', "cropped {0} hair");
 
 function hairStyle(character, statements) {
-    var color = hairColor.get(), string = null;
+    var color = hairColor.get();
+    var string = null;
     if (character.race === "hispanic" && color === "blond") {
         color = ion.random(["brown","black"]);
     }
@@ -206,10 +207,6 @@ function markings(character, app) {
         }
         tattoo = ion.resolve(tattoo, {name: name});
 
-        /* TODO?
-         var string = ion.resolve("has a tattoo of {0} on {1} {2} {3}",
-         tattoo, character.possessive, ['left', 'right'], ['shoulder','bicep','forearm','arm']);
-         */
         var string = ion.format("has a tattoo of {0} on {1} {2} {3}",
             tattoo,
             character.possessive,
@@ -253,9 +250,11 @@ function adjective(character, statements) {
  * @return {String} A description of the appearance and behavior of the character
  */
 module.exports = function(character) {
-    if (!character) { throw new Error("Character required"); }
-    var app = [],
-        statements = [];
+    if (!character) {
+        throw new Error("Character required");
+    }
+    var app = [];
+    var statements = [];
     hairStyle.call(this, character, app);
     stature.call(this, character, app);
     markings.call(this, character, app);

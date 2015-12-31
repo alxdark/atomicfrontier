@@ -2,12 +2,11 @@ var expect = require('chai').expect;
 var Item = require('../../src/models/item');
 var Bag = require('../../src/models/bag');
 var collectibles = require('../../src/generators/memorabilia');
-require('./../seedrandom');
+require('../before');
 
 describe("atomic.models.Bag", function() {
     var bag;
     beforeEach(function() {
-        Math.seedrandom('belgium');
         bag = new Bag();
     });
 

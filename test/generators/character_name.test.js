@@ -1,12 +1,9 @@
 var expect = require('chai').expect;
 var createCharacterName = require('../../src/generators/character_name');
 var Name = require('../../src/models/name');
-require('../seedrandom');
+require('../before');
 
 describe("createCharacterName()", function() {
-    beforeEach(function() {
-        Math.seedrandom('belgium');
-    });
     it("returns a name instance", function() {
         var n = createCharacterName();
         expect(n.constructor).to.equal(Name);

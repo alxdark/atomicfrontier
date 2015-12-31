@@ -87,10 +87,10 @@ module.exports = ion.define(Table, {
         if (this.useStrict && (this.rare.length === 0 || this.common.length === 0 || this.uncommon.length === 0)) {
             throw new Error("RarityTable must have at least one common, uncommon, and rare element");
         }
-        var common = ((this.common.length) ? 65 : 0),
-            uncommon = ((this.uncommon.length) ? 30 : 0),
-            rare = ((this.rare.length) ? 5 : 0),
-            roll = ion.roll(common+uncommon+rare);
+        var common = ((this.common.length) ? 65 : 0);
+        var uncommon = ((this.uncommon.length) ? 30 : 0);
+        var rare = ((this.rare.length) ? 5 : 0);
+        var roll = ion.roll(common+uncommon+rare);
 
         if (roll <= common && common !== 0) {
             return this.outFunction(rand(this.common));

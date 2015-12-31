@@ -111,7 +111,8 @@ function rankPatrol(service, gang) {
         member.traits.Military = 1; // member.traits.Government
     });
     // By luck, this may still produce a private and not someone of higher military rank.
-    var last = ion.last(gang.members), lowRank = gang.members[0].honorific;
+    var last = ion.last(gang.members);
+    var lowRank = gang.members[0].honorific;
     last.traits.Military = 4;
     do {
         prof.assignRank(last);
@@ -182,8 +183,8 @@ module.exports.assignNickname = assignNickname;
 module.exports.createGang = function(params) {
     params = ion.extend({}, params || {});
 
-    var gangType = params.type || ion.random(typeKeys),
-        gangSpec = types[gangType];
+    var gangType = params.type || ion.random(typeKeys);
+    var gangSpec = types[gangType];
 
     if (ion.isUndefined(gangSpec)) {
         throw new Error("Invalid gang type: " + gangType);

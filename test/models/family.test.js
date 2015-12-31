@@ -2,6 +2,7 @@ var expect = require('chai').expect;
 var Character = require('../../src/models/character');
 var Family = require('../../src/models/family');
 var Name = require('../../src/models/name');
+require('../before');
 
 function suePowers() {
     return new Character({gender: "female", name: new Name({given:"Sue","family":"Powers"}), age: 22});

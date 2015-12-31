@@ -1,6 +1,6 @@
 var ion = require('../src/ion.js');
 var expect = require('chai').expect;
-require('./seedrandom');
+require('./before');
 
 describe("ion", function() {
     var array;

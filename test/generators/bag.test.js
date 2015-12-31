@@ -3,9 +3,9 @@ var createBag = require('../../src/generators/bag').createBag;
 var createKit = require('../../src/generators/bag').createKit;
 var createContainer = require('../../src/generators/bag').createContainer;
 var getContainerTypes = require('../../src/generators/bag').getContainerTypes;
-
 var profDb = require('../../src/generators/data').professionDatabase;
 var Bag = require('../../src/models/bag');
+require('../before');
 
 function matchedTags(actual, tags) {
     var result = true;

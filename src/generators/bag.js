@@ -62,7 +62,7 @@ var containers = {
 // A container of containers.
 // "vault"
 
-var containerTypes = Object.keys(containers).sort();
+var containerTypes = ion.keys(containers).sort();
 
 // Uses the existing API to get the right frequency of objects, but can lead to many duplicates.
 // of all the fill* methods, this is the only one that respects all the createBag() options,
@@ -230,8 +230,8 @@ function createParams(params) {
  * @return {atomic.models.Bag} A bag of items on the person of that NPC
  */
 module.exports.createKit = function(params) {
-    var bag = new Bag(),
-        kitTag = (ion.isString(params.profession)) ?
+    var bag = new Bag();
+    var kitTag = (ion.isString(params.profession)) ?
         "kit:"+params.profession : params.profession.typeOf('kit');
 
     kitWeapon(bag, kitTag);

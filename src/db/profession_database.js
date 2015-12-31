@@ -64,13 +64,13 @@ module.exports = ion.define(Database, {
         var Clazz = arguments[0];
 
         for (var i=1, len = arguments.length; i < len; i += 2) {
-            var parts = arguments[i].split('!'),
-                names = parts[0].trim().split(/\s*;\s*/),
-                seeds = parseTags(this, parts[1]),
-                traits = parseTags(this, parts[2]),
-                tags = parseTags(this, parts[3]),
-                freq = tags.shift(),
-                func = arguments[i+1] ? new Function("c", arguments[i+1]) : ion.identity;
+            var parts = arguments[i].split('!');
+            var names = parts[0].trim().split(/\s*;\s*/);
+            var seeds = parseTags(this, parts[1]);
+            var traits = parseTags(this, parts[2]);
+            var tags = parseTags(this, parts[3]);
+            var freq = tags.shift();
+            var func = arguments[i+1] ? new Function("c", arguments[i+1]) : ion.identity;
 
             // So you can search for professions by name (converted to tags)
             for (var j=0; j < names.length; j++) {

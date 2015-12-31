@@ -2,8 +2,8 @@ var ion = require('../ion');
 var Database = require('./database');
 var Item = require('../models/item');
 
-var REMOVE_BRACES = /\{.*\}|\(.*\)/g,
-    REMOVE_WHITESPACE = /\W|\s/g;
+var REMOVE_BRACES = /\{.*\}|\(.*\)/g;
+var REMOVE_WHITESPACE = /\W|\s/g;
 
 function parseTags(db, arg) {
     var memo = getMemo();
@@ -97,16 +97,16 @@ module.exports = ion.define(Database, {
     register: function() {
         // optimizing on some things, like avoiding push, using for, etc.
         for (var i=0, len = arguments.length; i < len; i++) {
-            var string = arguments[i],
-                parts = string.split('!'),
-                names = parts[0].trim().split(/\s*;\s*/),
-                tags = parseTags(this, parts[3]),
-                breakable = tags.indexOf("br") > -1,
-                params = {
-                    value: parseFloat(parts[1]),
-                    enc: parseFloat(parts[2]),
-                    frequency: tags.shift()
-                };
+            var string = arguments[i];
+            var parts = string.split('!');
+            var names = parts[0].trim().split(/\s*;\s*/);
+            var tags = parseTags(this, parts[3]);
+            var breakable = tags.indexOf("br") > -1;
+            var params = {
+                value: parseFloat(parts[1]),
+                enc: parseFloat(parts[2]),
+                frequency: tags.shift()
+            };
             for (var j=0, len2 = names.length; j < len2; j++) {
                 params.name = names[j];
 

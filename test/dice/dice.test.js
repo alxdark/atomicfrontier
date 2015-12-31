@@ -2,11 +2,9 @@ var expect = require('chai').expect;
 var Die = require('../../src/dice/dice').Die;
 var Dice = require('../../src/dice/dice').Dice;
 var FudgeDie = require('../../src/dice/dice').FudgeDie;
+require('../before');
 
 describe("Dice (all kinds)", function() {
-    beforeEach(function() {
-        Math.seedrandom('belgium');
-    });
     it("assigns face and color", function() {
         var die = new Die(6, "red");
         expect(die.faces).to.equal(6);

@@ -4,12 +4,9 @@ var db = require('../../src/generators/data').storeDatabase;
 var createStore = require('../../src/generators/store');
 var Store = require('../../src/models/store');
 var createCharacter = require('../../src/generators/character').createCharacter;
-require('../seedrandom');
+require('../before');
 
 describe("atomic.createStore()", function() {
-    beforeEach(function() {
-        Math.seedrandom('belgium');
-    });
     it("can create a store", function() {
         var store = createStore();
         expect(store.constructor).to.equal(Store);

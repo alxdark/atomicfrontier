@@ -1,17 +1,10 @@
 var expect = require('chai').expect;
 var collectibles = require('../../src/generators/memorabilia');
 var ion = require('../../src/ion');
-
-require('../seedrandom');
-
-function resetRandom() {
-    Math.seedrandom('belgium');
-}
+require('../before');
 
 describe("memorabilia", function() {
-    beforeEach(resetRandom);
     describe("createMemorabilia()", function() {
-        beforeEach(resetRandom);
         it("returns unique item instances", function() {
             Math.seedrandom('belgium');
             var poster = collectibles.createMemorabilia();
@@ -80,13 +73,11 @@ describe("memorabilia", function() {
         });
     });
     describe("getMemorabiliaTypes()", function() {
-        beforeEach(resetRandom);
         it("returns all the collectible types", function() {
             expect(collectibles.getMemorabiliaTypes()).to.eql(["movie posters","propaganda posters","encyclopedias","baseball cards","news magazines","comics"]);
         });
     });
     describe("createMemorabiliaWanted()", function() {
-        beforeEach(resetRandom);
         it("selects a random type", function() {
             var description = collectibles.createMemorabiliaWanted();
             expect(description.indexOf("Collector is looking for encyclopedias: Encyclopedia Britannica vol. II")).to.be.above(-1);
@@ -95,10 +86,9 @@ describe("memorabilia", function() {
             var description =  collectibles.createMemorabiliaWanted("movie posters");
             expect(description.indexOf("Collector is looking for movie posters: Atomic Man")).to.be.above(-1);
         });
-        it("sometimes specifies that a whole team of baseball cards is collectible", function() {
+        xit("sometimes specifies that a whole team of baseball cards is collectible", function() {
             // To test this we have to override ion.test in the memorabilia.js module.
             var description =  collectibles.createMemorabiliaWanted("baseball cards");
-            console.log(description);
         });
     })
 });

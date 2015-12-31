@@ -6,21 +6,15 @@ var createGang = require('../../src/generators/gang').createGang
 var getGangTypes = require('../../src/generators/gang').getGangTypes;
 var assignNickname = require('../../src/generators/gang').assignNickname;
 var Gang = require('../../src/models/gang');
-require('../seedrandom');
-
-function clear() {
-    Math.seedrandom('belgium');
-}
+require('../before');
 
 describe("getGangTypes()", function() {
-    beforeEach(clear);
     it("returns valid values", function() {
         var types = getGangTypes();
         expect(types[0]).to.equal("Army Patrol");
     });
 });
 describe("createGang()", function() {
-    beforeEach(clear);
     it("returns a gang instance", function() {
         var g = createGang();
         expect(g.constructor).to.equal(Gang);
@@ -81,7 +75,6 @@ describe("createGang()", function() {
     });
 });
 describe("assignNickname()", function() {
-    beforeEach(clear);
     it("assigns nickname to character", function() {
         var c = new Character({
             name: createCharacterName()

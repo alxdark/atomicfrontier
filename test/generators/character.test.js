@@ -1,17 +1,13 @@
 var expect = require('chai').expect;
-var ion = require('../../src/ion');
 var sinon = require('sinon');
+var ion = require('../../src/ion');
 var Character = require('../../src/models/character');
 var Name = require('../../src/models/name');
 var createCharacter = require('../../src/generators/character').createCharacter;
 var createRace = require('../../src/generators/character').createRace;
-var createKit = require('../../src/generators/bag').createKit;
-require('../seedrandom');
+require('../before');
 
 describe("createCharacter()", function() {
-    beforeEach(function() {
-        Math.seedrandom('belgium');
-    });
     it("returns a Character instance", function() {
         var c = createCharacter();
         expect(c.constructor).to.equal(Character);

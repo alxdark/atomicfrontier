@@ -8,8 +8,8 @@ var createCharacterName = require('./character_name');
 var createKit = require('./bag').createKit;
 var createAppearance = require('./appearance');
 
-var innate = db.find('innate'),
-    histories = ["Before the collapse, was {0}", "Was {0} up until the war", "Was {0} before the war"];
+var innate = db.find('innate');
+var histories = ["Before the collapse, was {0}", "Was {0} up until the war", "Was {0} before the war"];
 
 function nameFromOpts(n, gender, race) {
     if (ion.isString(n)) {
@@ -56,23 +56,22 @@ function traitsForChild(character, opts) {
 }
 
 function traitsForAdult(character, prof, opts) {
-    var startingTraitPoints = ion.sum(ion.values(opts.traits)),
-        traitPoints = 8 + (~~(opts.age/10)) - startingTraitPoints;
+    var startingTraitPoints = ion.sum(ion.values(opts.traits));
+    var traitPoints = 8 + (~~(opts.age/10)) - startingTraitPoints;
 
     innate.train(character, ion.roll("2d2-1"));
 
     // 27 is arbitrary, it gives the character a couple of years to have had a profession.
     // For higher-status professions like doctor, cutoff is 30.
-    var pre = db.find('pre -innate'),
-        prestige = ion.intersection(pre.tags, ["low", "normal", "high"]),
-        post = (prof) ? prof : db.find(prestige + ' post -pre -innate'),
-        cutoffAge = (pre.is('high')) ? 30 : 27;
+    var pre = db.find('pre -innate');
+    var prestige = ion.intersection(pre.tags, ["low", "normal", "high"]);
+    var post = (prof) ? prof : db.find(prestige + ' post -pre -innate');
+    var cutoffAge = (pre.is('high')) ? 30 : 27;
 
     if (post.not('pre') && character.age > cutoffAge) {
-
-        var weight = (character.age - 10)/character.age,
-            prePoints = Math.floor(traitPoints * weight),
-            postPoints = traitPoints-prePoints;
+        var weight = (character.age - 10)/character.age;
+        var prePoints = Math.floor(traitPoints * weight);
+        var postPoints = traitPoints-prePoints;
 
         // two profession, pre/post war
         pre.train(character, prePoints);
@@ -131,7 +130,8 @@ module.exports.getProfessions = function() {
  * @return {atomic.models.Character} character
  */
 module.exports.createCharacter = function(params) {
-    var prof = null, opts = createOpts(params);
+    var prof = null;
+    var opts = createOpts(params);
 
     if (opts.profession) {
         prof = db.find(opts.profession);

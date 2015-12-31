@@ -3,9 +3,9 @@
 var ion = require('../ion');
 var Profession = require('./profession');
 
-var navyRanks = ["","Seaman", "Petty Officer", "Ensign", "Lieutenant", "Lieutenant Commander", "Commander", "Captain", "Admiral"],
-    policeRanks = ["Officer",["Officer","Trooper"],"Detective","Sergeant", ["Captain","Deputy Marshal"], ["Inspector","Marshal"],["Deputy Chief","Undersheriff"],["Chief","Sheriff"]],
-    milRanks = ["","Private", "Corporal", "Sergeant", "Lieutenant", "Captain", "Major", "Colonel", "General"];
+var navyRanks = ["","Seaman", "Petty Officer", "Ensign", "Lieutenant", "Lieutenant Commander", "Commander", "Captain", "Admiral"];
+var policeRanks = ["Officer",["Officer","Trooper"],"Detective","Sergeant", ["Captain","Deputy Marshal"], ["Inspector","Marshal"],["Deputy Chief","Undersheriff"],["Chief","Sheriff"]];
+var milRanks = ["","Private", "Corporal", "Sergeant", "Lieutenant", "Captain", "Major", "Colonel", "General"];
 
 module.exports = ion.define(Profession, {
     /**
@@ -28,7 +28,8 @@ module.exports = ion.define(Profession, {
      * @for atomic.models.AtomicProfession
      */
     assignRank: function(character) {
-        var name = this.names[0], rank = null;
+        var name = this.names[0];
+        var rank = null;
 
         // TODO: Could use gaussian spread here.
         var level = Math.round(Math.max(character.trait("Military"), character.trait("Government")) * 1.5);

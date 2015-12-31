@@ -1,14 +1,9 @@
 var expect = require('chai').expect;
 var Item = require('../../src/models/item');
 var reading = require('../../src/generators/reading');
-require('../seedrandom');
-
-function resetRandom() {
-    Math.seedrandom('belgium');
-}
+require('../before');
 
 describe("createMagazine()", function() {
-    beforeEach(resetRandom);
     it("creates a magazine", function () {
         var m = reading.createMagazine();
         expect(m.constructor).to.equal(Item);
@@ -17,7 +12,6 @@ describe("createMagazine()", function() {
     });
 });
 describe("createBook()", function() {
-    beforeEach(resetRandom);
     it("creates a book", function () {
         var b = reading.createBook();
         expect(b.constructor).to.equal(Item);

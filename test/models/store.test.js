@@ -4,6 +4,7 @@ var Bag = require('../../src/models/bag');
 var Character = require('../../src/models/character');
 var Name = require('../../src/models/name');
 var Item = require('../../src/models/item');
+require('../before');
 
 function createBag() {
     var gum = new Item({name: "{|packs of} Blackjack chewing gum", value: 10, enc: 2});

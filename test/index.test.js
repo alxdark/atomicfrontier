@@ -1,5 +1,6 @@
 var atomic = require('../src/atomic.js');
 var expect = require('chai').expect;
+require('./before');
 
 describe('version', function() {
     it('should return version 1.0.0', function() {

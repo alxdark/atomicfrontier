@@ -4,9 +4,9 @@ var db = require('../../src/generators/data').professionDatabase;
 var ion = require('../../src/ion');
 var Family = require('../../src/models/family');
 var createFamily = require('../../src/generators/relationships').createFamily;
+require('../before');
 
 describe("createFamily()", function() {
-
     function collectKin(array, family) {
         array.push(family.male);
         array.push(family.female);

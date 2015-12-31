@@ -1,8 +1,7 @@
 var expect = require('chai').expect;
-
-require('../seedrandom');
 var ion = require('../../src/ion');
 var RarityTable = require('../../src/tables/rarity_table');
+require('../before');
 
 describe("atomic.tables.RarityTable", function() {
 

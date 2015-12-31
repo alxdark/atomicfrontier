@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
-
 var ion = require('../../src/ion');
 var Table = require('../../src/tables/table');
+require('../before');
 
 // COMPLETE 2013-03-27
 describe("atomic.tables.Table", function() {

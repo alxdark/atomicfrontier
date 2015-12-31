@@ -2,6 +2,7 @@ var expect = require('chai').expect;
 var Relationship = require('../../src/models/relationship');
 var Character = require('../../src/models/character');
 var Name = require('../../src/models/name');
+require('../before');
 
 describe("atomic.models.Relationship", function() {
     var rel, char1, char2;

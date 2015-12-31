@@ -98,7 +98,7 @@ patterns.add('common', function(type) {
     // Williams Crossing
     return getName() + " " + ion.random(locative[type]);
 });
-var landforms = ion.keys(locative);
+var landforms = ion.keys(locative).sort();
 
 /**
  * Generate a random place name.

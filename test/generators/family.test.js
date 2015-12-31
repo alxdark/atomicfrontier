@@ -4,7 +4,7 @@ var ion = require('../../src/ion');
 var db = require('../../src/generators/data').professionDatabase;
 var familyMethods = require('../../src/generators/family');
 var Family = require('../../src/models/family');
-require('../seedrandom');
+require('../before');
 
 function collectKin(array, family) {
     array.push(family.male);
@@ -25,9 +25,6 @@ function getPrestige(c) {
 }
 
 describe("atomic.createFamily()", function() {
-    beforeEach(function() {
-        Math.seedrandom('belgium');
-    });
     it("creates a family with no args", function() {
         var f = familyMethods.createFamily();
 

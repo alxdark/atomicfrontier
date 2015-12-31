@@ -1,11 +1,8 @@
 var expect = require('chai').expect;
 var historicalDates = require('../../src/generators/historical_time_series');
-require('../seedrandom');
+require('../before');
 
 describe("historical dates sequences", function() {
-    beforeEach(function() {
-        Math.seedrandom('belgium');
-    });
     it("rejects invalid period", function() {
         expect(function() {
             historicalDates({period:'foo'});

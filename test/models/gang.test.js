@@ -1,8 +1,8 @@
 var expect = require('chai').expect;
 var deserializer = require('../../src/atomic').models.deserializer;
 var Gang = require('../../src/models/gang');
-var Name = require('../../src/models/name');
 var Character = require('../../src/models/character');
+require('../before');
 
 function makeSimpleGang() {
     var gang = new Gang({kind:"Bicycle Gang"});

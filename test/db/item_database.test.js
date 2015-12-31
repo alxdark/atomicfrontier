@@ -1,5 +1,6 @@
 var expect = require('chai').expect;
 var ItemDatabase = require('../../src/db/item_database');
+require('../before');
 
 describe("atomic.db.ItemDatabase", function() {
     it("can be created", function() {

@@ -3,14 +3,14 @@ var sinon = require('sinon');
 var ion = require('../../src/ion');
 var createCharacter = require('../../src/generators/character').createCharacter;
 var createAppearance = require('../../src/generators/appearance');
-require('../seedrandom');
+require('../before');
+
 
 describe("createAppearance()", function() {
     // Kind of hard to test this as it just spits out a string, based on tons of randomness.
 
     var character;
     beforeEach(function() {
-        Math.seedrandom('belgium');
         character = createCharacter();
     });
 

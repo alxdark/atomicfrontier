@@ -101,7 +101,7 @@ var bbCards = {
 
 var i=1;
 var baseball = [];
-Object.keys(bbCards).forEach(function(team) {
+ion.keys(bbCards).forEach(function(team) {
     bbCards[team].forEach(function(player) {
         var name = "Pennant brand 1958 baseball card{|s}";
         var title = player + ", " + team + ", #"+(i++)+" of 466";
@@ -172,7 +172,7 @@ function createMemorabilia(params) {
     var type = (ion.isString(params)) ? params : (params && params.type || ion.random(getMemorabiliaTypes()));
 
     if (!collectibles[type]) {
-        throw new Error(type + " is an invalid collectible, use " + Object.keys(collectibles).join(', '));
+        throw new Error(type + " is an invalid collectible, use " + ion.keys(collectibles).join(', '));
     }
     var source = collectibles[type];
     if (source instanceof RarityTable) {
@@ -191,7 +191,7 @@ function createMemorabilia(params) {
  * @return {Array} an array of string types that can be used to generate a collectible.
  */
 function getMemorabiliaTypes() {
-    return Object.keys(collectibles);
+    return ion.keys(collectibles);
 }
 
 /**
@@ -210,13 +210,13 @@ function getMemorabiliaTypes() {
  * @return {String} a description of what is being sought out for trade
  */
 function createMemorabiliaWanted(params) {
-    var type = (ion.isString(params)) ? params : (params && params.type || ion.random(Object.keys(collectibles)));
+    var type = (ion.isString(params)) ? params : (params && params.type || ion.random(ion.keys(collectibles)));
     var coll = collectibles[type];
     var count = Math.floor(ion.gaussian(coll.length/8,coll.length/4));
 
     // collects a team rather than individual cards.
     if (type === "baseball  cards" && ion.test(20)) {
-        var team = ion.random(Object.keys(bbCards));
+        var team = ion.random(ion.keys(bbCards));
         return "Collector is looking for any team baseball card for the " + team + ".";
     }
 

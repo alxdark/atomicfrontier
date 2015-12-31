@@ -68,17 +68,17 @@ module.exports = ion.define(Database, {
     register: function() {
         var opts, inv;
         for (var i=0, len = arguments.length; i < len; i++) {
-            var parts = arguments[i].split('!'),
-                names = parts[0].trim().split(/\s*;\s*/),
-                policy = parts[1],
-                owner_profession = parts[2],
-                owner_trait = parts[3],
-                bag_tags = parts[4],
-                bag_total_value = parts[5],
-                bag_min_value = parts[6],
-                bag_max_value = parts[7],
-                tags = parseTags(this, parts[8]),
-                frequency = tags.shift();
+            var parts = arguments[i].split('!');
+            var names = parts[0].trim().split(/\s*;\s*/);
+            var policy = parts[1];
+            var owner_profession = parts[2];
+            var owner_trait = parts[3];
+            var bag_tags = parts[4];
+            var bag_total_value = parts[5];
+            var bag_min_value = parts[6];
+            var bag_max_value = parts[7];
+            var tags = parseTags(this, parts[8]);
+            var frequency = tags.shift();
 
             // So you can search for a store by name (converted to tags)
             for (var j=0; j < names.length; j++) {

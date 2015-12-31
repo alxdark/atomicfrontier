@@ -4,7 +4,7 @@ var Bag = require('./bag');
 var Builder = require('../builder');
 
 function traitsToString(traits) {
-    return Object.keys(traits).sort(function(a,b) {
+    return ion.keys(traits).sort(function(a,b) {
         return (a < b) ? -1 : (a > b) ? 1 : 0 ;
     }).map(function(key) {
         return ion.format("{0} {1}", key, traits[key]);

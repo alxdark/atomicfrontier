@@ -1,12 +1,9 @@
 var expect = require('chai').expect;
 var Weather = require('../../src/models/weather');
 var createWeather = require('../../src/generators/weather');
-require('../seedrandom');
+require('../before');
 
 describe("createWeather()", function() {
-    beforeEach(function() {
-        Math.seedrandom('belgium');
-    });
     it("returns a weather.js object", function() {
         var w = createWeather();
         expect(w.constructor).to.equal(Weather);

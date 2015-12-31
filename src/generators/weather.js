@@ -44,13 +44,13 @@ var months = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov",
  * @return {atomic.models.Weather} An object describing the weather.js forecast.
  */
 module.exports = function(month) {
-    var index = ion.isUndefined(month) ? new Date().getMonth() : months.indexOf(month.toLowerCase()),
-        monthly = averages[index],
-        weather = new Weather({
-            low: (monthly.lo + ion.roll("1d10-5")),
-            high: (monthly.hi + ion.roll("1d10-5")),
-            rain: "clear skies"
-        });
+    var index = ion.isUndefined(month) ? new Date().getMonth() : months.indexOf(month.toLowerCase());
+    var monthly = averages[index];
+    var weather = new Weather({
+        low: (monthly.lo + ion.roll("1d10-5")),
+        high: (monthly.hi + ion.roll("1d10-5")),
+        rain: "clear skies"
+    });
 
     if (monthly.rain === 0 && ion.test(8)) {
         weather.rain = ion.random(["cloudy skies", "high clouds"]);

@@ -1,5 +1,6 @@
 var expect = require('chai').expect;
 var IonSet = require('../../src/models/ion_set');
+require('../before');
 
 describe("atomic.models.IonSet", function() {
     it("initializes with an array", function() {

@@ -1,5 +1,6 @@
 var expect = require('chai').expect;
 var Name = require('../../src/models/name');
+require('../before');
 
 describe("atomic.models.Name", function() {
     var name;

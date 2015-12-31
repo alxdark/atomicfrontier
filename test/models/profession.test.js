@@ -3,6 +3,7 @@ var Profession = require('../../src/models/profession');
 var Character = require('../../src/models/character');
 var ion = require('../../src/ion');
 var sinon = require('sinon');
+require('../before');
 
 describe("atomic.models.Profession", function() {
 

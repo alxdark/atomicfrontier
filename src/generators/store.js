@@ -64,19 +64,18 @@ var clone = require('../models/lib').clone;
  *  - can submit another type.
  */
 
-var markup = [0.2, 0.33, 0.4],
-    ownerStrategies = new Table(),
-    nameStrategies = new Table(),
-    policies = {
-        // trade:sellhigh - sells higher than normal price - handled separately
-        // trade:buylow - buys lower than normal prices - handled separately
-        "trade:any": ["anything"],
-        "trade:necessities": ["food", "ammo", "medicine"],
-        "trade:luxuries": ["liquor", "pre-collapse junk food", "cigarettes"],
-        "trade:currency": ["greenbacks", "casino chips", "gold and silver"],
-        "trade:stocked": ["any item that would be stocked at this store"]
-    };
-
+var markup = [0.2, 0.33, 0.4];
+var ownerStrategies = new Table();
+var nameStrategies = new Table();
+var policies = {
+    // trade:sellhigh - sells higher than normal price - handled separately
+    // trade:buylow - buys lower than normal prices - handled separately
+    "trade:any": ["anything"],
+    "trade:necessities": ["food", "ammo", "medicine"],
+    "trade:luxuries": ["liquor", "pre-collapse junk food", "cigarettes"],
+    "trade:currency": ["greenbacks", "casino chips", "gold and silver"],
+    "trade:stocked": ["any item that would be stocked at this store"]
+};
 var storeNames = {
     'clientele:lobrow': ["{Bull's Head|Holy Moses}", "{Red|Black|Blue} {Lightning|Cross}", "{Snake|Scorpion} Pit"],
     'clientele:nobrow': ["{Northern|Central|Southern|Western}", "{Red|Blue|Black} Star", "The {Buckaroo|Cowpoke}"],
