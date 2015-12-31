@@ -12,7 +12,7 @@ describe("createMagazine()", function() {
     it("creates a magazine", function() {
         var m = createMagazine();
         expect(m.constructor).to.equal(Item);
-        expect(m.title).to.equal("Boy's Frontier Magazine");
+        expect(m.title).to.equal("Boy's Wild Frontier Magazine");
     });
     xit("creates a book", function() {
         var b = createBook();

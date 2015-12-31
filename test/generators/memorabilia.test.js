@@ -8,9 +8,9 @@ function resetRandom() {
     Math.seedrandom('belgium');
 }
 
-describe("collectibles", function() {
+describe("memorabilia", function() {
     beforeEach(resetRandom);
-    describe("createCollectible()", function() {
+    describe("createMemorabilia()", function() {
         beforeEach(resetRandom);
         it("returns unique item instances", function() {
             Math.seedrandom('belgium');
@@ -76,7 +76,7 @@ describe("collectibles", function() {
         });
         it("can create a comic", function() {
             var comic = collectibles.createMemorabilia({type:'comics'});
-            expect(comic.toString()).to.equal("a comic book (Atomic War Comics, Nov 1956, #17 of 27)");
+            expect(comic.toString()).to.equal("a comic book (The Adventures of Captain Atom, Aug 1956, #7 of 31)");
         });
     });
     describe("getMemorabiliaTypes()", function() {
