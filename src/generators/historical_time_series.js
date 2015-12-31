@@ -48,10 +48,10 @@ var periods =  {
  *      @param [params.period='weekly'] {String} one of 'weekly', 'monthly', 'biweekly' or 'bimonthly'
  *      @param [params.dayOfWeek] {String} one of 'Saturday' to 'Sunday', if you want the dates to be
  *          adjusted to the next day of the week (for example if a periodical is always published on Mondays).
- *      @param [params.startDate='1955-12-31'] {String|Date} a string (in format 'YYYY-MM-DD') or a date object that is the date
- *          after which the sequence will start.
- *      @param [params.endDate='1958-07-14'] {String|Date} a string (in format 'YYYY-MM-DD') or a date object that is the date
- *          before which the sequence will end.
+ *      @param [params.startDate='1956-01-01'] {String|Date} a string (in format 'YYYY-MM-DD') or a date object that
+ *          is the date on which the sequence will start.
+ *      @param [params.endDate='1958-07-14'] {String|Date} a string (in format 'YYYY-MM-DD') or a date object that
+ *          is the date before which the sequence will end.
  * @return {Array} an array of string dates in the format 'Monday 2 Jan 1956'.
  */
 function timeSeries(params) {
