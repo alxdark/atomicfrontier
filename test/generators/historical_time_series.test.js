@@ -51,7 +51,7 @@ describe("historical dates sequences", function() {
         expect(dates[3]).to.equal("Monday 20 Feb 1956");
     });
     it("creates sequence of bi-monthlies", function() {
-        var dates = historicalDates({period: 'bimonthly', format: 'short', startDate: '1962-11-31', endDate: '1963-12-31'});
+        var dates = historicalDates({period: 'bimonthly', format: 'short', startDate: '1963-01-01', endDate: '1963-12-31'});
 
         expect(dates.length).to.equal(6);
         expect(dates[0]).to.equal("Jan 1963");
@@ -63,7 +63,7 @@ describe("historical dates sequences", function() {
     });
     it("can set the years for the date range", function() {
         var dates = historicalDates({period:'monthly', startDate:'1962-01-01', endDate:'1963-01-01'});
-        console.log(dates);
+
         expect(dates.length).to.equal(12);
         expect(dates[0]).to.equal("Monday 1 Jan 1962");
         expect(dates[1]).to.equal("Thursday 1 Feb 1962");

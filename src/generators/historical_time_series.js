@@ -7,8 +7,8 @@ var daysOfMonth = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','
 
 function advanceToDayOfWeek(date, params) {
     var pubDate = new Date(date.getTime());
-    while(params.dayOfWeek && daysOfWeek[pubDate.getDay()] !== params.dayOfWeek) {
-        pubDate.setDate(pubDate.getDate()+1);
+    while(params.dayOfWeek && daysOfWeek[pubDate.getUTCDay()] !== params.dayOfWeek) {
+        pubDate.setUTCDate(pubDate.getUTCDate()+1);
     }
     return pubDate;
 }
@@ -18,20 +18,20 @@ var periods =  {
         date.setTime(date.getTime() + sevenDays);
     },
     'monthly': function(date) {
-        if (date.getDate() !== 1) {
-            date.setDate(1);
+        if (date.getUTCDate() !== 1) {
+            date.setUTCDate(1);
         }
-        date.setMonth(date.getMonth()+1);
+        date.setUTCMonth(date.getUTCMonth()+1);
     },
     'biweekly': function(date, params) {
-        var i = (date.getDate() === 1) ? 15 : 1;
-        date.setDate(i);
+        var i = (date.getUTCDate() === 1) ? 15 : 1;
+        date.setUTCDate(i);
         if (i === 1) {
-            date.setMonth(date.getMonth()+1);
+            date.setUTCMonth(date.getUTCMonth()+1);
         }
     },
     'bimonthly': function(date) {
-        date.setMonth(date.getMonth()+2);
+        date.setUTCMonth(date.getUTCMonth()+2);
     }
 };
 
@@ -57,22 +57,19 @@ var periods =  {
 function timeSeries(params) {
     params = params || {};
     params.period = params.period || 'weekly';
-    params.startDate = params.startDate || '1955-12-31';
+    params.startDate = params.startDate || '1956-01-01';
     params.endDate = params.endDate || '1958-07-14'; // TODO: what's the canonical date?
     params.format = params.format || 'full';
     if (!periods[params.period]) {
         throw new Error(params.period + " is not a valid period.");
     }
-    params.startDate = new Date(params.startDate);
-    params.endDate = new Date(params.endDate);
+    params.startDate = new Date(params.startDate/*+"T00:00:00.000Z"*/);
+    params.endDate = new Date(params.endDate/*+"T00:00:00.000Z"*/);
 
     var date = params.startDate;
 
     var dateStrings = [];
     while(true) {
-        // advance time according to the period function.
-        periods[params.period](date, params);
-
         // publications often adjust the date to the nearest day of week, or do something that's close enough to this
         var pubDate = advanceToDayOfWeek(date, params);
         if (pubDate >= params.endDate) {
@@ -81,11 +78,15 @@ function timeSeries(params) {
         // format
         if (params.format === 'full') {
             var str = ion.format("{0} {1} {2} {3}",
-                daysOfWeek[pubDate.getDay()], pubDate.getDate(), daysOfMonth[pubDate.getMonth()], pubDate.getFullYear());
+                daysOfWeek[pubDate.getUTCDay()], pubDate.getUTCDate(), daysOfMonth[pubDate.getUTCMonth()], pubDate.getUTCFullYear());
         } else {
-            var str = ion.format("{0} {1}", daysOfMonth[pubDate.getMonth()], pubDate.getFullYear());
+            var str = ion.format("{0} {1}", daysOfMonth[pubDate.getUTCMonth()], pubDate.getUTCFullYear());
         }
-        dateStrings.push(str);
+        // advance time according to the period function.
+        if (str != dateStrings[dateStrings.length-1]) {
+            dateStrings.push(str);
+        }
+        periods[params.period](date, params);
     }
     return dateStrings;
 }
