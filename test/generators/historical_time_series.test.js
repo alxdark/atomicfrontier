@@ -1,5 +1,6 @@
 var expect = require('chai').expect;
 var historicalDates = require('../../src/generators/historical_time_series');
+require('../seedrandom');
 
 describe("historical dates sequences", function() {
     beforeEach(function() {
@@ -62,7 +63,7 @@ describe("historical dates sequences", function() {
     });
     it("can set the years for the date range", function() {
         var dates = historicalDates({period:'monthly', startDate:'1962-01-01', endDate:'1963-01-01'});
-
+        console.log(dates);
         expect(dates.length).to.equal(12);
         expect(dates[0]).to.equal("Monday 1 Jan 1962");
         expect(dates[1]).to.equal("Thursday 1 Feb 1962");
