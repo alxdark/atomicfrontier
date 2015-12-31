@@ -1,26 +1,27 @@
 var expect = require('chai').expect;
 var Item = require('../../src/models/item');
-var createMagazine = require('../../src/generators/reading').createMagazine;
-var createBook = require('../../src/generators/reading').createBook;
-var createTitle = require('../../src/generators/reading').createTitle;
+var reading = require('../../src/generators/reading');
 require('../seedrandom');
 
+function resetRandom() {
+    Math.seedrandom('belgium');
+}
+
 describe("createMagazine()", function() {
-    beforeEach(function() {
-        Math.seedrandom('belgium');
-    });
-    it("creates a magazine", function() {
-        var m = createMagazine();
+    beforeEach(resetRandom);
+    it("creates a magazine", function () {
+        var m = reading.createMagazine();
         expect(m.constructor).to.equal(Item);
+        expect(m.name).to.equal("magazine");
         expect(m.title).to.equal("Boy's Wild Frontier Magazine");
     });
-    xit("creates a book", function() {
-        var b = createBook();
+});
+describe("createBook()", function() {
+    beforeEach(resetRandom);
+    it("creates a book", function () {
+        var b = reading.createBook();
         expect(b.constructor).to.equal(Item);
-        expect(b.name).to.equal("");
-    });
-    it("creates a title", function() {
-        var title = createTitle();
-        expect(title).to.equal("The dead flight of light");
+        expect(b.name).to.equal("book");
+        expect(b.title).to.equal("Nuclear War Survival");
     });
 });

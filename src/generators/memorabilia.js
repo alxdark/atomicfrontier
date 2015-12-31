@@ -16,21 +16,18 @@ function seriesSorter(a, b) {
     return aNum - bNum;
 }
 
-function addNews(name, rarity, params) {
-    var value = (rarity === "rare") ? 5 : (rarity === "uncommon") ? 3 : 1;
-    timeSeries(params).forEach(function(date, i, coll) {
-        newsPubs.add(rarity, {name: "news magazine", title: (name + ", " + date + ", #" + i + " of " + coll.length),
-            enc: 1, value: value, tags: ['collectible']});
-    });
+function printed(printedType, collection) {
+    return function(name, rarity, params) {
+        var value = (rarity === "rare") ? 5 : (rarity === "uncommon") ? 3 : 1;
+        timeSeries(params).forEach(function(date, i, coll) {
+            var title = name + ", " + date + ", #" + i + " of " + coll.length;
+            collection.add(rarity, {name: printedType, title: title, enc: 1, value: value, tags: ['collectible']});
+        });
+    }
 }
 
-function addComic(name, rarity, params) {
-    var value = (rarity === "rare") ? 5 : (rarity === "uncommon") ? 3 : 1;
-    timeSeries(params).forEach(function(date, i, coll) {
-        comics.add(rarity, {name: "comic book", title: (name + ", " + date + ", #" + i + " of " + coll.length),
-            enc: 1, value: value, tags: ['collectible']});
-    });
-}
+var addNews = printed("news magazine", newsPubs);
+var addComic = printed("comic book", comics);
 
 function poster(collection, type, fileExt, value) {
     return collection.map(function(base, i) {
@@ -112,35 +109,12 @@ Object.keys(bbCards).forEach(function(team) {
     });
 });
 
-// Survival books... however, many of these are from after the 50s. The titles are good though.
-// Need other things that are more survival oriented because this is not really relevant in the
-// time period of these games.
-
-// "Medical Planning & Response Manual for a Nuclear Detonation Incident: A Practical Guide"
-// "Nuclear Dangers: Myths and Facts"
-// "Nuclear Detonation Preparedness"
-// "Nuclear War Survival Skills"
-// "Nuclear War Survival"
-// "Planning Guidance for Response to a Nuclear Detonation"
-// "Protection in the Nuclear Age"
-// "Recovery from Nuclear Attack"
-// "U.S. Army Survival Manual"
-
-// specific books or book collections
+// specific bookTitles or book collections
 // maps
-// comics
 // disney pins... renaming everything of course. total insanity [https://en.wikipedia.org/wiki/Disney_pin_trading]
 // films. The actual cans of film. Usually two rolls. Any poster could also have a film, vice versa.
 // records. and, record players. and, electricity.
 // other mags: Popular Science, Science Digest, Mechanix Illustrated, National Geographic
-
-// Luxury goods (not considered collectibles):
-// bottles of wine, whiskey, other fine liquors
-// gold. silver. platinum, semi-precious jewels, watches
-// bicycles
-// fountain pens. paper, writing implements
-// tools
-// weapons
 
 addNews("Atlantic Dispatch Magazine", "uncommon", {period: 'weekly'});
 addNews("The Weekly Nation", "uncommon", {period: 'weekly', dayOfWeek: 'Monday', startDate: '1953-12-31'});

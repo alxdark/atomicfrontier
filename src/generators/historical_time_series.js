@@ -36,12 +36,11 @@ var periods =  {
 };
 
 function formatDate(pubDate, format) {
+    var monthYear = daysOfMonth[pubDate.getUTCMonth()] + " " + pubDate.getUTCFullYear();
     if (format === 'full') {
-        return ion.format("{0} {1} {2} {3}", daysOfWeek[pubDate.getUTCDay()], pubDate.getUTCDate(),
-            daysOfMonth[pubDate.getUTCMonth()], pubDate.getUTCFullYear());
-    } else {
-        return ion.format("{0} {1}", daysOfMonth[pubDate.getUTCMonth()], pubDate.getUTCFullYear());
+        return daysOfWeek[pubDate.getUTCDay()] + " " + pubDate.getUTCDate() + " " + monthYear;
     }
+    return monthYear;
 }
 
 // TODO: Seasonal, volume/issues?
@@ -66,7 +65,8 @@ function formatDate(pubDate, format) {
 function timeSeries(params) {
     params = params || {};
     params.period = params.period || 'weekly';
-    if (!periods[params.period]) {
+    var period = periods[params.period];
+    if (!period) {
         throw new Error(params.period + " is not a valid period.");
     }
     params.startDate = params.startDate || '1956-01-01';
@@ -75,17 +75,14 @@ function timeSeries(params) {
     params.startDate = new Date(params.startDate);
     params.endDate = new Date(params.endDate);
 
-    var date = params.startDate;
     var dateStrings = [];
-    while(date < params.endDate) {
+    for (var date = params.startDate; date < params.endDate; period(date, params)) {
         // pub date moves the date to a day of the week, but keeps calculating using the existing date.
-        // So there's some extra checking around this fact.
         var pubDate = advanceToDayOfWeek(date, params);
         if (pubDate < params.endDate) {
             var dateString = formatDate(pubDate, params.format);
             dateStrings.push(dateString);
         }
-        periods[params.period](date, params);
     }
     return dateStrings;
 }

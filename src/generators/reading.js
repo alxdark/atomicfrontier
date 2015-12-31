@@ -4,12 +4,6 @@ var ion = require('../ion');
 var Item = require('../models/item');
 var itemDb = require('./data').itemDatabase;
 
-// Some books are just for fun, some would be useful for gaining experience given a known
-// list of skills, and it would be nice to point that out (e.g. "Bargain +3xp"). Seems okay to
-// me to have canned titles as well that don't follow the rules, just to mix things up.
-// "Observational Signatures of Self-Destructive Civilisations"
-// http://arxiv.org/pdf/1507.08530v1.pdf
-
 var adj = ["all", "amazing", "astonishing", "atomic", "baffling", "bolshevik", "boy's", "complete", "dark", "dynamic",
     "exciting", "favorite", "gentleman's", "girl's", "glamorous", "haunted", "incredible", "lady's", "northwest", "popular",
     "railroad man's", "ranch", "saucy", "spicy", "startling", "strange", "thrilling", "weird", "women's", "wonderful"];
@@ -20,29 +14,27 @@ var base = ["almanac", "weekly", "magazine", "quarterly", "stories", "tales", "t
 var cannedTitles = ["all-story", "argosy", "black mask", "cavalier", "keepsake", "ladies home almanac", "ocean",
     "scrap book", "apache trail"];
 
-// split into nouns and adjectives... can make times for stories or individual pulp novels or something
-
-var storyAdj = ["three", "white", "deep", "away", "back", "beyond", "great", "lost", "big", "like", "little", "living",
-    "new", "long", "two", "small", "dead", "never", "last", "best", "dark", "old", "second", "first", "one",
-    "cold", "red", "bad", "final", "broken", "just", "perfect", "green", "blue"];
-
-var storyNouns = ["man", "summer", "witch", "time", "earth", "house", "heaven", "mind", "devil", "flight",
-    "book", "mother", "star{|s}", "king", "thing{|s}", "stairs", "universe", "glass", "eye", "darkness", "lady",
-    "end", "sun", "call", "woman", "water", "dance", "mars", "light", "moon", "black", "winter", "wind", "queen",
-    "river", "dragon", "skin", "ghost{|s}", "alien", "", "garden", "war", "death", "monster{|s}", "dead", "never",
-    "story", "bones", "soul", "blood", "mirror", "children", "beast", "men", "fire", "hell", "know", "demon",
-    "planet", "snow", "dark", "ice", "god{|s}", "way", "heart", "stone", "door", "world{|s}", "human",
-    "dream{|s}", "second", "family", "fall", "boy", "song", "city", "road", "place", "gift", "sky", "life",
-    "shadow{|s}", "people", "flesh", "final", "memory", "tale", "wings", "day{|s}", "home", "game", "space",
-    "tree", "eyes", "dust", "room", "name", "rain", "box", "thing", "sea", "night", "love", "girl", "machine",
-    "child", "daughter", "future", "angel", "magic", "dream", "hand"];
-
 // Unique base options (genreBases) add variety but conflict with some genres, so only use a unique when
 // those genres (redundantWithGenres) are not in the title array
 var genreBases = ["mysteries", "westerns", "thrillers","{love|ghost|true} stories"];
 var redundantWithGenres = ["ghost","mystery","new love","western","high seas"];
 
-var mag = "magazine ({0})";
+// Some bookTitles are just for fun, some would be useful for gaining experience given a known
+// list of skills, and it would be nice to point that out (e.g. "Bargain +3xp"). Seems okay to
+// me to have canned titles as well that don't follow the rules, just to mix things up.
+// "Observational Signatures of Self-Destructive Civilisations"
+// http://arxiv.org/pdf/1507.08530v1.pdf
+var bookTitles = [
+    "Medical Planning & Response Manual for a Nuclear Detonation Incident: A Practical Guide",
+    "Nuclear Dangers: Myths and Facts",
+    "Nuclear Detonation Preparedness",
+    "Nuclear War Survival Skills",
+    "Nuclear War Survival",
+    "Planning Guidance for Response to a Nuclear Detonation",
+    "Protection in the Nuclear Age",
+    "Recovery from Nuclear Attack",
+    "U.S. Army Survival Manual"
+];
 
 function addIf(percent, array, options) {
     if (percent == 100 || ion.test(percent)) {
@@ -89,11 +81,6 @@ module.exports.createMagazine = function() {
 };
 
 module.exports.createBook = function() {
-    throw new Error("Not implemented");
-};
-
-// These are all dreadful, and also this isn't useful. But it was an idea for some data that I
-// wanted to try out.
-module.exports.createTitle = function() {
-    return ion.format("The {0} {1} of {2}", ion.random(storyAdj), ion.random(storyNouns), ion.random(storyNouns));
+    var title = ion.random(bookTitles);
+    return new Item({name: "book", title: title, value: 3, enc: 2, tags: ['reading']});
 };
