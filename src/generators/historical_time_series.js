@@ -35,6 +35,15 @@ var periods =  {
     }
 };
 
+function formatDate(pubDate, format) {
+    if (format === 'full') {
+        return ion.format("{0} {1} {2} {3}", daysOfWeek[pubDate.getUTCDay()], pubDate.getUTCDate(),
+            daysOfMonth[pubDate.getUTCMonth()], pubDate.getUTCFullYear());
+    } else {
+        return ion.format("{0} {1}", daysOfMonth[pubDate.getUTCMonth()], pubDate.getUTCFullYear());
+    }
+}
+
 // TODO: Seasonal, volume/issues?
 
 /**
@@ -57,34 +66,24 @@ var periods =  {
 function timeSeries(params) {
     params = params || {};
     params.period = params.period || 'weekly';
-    params.startDate = params.startDate || '1956-01-01';
-    params.endDate = params.endDate || '1958-07-14'; // TODO: what's the canonical date?
-    params.format = params.format || 'full';
     if (!periods[params.period]) {
         throw new Error(params.period + " is not a valid period.");
     }
-    params.startDate = new Date(params.startDate/*+"T00:00:00.000Z"*/);
-    params.endDate = new Date(params.endDate/*+"T00:00:00.000Z"*/);
+    params.startDate = params.startDate || '1956-01-01';
+    params.endDate = params.endDate || '1958-07-14'; // TODO: what's the canonical date?
+    params.format = params.format || 'full';
+    params.startDate = new Date(params.startDate);
+    params.endDate = new Date(params.endDate);
 
     var date = params.startDate;
-
     var dateStrings = [];
-    while(true) {
-        // publications often adjust the date to the nearest day of week, or do something that's close enough to this
+    while(date < params.endDate) {
+        // pub date moves the date to a day of the week, but keeps calculating using the existing date.
+        // So there's some extra checking around this fact.
         var pubDate = advanceToDayOfWeek(date, params);
-        if (pubDate >= params.endDate) {
-            break;
-        }
-        // format
-        if (params.format === 'full') {
-            var str = ion.format("{0} {1} {2} {3}",
-                daysOfWeek[pubDate.getUTCDay()], pubDate.getUTCDate(), daysOfMonth[pubDate.getUTCMonth()], pubDate.getUTCFullYear());
-        } else {
-            var str = ion.format("{0} {1}", daysOfMonth[pubDate.getUTCMonth()], pubDate.getUTCFullYear());
-        }
-        // advance time according to the period function.
-        if (str != dateStrings[dateStrings.length-1]) {
-            dateStrings.push(str);
+        if (pubDate < params.endDate) {
+            var dateString = formatDate(pubDate, params.format);
+            dateStrings.push(dateString);
         }
         periods[params.period](date, params);
     }
