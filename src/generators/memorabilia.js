@@ -215,7 +215,7 @@ function createMemorabiliaWanted(params) {
     var count = Math.floor(ion.gaussian(coll.length/8,coll.length/4));
 
     // collects a team rather than individual cards.
-    if (type === "baseball  cards" && ion.test(20)) {
+    if (type === "baseball cards" && ion.test(20)) {
         var team = ion.random(ion.keys(bbCards));
         return "Collector is looking for any team baseball card for the " + team + ".";
     }

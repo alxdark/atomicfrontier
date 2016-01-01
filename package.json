@@ -14,7 +14,7 @@
         "docs": "yuidoc -C --config docs/config.json src/",
         "test": "mocha --recursive",
         "test:watch": "mocha -w",
-        "test:coverage": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec --recursive"
+        "test:coverage": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec --timeout 5000 --recursive"
     },
     "keywords": [
         "procedural",
@@ -37,6 +37,7 @@
         "chai": "3.3.0",
         "istanbul": "0.4.1",
         "mocha": "2.3.3",
+        "rewire": "2.5.1",
         "sinon": "1.17.2",
         "uglify-js": "2.6.1",
         "yuidoc-lucid-theme": "0.1.1",

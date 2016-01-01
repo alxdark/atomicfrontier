@@ -1,5 +1,6 @@
 var expect = require('chai').expect;
-var collectibles = require('../../src/generators/memorabilia');
+var rewire = require("rewire");
+var collectibles = rewire('../../src/generators/memorabilia');
 var ion = require('../../src/ion');
 require('../before');
 
@@ -86,9 +87,16 @@ describe("memorabilia", function() {
             var description =  collectibles.createMemorabiliaWanted("movie posters");
             expect(description.indexOf("Collector is looking for movie posters: Atomic Man")).to.be.above(-1);
         });
-        xit("sometimes specifies that a whole team of baseball cards is collectible", function() {
+        it("sometimes specifies that a whole team of baseball cards is collectible", function() {
+            var ionStub = ion.extend({}, ion);
+            ionStub.test = function() {return true;}
+            var revert = collectibles.__set__("ion", ionStub);
+
             // To test this we have to override ion.test in the memorabilia.js module.
             var description =  collectibles.createMemorabiliaWanted("baseball cards");
+            expect(description).to.equal("Collector is looking for any team baseball card for the Cincinnati Reds.");
+
+            revert();
         });
     })
 });
