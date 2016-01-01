@@ -25,7 +25,6 @@ function nameFromOpts(n, gender, race) {
 
 function createOpts(params) {
     var opts = ion.extend({}, params);
-    // ion.defS(opts, "gender", ion.random(['male','female']));
     opts.gender = opts.gender || ion.random(['male','female']);
     opts.equip = (ion.isBoolean(opts.equip)) ? opts.equip : true;
     opts.race = opts.race ||  createRace();

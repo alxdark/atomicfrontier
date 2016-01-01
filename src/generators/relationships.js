@@ -38,7 +38,8 @@ var relationships = {
 var relNames = ion.keys(relationships).map(function(prop) {
     relationships[prop].name = prop;
     return ion.titleCase(prop);
-});
+}).sort();
+
 // You only have to put the older terms in this table because if you're using
 // it, you're randomizing, and the younger will be selected from the older
 var rtable = new RarityTable()
@@ -216,19 +217,19 @@ function nextGeneration(family, kin, i, gen) {
  *          created, that will set the profession, race and name of sub-generations.
  * @return {atomic.models.Family} a family
  */
-module.exports.createFamily = function(opts) {
-    opts = opts || {};
-    opts.generations = opts.generations || 2;
-    opts.parent = opts.parent || {};
-    opts.parent.age = (opts.parent.age || getAdultAge());
+module.exports.createFamily = function(params) {
+    params = ion.extend({}, params || {});
+    params.generations = params.generations || 2;
+    params.parent = params.parent || {};
+    params.parent.age = (params.parent.age || getAdultAge());
 
-    var parent = createCharacter(opts.parent);
+    var parent = createCharacter(params.parent);
     var kin = [parent];
     var family = makeFamily(parent, kin);
     var root = family;
 
-    if (opts.generations > 1) {
-        nextGeneration(family, kin, 1, opts.generations);
+    if (params.generations > 1) {
+        nextGeneration(family, kin, 1, params.generations);
     }
     postProcess(kin);
     return root;
@@ -245,7 +246,7 @@ module.exports.createFamily = function(opts) {
  * @return {Array} a list of relationship names
  */
 module.exports.getRelationships = function() {
-    return relNames.sort();
+    return relNames;
 };
 
 /**

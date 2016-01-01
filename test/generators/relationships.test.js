@@ -1,31 +1,32 @@
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var db = require('../../src/generators/data').professionDatabase;
 var ion = require('../../src/ion');
+var db = require('../../src/generators/data').professionDatabase;
+var familyMethods = require('../../src/generators/relationships');
 var Family = require('../../src/models/family');
-var createFamily = require('../../src/generators/relationships').createFamily;
 require('../before');
 
-describe("createFamily()", function() {
-    function collectKin(array, family) {
-        array.push(family.male);
-        array.push(family.female);
-        family.children.forEach(function(child) {
-            array.push(child);
-        });
-        family.couples.forEach(function(f) {
-            collectKin(array, f);
-        });
-    }
+function collectKin(array, family) {
+    array.push(family.male);
+    array.push(family.female);
+    family.children.forEach(function(child) {
+        array.push(child);
+    });
+    family.couples.forEach(function(f) {
+        collectKin(array, f);
+    });
+}
 
-    function getPrestige(c) {
-        if (c.is('normal')) return "normal";
-        else if (c.is('low')) return "low";
-        else if (c.is('high')) return "high";
-        else throw new Error("Profession does not have set prestige: " + c.profession);
-    }
+function getPrestige(c) {
+    if (c.is('normal')) return "normal";
+    else if (c.is('low')) return "low";
+    else if (c.is('high')) return "high";
+    else throw new Error("Profession does not have set prestige: " + c.profession);
+}
+
+describe("atomic.createFamily()", function() {
     it("creates a family with no args", function() {
-        var f = createFamily();
+        var f = familyMethods.createFamily();
 
         expect(f.constructor).to.equal(Family);
         expect(f.children.length).to.not.be.null;
@@ -35,11 +36,11 @@ describe("createFamily()", function() {
         try {
             sinon.stub(ion, "nonNegativeGaussian").returns(5);
 
-            var f = createFamily({generations:3});
+            var f = familyMethods.createFamily({generations:3});
             expect(f.couples.length).to.equal(1);
             expect(f.couples[0].couples.length).to.equal(0);
 
-            f = createFamily({generations:4});
+            f = familyMethods.createFamily({generations:4});
             expect(f.couples[0].couples.length).to.equal(1);
             expect(f.couples[0].children.length).to.equal(4);
         } finally {
@@ -54,7 +55,7 @@ describe("createFamily()", function() {
             profession: "trader"
         };
 
-        var f = createFamily({parent: params});
+        var f = familyMethods.createFamily({parent: params});
 
         expect(f.male.name.family).to.equal(f.female.name.family);
         var female = f.female;
@@ -71,7 +72,7 @@ describe("createFamily()", function() {
             profession: "raider"
         };
         // Got to keep it one generation, or Dave Pringle is aged.
-        var f = createFamily({generations: 1, parent: params});
+        var f = familyMethods.createFamily({generations: 1, parent: params});
         var male = f.male;
         expect(male.name.toString()).to.equal("Dave Pringle");
         expect(male.gender).to.equal("male");
@@ -79,7 +80,7 @@ describe("createFamily()", function() {
         expect(male.profession).to.equal("Raider");
     });
     it("ages family members as generations are created", function() {
-        var f = createFamily({generations: 3});
+        var f = familyMethods.createFamily({generations: 3});
         var grandparent = f.male;
         var parent = f.couples[0].male;
         var grandchild = f.couples[0].children[0];
@@ -87,7 +88,7 @@ describe("createFamily()", function() {
         expect(parent.age).to.be.above(grandchild.age);
     });
     it("assigns all members of family to different professions, at same level of prestige", function() {
-        var f = createFamily({generations: 5, parent: {profession: 'doctor'}});
+        var f = familyMethods.createFamily({generations: 5, parent: {profession: 'doctor'}});
         var p = db.find(f.male.profession);
 
         var prestige = getPrestige(p), kin = [];
@@ -99,5 +100,13 @@ describe("createFamily()", function() {
                 expect(getPrestige(p)).to.equal('high');
             }
         });
+    });
+});
+describe("atomic.getRelationships()", function() {
+    it("returns a list of all possible relationships", function() {
+        var rels = familyMethods.getRelationships();
+        expect(rels.length).to.equal(15);
+        expect(rels[0]).to.equal('Aunt');
+        expect(rels[1]).to.equal('Brother');
     });
 });

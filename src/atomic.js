@@ -47,7 +47,6 @@ lib.createTimeSeries = require('./generators/historical_time_series');
 ion.extend(lib, require('./generators/bag'));
 ion.extend(lib, require('./generators/character'));
 ion.extend(lib, require('./generators/data'));
-ion.extend(lib, require('./generators/family'));
 ion.extend(lib, require('./generators/gang'));
 ion.extend(lib, require('./generators/memorabilia'));
 ion.extend(lib, require('./generators/place_name'));
