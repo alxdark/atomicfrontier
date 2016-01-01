@@ -56,7 +56,7 @@ describe("memorabilia", function() {
         it("throws error when type value is wrong", function() {
             expect(function() {
                 collectibles.createMemorabilia("junk");
-            }).to.throw("junk is an invalid collectible");
+            }).to.throw("junk is an invalid type, use");
         });
         it("randomizes type when there is an invalid parameter object", function() {
             var item = collectibles.createMemorabilia({name: "temp"});
@@ -75,7 +75,7 @@ describe("memorabilia", function() {
     });
     describe("getMemorabiliaTypes()", function() {
         it("returns all the collectible types", function() {
-            expect(collectibles.getMemorabiliaTypes()).to.eql(["movie posters","propaganda posters","encyclopedias","baseball cards","news magazines","comics"]);
+            expect(collectibles.getMemorabiliaTypes()).to.eql(["baseball cards", "comics", "encyclopedias", "movie posters", "news magazines", "propaganda posters"]);
         });
     });
     describe("createMemorabiliaWanted()", function() {
@@ -93,10 +93,14 @@ describe("memorabilia", function() {
             var revert = collectibles.__set__("ion", ionStub);
 
             // To test this we have to override ion.test in the memorabilia.js module.
-            var description =  collectibles.createMemorabiliaWanted("baseball cards");
+            var description = collectibles.createMemorabiliaWanted("baseball cards");
             expect(description).to.equal("Collector is looking for any team baseball card for the Cincinnati Reds.");
 
             revert();
+        });
+        it("will produce short format", function() {
+            var description = collectibles.createMemorabiliaWanted({format: 'short'});
+            expect(description).to.equal("Collector is looking for encyclopedias: #2, #6, #8, #13, #18.");
         });
     })
 });

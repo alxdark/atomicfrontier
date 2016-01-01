@@ -66,11 +66,6 @@ patterns.add('rare', function(type) {
     // East Pond
     return ion.random(regional) + " " + ion.random(locative[type]);
 });
-/* eh
- patterns.add('rare', function(type) {
- // The Rock Junction
- return ion.format("The {0} {1}", ion.random(descriptive), ion.random(locative[type]));
- });*/
 patterns.add('uncommon', function(type) {
     // West Anderson Junction
     var location = ion.random(locative[type]);

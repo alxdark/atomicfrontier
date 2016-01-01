@@ -30,9 +30,6 @@ function createStore() {
 }
 
 describe("atomic.models.Store", function() {
-    it("can be created", function() {
-        var store = new Store();
-    });
     it("can be expressed as a string", function() {
         var store = createStore();
         expect(store.toString()).to.equal('Big Box Store. Owner(s): Dave Powers. Age 22.  For Trade: Never trades for sparrows. 10 packs of Blackjack chewing gum, and a baseball bat. Cash On Hand: 10 packs of Blackjack chewing gum, and a baseball bat. Total value: 100. ');

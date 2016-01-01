@@ -5,6 +5,7 @@ var IonSet = require('../models/ion_set');
 var Item = require('../models/item');
 var timeSeries = require('./historical_time_series');
 var RarityTable = require('../tables/rarity_table');
+var parameters = require('../parameters');
 
 var comics = new RarityTable(ion.identity, false);
 var newsPubs = new RarityTable(ion.identity, false);
@@ -24,6 +25,22 @@ function printed(printedType, collection) {
             collection.add(rarity, {name: printedType, title: title, enc: 1, value: value, tags: ['collectible']});
         });
     }
+}
+
+function getCollectionItem(type) {
+    var source = collectibles[type];
+    if (source instanceof RarityTable) {
+        return new Item(source.get());
+    }
+    return new Item(ion.random(source));
+}
+
+function getCollectionSize(type) {
+    var source = collectibles[type];
+    if (source instanceof RarityTable) {
+        return source.size();
+    }
+    return source.length;
 }
 
 var addNews = printed("news magazine", newsPubs);
@@ -144,6 +161,8 @@ var collectibles = {
     "comics": comics
 };
 
+var collectibleKeys = ion.keys(collectibles).sort();
+
 /**
  * Create an item of memorabilia. These items are collectibles, worth a great deal of money
  * in sets or when traded with the right collector.
@@ -169,16 +188,14 @@ var collectibles = {
  * @return {atomic.models.Item} a collectible item
  */
 function createMemorabilia(params) {
-    var type = (ion.isString(params)) ? params : (params && params.type || ion.random(getMemorabiliaTypes()));
+    var params = parameters(params, "type", {
+        type: collectibleKeys
+    });
 
-    if (!collectibles[type]) {
-        throw new Error(type + " is an invalid collectible, use " + ion.keys(collectibles).join(', '));
+    if (!collectibles[params.type]) {
+        throw new Error(params.type + " is an invalid collectible, use " + collectibleKeys.join(', '));
     }
-    var source = collectibles[type];
-    if (source instanceof RarityTable) {
-        return new Item(source.get());
-    }
-    return new Item(ion.random(source));
+    return getCollectionItem(params.type);
 }
 
 /**
@@ -191,7 +208,7 @@ function createMemorabilia(params) {
  * @return {Array} an array of string types that can be used to generate a collectible.
  */
 function getMemorabiliaTypes() {
-    return ion.keys(collectibles);
+    return collectibleKeys;
 }
 
 /**
@@ -207,27 +224,38 @@ function getMemorabiliaTypes() {
  * @param [params] {Object} params
  *      @param [params.type] {String} the type of collectible item to return. Picks a random type if
 *              none is specified.
+ *      @param [params.format='long'] {String} whether the full information should be output for each item,
+ *             or just the number of the series, if format is set to 'short'. The short format is easier to
+ *             use for matching when more than a few items are involved (also see rules for handling memorabilia
+ *             in bulk).
  * @return {String} a description of what is being sought out for trade
  */
 function createMemorabiliaWanted(params) {
-    var type = (ion.isString(params)) ? params : (params && params.type || ion.random(ion.keys(collectibles)));
-    var coll = collectibles[type];
-    var count = Math.floor(ion.gaussian(coll.length/8,coll.length/4));
+    var params = parameters(params, "type", {
+        type: collectibleKeys,
+        format: 'long'
+    });
+
+    var length = getCollectionSize(params.type);
+    var count = Math.floor(ion.gaussian(length/8,length/4));
 
     // collects a team rather than individual cards.
-    if (type === "baseball cards" && ion.test(20)) {
+    if (params.type === "baseball cards" && ion.test(20)) {
         var team = ion.random(ion.keys(bbCards));
         return "Collector is looking for any team baseball card for the " + team + ".";
     }
-
     var set = new IonSet();
     while(set.size() < count) {
-        set.add(ion.random(coll).title);
+        var item = getCollectionItem(params.type);
+        set.add(item.title);
     }
     var titles = set.toArray();
     titles.sort(seriesSorter);
 
-    return "Collector is looking for " + type + ": " + titles.join(", ") + ".";
+    if (params.format === 'short') {
+        titles = titles.map(function(title) { return title.match(/#\d+/)[0]; });
+    }
+    return "Collector is looking for " + params.type + ": " + titles.join(", ") + ".";
 }
 
 module.exports = {
