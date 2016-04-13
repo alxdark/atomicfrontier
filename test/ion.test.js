@@ -440,6 +440,26 @@ describe("ion", function() {
             expect(child instanceof Child).to.be.true;
             expect(child instanceof Parent).to.be.true;
         });
+        it("supports properties", function() {
+            var Child = ion.define({
+                properties: {
+                    two: function() {
+                        return "two"
+                    }
+                } 
+            });
+            var child = new Child();
+            expect(child.two).to.equal("two");
+        });
+        it("supports static functions", function() {
+            var Child = ion.define({
+                one: function() {return "one";},
+                static: {
+                    two: function() {return "two";}
+                }
+            });
+            expect(Child.two()).to.equal("two");    
+        });
     });
     describe("ion.contains()", function() {
         it("contains the correct items", function() {

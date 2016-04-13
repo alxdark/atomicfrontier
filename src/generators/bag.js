@@ -4,6 +4,7 @@ var ion = require('../ion');
 var Bag = require('../models/bag');
 var IonSet = require('../models/ion_set');
 var db = require('./data').itemDatabase;
+var parameters = require('../parameters');
 
 var containers = {
     "Safe": {
@@ -107,29 +108,6 @@ function getClusterCount(value) {
             return ion.roll("(1d3*2)+4"); // 6-10
     }
 }
-// Try and create duplicates on purpose
-/*
- function stockpile(bag, opts) {
- var bagValue = opts.totalValue;
- while (bagValue > 0) {
- var count = cluster(opts.cluster);
- // Take the the max value or the bag value, unless they are less than the min value,
- // then take the min value. For that reason, the item's value has to be tested below
- // to verify it is less than the remaining bag value (if it's not, just quit and return
- // the bag).
- opts.maxValue = Math.max(Math.min(opts.maxValue, bagValue), opts.minValue);
-
- // Because maxValue changes every query, we can't cache any of this.
- var item = db.find(opts);
- if (item === null || (item.value*count) > bagValue) {
- return bag;
- }
- bag.add(item, count);
- bagValue -= (item.value * count);
- }
- return bag;
- }
- */
 function fillCurrency(bag, amount) {
     if (amount > 0) {
         var currencies = db.findAll({tags: 'currency', maxValue: amount});
@@ -195,21 +173,21 @@ function kitChanceOfFill(bag, gender, kitTag) {
     };
 }
 function createParams(params) {
-    params = ion.extend({}, params || {});
-    params.totalValue = params.totalValue || 20;
-    // TODO? ion.defB(params, "fillBag", true);
-    params.fillBag = ion.isBoolean(params.fillBag) ? params.fillBag : true;
-    // TODO? ion.defN(params, "minValue", 0);
-    params.minValue = ion.isNumber(params.minValue) ? params.minValue : 0;
-    params.maxValue = ion.isNumber(params.maxValue) ? params.maxValue : Number.MAX_VALUE;
-    params.minEnc = ion.isNumber(params.minEnc) ? params.minEnc : 0;
-    params.maxEnc = ion.isNumber(params.maxEnc) ? params.maxEnc : Number.MAX_VALUE;
-
+    params = parameters(params, {
+        totalValue: 20,
+        fillBag: true,
+        minValue: 0,
+        maxValue: Number.MAX_VALUE,
+        minEnc: 0,
+        maxEnc: Number.MAX_VALUE,
+        cluster: 'medium',
+        tags: ''
+    });
     if (params.maxValue <= 0 || params.maxEnc <= 0 ||
         params.minValue > params.maxValue || params.minEnc > params.maxEnc) {
         throw new Error('Conditions cannot match any taggable: ' + JSON.stringify(params));
     }
-    if (!ion.isUndefined(params.totalValue) && params.totalValue <= 0) {
+    if (params.totalValue <= 0) {
         throw new Error("Bag value must be more than 0");
     }
     return params;
@@ -271,10 +249,10 @@ module.exports.createKit = function(params) {
  *
  * @param [params] {Object}
  *      @param [params.tags] {String} One or more query tags specifying the items in the bag
- *      @param [params.minValue] {Number}
- *      @param [params.maxValue] {Number}
- *      @param [params.minEnc] {Number}
- *      @param [params.maxEnc] {Number}
+ *      @param [params.minValue=0] {Number}
+ *      @param [params.maxValue=Number.MAX_VALUE] {Number}
+ *      @param [params.minEnc=0] {Number}
+ *      @param [params.maxEnc=Number.MAX_VALUE] {Number}
  *      @param [params.totalValue=20] {Number} The total value of the bag
  *      @param [params.fillBag=true] {Boolean} Should the bag's value be filled with
  *      currency if it hasn't been filled any other way? Usually currency has a value of
@@ -303,8 +281,8 @@ module.exports.createBag = createBag;
  *
  * @param [params] {Object}
  *      @param [params.tags] {String} One or more query tags specifying the items in the bag
- *      @param [params.cluster="medium"] {String} "low", "medium" or "high". Alters the amount
- *          of stockpiling from a little to a lot.
+ *      @param [params.cluster="medium"] {String} "none", "low", "medium" or "high". Alters the
+ *          amount of stockpiling from a little to a lot.
  *      @param [params.minValue] {Number}
  *      @param [params.maxValue] {Number}
  *      @param [params.minEnc] {Number}
@@ -315,11 +293,9 @@ module.exports.createBag = createBag;
 module.exports.createStockpile = function(params) {
     // A very different approach where a lot of the values wouldn't even matter.
     params = createParams(params);
-    params.cluster = params.cluster || "medium";
     params.fillBag = false;
-    params.tags = params.tags || "";
 
-    if (params.cluster === "none") {
+    if (params.cluster === "none") { // same as no stockpiling at all
         return createBag(params);
     }
 
@@ -344,18 +320,28 @@ module.exports.createStockpile = function(params) {
  * @method createContainer
  * @for atomic
  *
- * @param type {String} the container type
+ * @param [type] {String} the container type (randomly selected if not provided)
  * @return {atomic.models.Bag} a bag representing a container
- *
  */
-// TODO: Take a params object. All methods should do this.
+/**
+ * Create a bag with additional properties (representing a container of some kind, like a
+ * lockbox or safe).
+ *
+ * @static
+ * @method createContainer
+ * @for atomic
+ *
+ * @param [params] {Object}
+ *      @param [params.type] {String} the container type (values randomly selected if not provided).
+ * @return {atomic.models.Bag} a bag representing a container
+ */
 module.exports.createContainer = function(type) {
-    if (!containers[type]) {
-        type = ion.random(containerTypes);
-    }
+    var params = parameters(type, "type", {
+        type: containerTypes
+    });
     var container = containers[type];
-    var params = ion.extend({}, container.query);
-    params.totalValue = ion.roll(params.totalValue);
+    var query = ion.extend({}, container.query);
+    query.totalValue = ion.roll(query.totalValue);
 
     var bag = createBag(params);
     if (container.desc) {

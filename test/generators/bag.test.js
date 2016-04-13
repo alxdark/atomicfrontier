@@ -140,15 +140,13 @@ describe("createKit()", function() {
     });
 });
 describe("createContainer()", function() {
-    it("creates a container using a valid type if no arg", function() {
-        var c = createContainer(null);
-        expect(c.constructor).to.equal(Bag);
-        expect(c.entries.length).is.above(0);
-    });
-    it("creates a container using a valid type if no arg", function() {
-        var c = createContainer("testvalue");
-        expect(c.constructor).to.equal(Bag);
-        expect(c.entries.length).is.above(0);
+    it("throws an error if type missing or invalid", function() {
+        expect(function() {
+            createContainer(null);
+        }).to.throw();
+        expect(function() {
+            createContainer("testvalue");
+        }).to.throw();
     });
     it("returns a type-appropriate container", function() {
         var c = createContainer("Cash Register");

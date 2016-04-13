@@ -139,7 +139,21 @@ var ion = {
             return (args.indexOf(value) === -1);
         });
     },
-    // Here's that scary use of object-orientation in JS that your parents told you about
+    /**
+     * Define a class (a constructor function with many of the amenities of a class, including a 
+     * constructor function that is not called to generate a prototype, and property and static 
+     * definitions, in one syntactic bundle).
+     * 
+     * @static
+     * @method define
+     * @for atomic
+     * 
+     * @param [parent] a parent class to serve as the prototype for this class.
+     * @param methods an object containing methods for this class. There are two special 
+     *      properties on this object that will be treated differently. `properties` defines
+     *      one or more properties on the object, while `static` defines one ore more functions 
+     *      to assign to the constructor, rather than the objects returned by the constructor.
+     */
     define: function(parent, methods) {
         if (arguments.length === 1) { // parent is optional
             methods = parent;
@@ -160,6 +174,12 @@ var ion = {
                 });
             }
             delete methods.properties;
+        }
+        if (methods.static) {
+            for (var funcName in methods.static) {
+                F[funcName] = methods.static[funcName];
+            }
+            delete methods.static;
         }
         delete methods.init;
         for (var prop in methods) {

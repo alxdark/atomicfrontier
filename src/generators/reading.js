@@ -5,11 +5,13 @@ var Item = require('../models/item');
 var itemDb = require('./data').itemDatabase;
 
 var adj = ["all", "amazing", "astonishing", "atomic", "baffling", "bolshevik", "boy's", "complete", "dark", "dynamic",
-    "exciting", "favorite", "gentleman's", "girl's", "glamorous", "haunted", "incredible", "lady's", "northwest", "popular",
-    "railroad man's", "ranch", "saucy", "spicy", "startling", "strange", "thrilling", "weird", "women's", "wonderful"];
-var genres = ["adventure", "air", "combat", "cowboy", "detective", "fantasy", "far west", "FBI", "flying", "frontier", "wild frontier",
-    "ghost", "high seas", "horror", "indian", "jungle", "library science", "love", "new love", "northwest", "outdoor",
-    "pirate", "prison", "ranch", "romance{|s}", "sci-fi", "science", "supernatural", "sweetheart", "war", "western"];
+    "exciting", "favorite", "gentleman's", "girl's", "glamorous", "haunted", "incredible", "lady's", "northwest",
+    "popular", "railroad man's", "ranch", "saucy", "spicy", "startling", "strange", "thrilling", "weird", "women's",
+    "wonderful"];
+var genres = ["adventure", "air", "combat", "cowboy", "detective", "fantasy", "far west", "FBI", "flying", "frontier",
+    "wild frontier", "ghost", "high seas", "horror", "indian", "jungle", "library science", "love", "new love",
+    "northwest", "outdoor", "pirate", "prison", "ranch", "romance{|s}", "sci-fi", "science", "south seas",
+    "supernatural", "sweetheart", "war", "western"];
 var base = ["almanac", "weekly", "magazine", "quarterly", "stories", "tales", "thrills"];
 var cannedTitles = ["all-story", "argosy", "black mask", "cavalier", "keepsake", "ladies home almanac", "ocean",
     "scrap book", "apache trail"];

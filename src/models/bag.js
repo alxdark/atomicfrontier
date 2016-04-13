@@ -214,8 +214,8 @@ var Bag = ion.define(Model, {
      * this prefix, such as `ammo:22` or `media:35mm`.
      *
      * @method typeOf
-     * @param prefix {String} the prefix to match
-     * @return {Array} all items that match this prefix
+     * @param prefix {String} the prefix to matchAndRemove
+     * @return {Array} all items that matchAndRemove this prefix
      */
     typeOf: function(p) {
         return this.entries.reduce(function(array, entry) {

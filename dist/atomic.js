@@ -41,6 +41,7 @@ lib.createAppearance = require('./generators/appearance');
 lib.createCharacterName = require('./generators/character_name');
 lib.createCollectible = require('./generators/memorabilia');
 lib.createCorporateName = require('./generators/corporate_name');
+lib.createLocation = require('./generators/location');
 lib.createStore = require('./generators/store');
 lib.createWeather = require('./generators/weather');
 lib.createTimeSeries = require('./generators/historical_time_series');
@@ -57,7 +58,7 @@ ion.extend(lib.models, require('./models/lib'));
 
 // exports in Browserify as window.atomic
 module.exports = lib;
-},{"./builder":2,"./db/database":3,"./db/encounter_database":4,"./db/item_database":5,"./db/profession_database":6,"./db/store_database":7,"./dice/dice":8,"./generators/appearance":9,"./generators/bag":10,"./generators/character":11,"./generators/character_name":12,"./generators/corporate_name":13,"./generators/data":14,"./generators/gang":15,"./generators/historical_time_series":16,"./generators/memorabilia":17,"./generators/place_name":18,"./generators/reading":19,"./generators/relationships":20,"./generators/store":21,"./generators/weather":22,"./ion":23,"./models/bag":25,"./models/character":26,"./models/family":27,"./models/gang":28,"./models/ion_set":29,"./models/item":30,"./models/lib":31,"./models/model":32,"./models/name":33,"./models/profession":34,"./models/relationship":35,"./models/store":36,"./models/weather":37,"./tables/hash_table":38,"./tables/rarity_table":39,"./tables/table":40}],2:[function(require,module,exports){
+},{"./builder":2,"./db/database":3,"./db/encounter_database":4,"./db/item_database":5,"./db/profession_database":6,"./db/store_database":7,"./dice/dice":8,"./generators/appearance":9,"./generators/bag":10,"./generators/character":11,"./generators/character_name":12,"./generators/corporate_name":13,"./generators/data":14,"./generators/gang":15,"./generators/historical_time_series":16,"./generators/location":17,"./generators/memorabilia":18,"./generators/place_name":19,"./generators/reading":20,"./generators/relationships":21,"./generators/store":22,"./generators/weather":23,"./ion":24,"./models/bag":26,"./models/character":27,"./models/family":28,"./models/gang":29,"./models/ion_set":30,"./models/item":31,"./models/lib":32,"./models/model":33,"./models/name":34,"./models/profession":35,"./models/relationship":36,"./models/store":37,"./models/weather":38,"./tables/hash_table":40,"./tables/rarity_table":41,"./tables/table":42}],2:[function(require,module,exports){
 var ion = require('./ion');
 
 // throws lots of errors in strict mode jshint, doesn't like this style of (legal) code
@@ -258,7 +259,7 @@ module.exports = function(ctx) {
     return bldr;
 };
 
-},{"./ion":23}],3:[function(require,module,exports){
+},{"./ion":24}],3:[function(require,module,exports){
 var ion = require('../ion');
 var RarityTable = require('../tables/rarity_table');
 
@@ -371,7 +372,7 @@ module.exports = ion.define({
      * @for atomic.db.Database
      * @method matches
      *
-     * @param params {Object} conditions to match (tags are handled by the base class,
+     * @param params {Object} conditions to matchAndRemove (tags are handled by the base class,
      *      but sub-classed DBs can look at other conditions).
      * @param model {atomic.models.Model} the model object to examine (will be the type
      *      handled by the specific database implementation).
@@ -425,7 +426,7 @@ module.exports = ion.define({
     }
 });
 
-},{"../ion":23,"../tables/rarity_table":39}],4:[function(require,module,exports){
+},{"../ion":24,"../tables/rarity_table":41}],4:[function(require,module,exports){
 var ion = require('../ion');
 var Database = require('./database');
 
@@ -440,7 +441,7 @@ module.exports = ion.define(Database, {
         }
     }
 });
-},{"../ion":23,"./database":3}],5:[function(require,module,exports){
+},{"../ion":24,"./database":3}],5:[function(require,module,exports){
 var ion = require('../ion');
 var Database = require('./database');
 var Item = require('../models/item');
@@ -574,7 +575,7 @@ module.exports = ion.define(Database, {
         }
     }
 });
-},{"../ion":23,"../models/item":30,"./database":3}],6:[function(require,module,exports){
+},{"../ion":24,"../models/item":31,"./database":3}],6:[function(require,module,exports){
 var ion = require('../ion');
 var Database = require('./database');
 
@@ -660,7 +661,7 @@ module.exports = ion.define(Database, {
     }
 });
 
-},{"../ion":23,"./database":3}],7:[function(require,module,exports){
+},{"../ion":24,"./database":3}],7:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('../models/model');
 var Database = require('./database');
@@ -774,7 +775,7 @@ module.exports = ion.define(Database, {
     }
 });
 
-},{"../ion":23,"../models/model":32,"./database":3}],8:[function(require,module,exports){
+},{"../ion":24,"../models/model":33,"./database":3}],8:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -931,7 +932,7 @@ var Dice = ion.define({
 module.exports.Die = Die;
 module.exports.FudgeDie = FudgeDie;
 module.exports.Dice = Dice;
-},{"../ion":23}],9:[function(require,module,exports){
+},{"../ion":24}],9:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -1202,13 +1203,14 @@ module.exports = function(character) {
     }, []).join('. ');
 };
 
-},{"../generators/character_name":12,"../ion":23,"../tables/rarity_table":39,"../tables/table":40}],10:[function(require,module,exports){
+},{"../generators/character_name":12,"../ion":24,"../tables/rarity_table":41,"../tables/table":42}],10:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
 var Bag = require('../models/bag');
 var IonSet = require('../models/ion_set');
 var db = require('./data').itemDatabase;
+var parameters = require('../parameters');
 
 var containers = {
     "Safe": {
@@ -1312,29 +1314,6 @@ function getClusterCount(value) {
             return ion.roll("(1d3*2)+4"); // 6-10
     }
 }
-// Try and create duplicates on purpose
-/*
- function stockpile(bag, opts) {
- var bagValue = opts.totalValue;
- while (bagValue > 0) {
- var count = cluster(opts.cluster);
- // Take the the max value or the bag value, unless they are less than the min value,
- // then take the min value. For that reason, the item's value has to be tested below
- // to verify it is less than the remaining bag value (if it's not, just quit and return
- // the bag).
- opts.maxValue = Math.max(Math.min(opts.maxValue, bagValue), opts.minValue);
-
- // Because maxValue changes every query, we can't cache any of this.
- var item = db.find(opts);
- if (item === null || (item.value*count) > bagValue) {
- return bag;
- }
- bag.add(item, count);
- bagValue -= (item.value * count);
- }
- return bag;
- }
- */
 function fillCurrency(bag, amount) {
     if (amount > 0) {
         var currencies = db.findAll({tags: 'currency', maxValue: amount});
@@ -1400,21 +1379,21 @@ function kitChanceOfFill(bag, gender, kitTag) {
     };
 }
 function createParams(params) {
-    params = ion.extend({}, params || {});
-    params.totalValue = params.totalValue || 20;
-    // TODO? ion.defB(params, "fillBag", true);
-    params.fillBag = ion.isBoolean(params.fillBag) ? params.fillBag : true;
-    // TODO? ion.defN(params, "minValue", 0);
-    params.minValue = ion.isNumber(params.minValue) ? params.minValue : 0;
-    params.maxValue = ion.isNumber(params.maxValue) ? params.maxValue : Number.MAX_VALUE;
-    params.minEnc = ion.isNumber(params.minEnc) ? params.minEnc : 0;
-    params.maxEnc = ion.isNumber(params.maxEnc) ? params.maxEnc : Number.MAX_VALUE;
-
+    params = parameters(params, {
+        totalValue: 20,
+        fillBag: true,
+        minValue: 0,
+        maxValue: Number.MAX_VALUE,
+        minEnc: 0,
+        maxEnc: Number.MAX_VALUE,
+        cluster: 'medium',
+        tags: ''
+    });
     if (params.maxValue <= 0 || params.maxEnc <= 0 ||
         params.minValue > params.maxValue || params.minEnc > params.maxEnc) {
-        throw new Error('Conditions cannot match any taggable: ' + JSON.stringify(params));
+        throw new Error('Conditions cannot matchAndRemove any taggable: ' + JSON.stringify(params));
     }
-    if (!ion.isUndefined(params.totalValue) && params.totalValue <= 0) {
+    if (params.totalValue <= 0) {
         throw new Error("Bag value must be more than 0");
     }
     return params;
@@ -1476,10 +1455,10 @@ module.exports.createKit = function(params) {
  *
  * @param [params] {Object}
  *      @param [params.tags] {String} One or more query tags specifying the items in the bag
- *      @param [params.minValue] {Number}
- *      @param [params.maxValue] {Number}
- *      @param [params.minEnc] {Number}
- *      @param [params.maxEnc] {Number}
+ *      @param [params.minValue=0] {Number}
+ *      @param [params.maxValue=Number.MAX_VALUE] {Number}
+ *      @param [params.minEnc=0] {Number}
+ *      @param [params.maxEnc=Number.MAX_VALUE] {Number}
  *      @param [params.totalValue=20] {Number} The total value of the bag
  *      @param [params.fillBag=true] {Boolean} Should the bag's value be filled with
  *      currency if it hasn't been filled any other way? Usually currency has a value of
@@ -1508,8 +1487,8 @@ module.exports.createBag = createBag;
  *
  * @param [params] {Object}
  *      @param [params.tags] {String} One or more query tags specifying the items in the bag
- *      @param [params.cluster="medium"] {String} "low", "medium" or "high". Alters the amount
- *          of stockpiling from a little to a lot.
+ *      @param [params.cluster="medium"] {String} "none", "low", "medium" or "high". Alters the
+ *          amount of stockpiling from a little to a lot.
  *      @param [params.minValue] {Number}
  *      @param [params.maxValue] {Number}
  *      @param [params.minEnc] {Number}
@@ -1520,11 +1499,9 @@ module.exports.createBag = createBag;
 module.exports.createStockpile = function(params) {
     // A very different approach where a lot of the values wouldn't even matter.
     params = createParams(params);
-    params.cluster = params.cluster || "medium";
     params.fillBag = false;
-    params.tags = params.tags || "";
 
-    if (params.cluster === "none") {
+    if (params.cluster === "none") { // same as no stockpiling at all
         return createBag(params);
     }
 
@@ -1549,18 +1526,28 @@ module.exports.createStockpile = function(params) {
  * @method createContainer
  * @for atomic
  *
- * @param type {String} the container type
+ * @param [type] {String} the container type (randomly selected if not provided)
  * @return {atomic.models.Bag} a bag representing a container
- *
  */
-// TODO: Take a params object. All methods should do this.
+/**
+ * Create a bag with additional properties (representing a container of some kind, like a
+ * lockbox or safe).
+ *
+ * @static
+ * @method createContainer
+ * @for atomic
+ *
+ * @param [params] {Object}
+ *      @param [params.type] {String} the container type (values randomly selected if not provided).
+ * @return {atomic.models.Bag} a bag representing a container
+ */
 module.exports.createContainer = function(type) {
-    if (!containers[type]) {
-        type = ion.random(containerTypes);
-    }
+    var params = parameters(type, "type", {
+        type: containerTypes
+    });
     var container = containers[type];
-    var params = ion.extend({}, container.query);
-    params.totalValue = ion.roll(params.totalValue);
+    var query = ion.extend({}, container.query);
+    query.totalValue = ion.roll(query.totalValue);
 
     var bag = createBag(params);
     if (container.desc) {
@@ -1583,7 +1570,7 @@ module.exports.getContainerTypes = function() {
     return containerTypes;
 };
 
-},{"../ion":23,"../models/bag":25,"../models/ion_set":29,"./data":14}],11:[function(require,module,exports){
+},{"../ion":24,"../models/bag":26,"../models/ion_set":30,"../parameters":39,"./data":14}],11:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -1763,7 +1750,7 @@ function createRace() {
 }
 module.exports.createRace = createRace;
 
-},{"../ion":23,"../models/character":26,"../models/name":33,"./appearance":9,"./bag":10,"./character_name":12,"./data":14}],12:[function(require,module,exports){
+},{"../ion":24,"../models/character":27,"../models/name":34,"./appearance":9,"./bag":10,"./character_name":12,"./data":14}],12:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -1863,7 +1850,7 @@ module.exports = function(opts) {
     });
 };
 
-},{"../ion":23,"../models/name":33}],13:[function(require,module,exports){
+},{"../ion":24,"../models/name":34}],13:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -1929,7 +1916,7 @@ module.exports = function() {
     return name;
 };
 
-},{"../ion":23,"../tables/table":40,"./character_name":12}],14:[function(require,module,exports){
+},{"../ion":24,"../tables/table":42,"./character_name":12}],14:[function(require,module,exports){
 var ItemDatabase = require('../db/item_database');
 var ProfessionDatabase = require('../db/profession_database');
 var StoreDatabase = require('../db/store_database');
@@ -2301,7 +2288,7 @@ module.exports = {
     storeDatabase: sdb
 }
 
-},{"../db/item_database":5,"../db/profession_database":6,"../db/store_database":7,"../models/atomic_profession":24}],15:[function(require,module,exports){
+},{"../db/item_database":5,"../db/profession_database":6,"../db/store_database":7,"../models/atomic_profession":25}],15:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -2526,7 +2513,7 @@ module.exports.createGang = function(params) {
     });
     return gang;
 };
-},{"../ion":23,"../models/gang":28,"./character":11,"./data":14}],16:[function(require,module,exports){
+},{"../ion":24,"../models/gang":29,"./character":11,"./data":14}],16:[function(require,module,exports){
 "use strict";
 var ion = require('../ion');
 
@@ -2617,7 +2604,69 @@ function timeSeries(params) {
 }
 
 module.exports = timeSeries;
-},{"../ion":23}],17:[function(require,module,exports){
+},{"../ion":24}],17:[function(require,module,exports){
+var ion = require('../ion');
+var RarityTable = require('../tables/rarity_table');
+
+function children() {
+    return new RarityTable(ion.identity, false);
+}
+
+var natural = {name: "natural", cls: "type", contains: children()
+    .add("common", {name: "canyon", cls: "area"})
+    .add("common", {name: "prairie", cls: "area"})
+    .add("uncommon", {name: "forest", cls: "area"})
+    .add("uncommon", {name: ["dry river bed", "gulch"], cls: "area"})
+    .add("uncommon", {name: "lake", cls: "area"})
+    .add("rare", {name: "river", cls: "area"})
+    .add("rare", {name: "cave", cls: "area"})
+    .add("rare", {name: "caverns", cls: "area"})
+    .add("rare", {name: "crater", cls: "area"})
+};
+var rural = {name: "rural", cls: "type", contains: children()
+    .add("uncommon", {name: "farm", cls: "area", num: "1d5+1", contains: children()
+        .add("common", {name: "barn", cls: "building"})
+        .add("common", {name: "garage", cls: "building"})
+        .add("common", {name: "stable", cls: "building"})
+        .add("common", {name: ["storm shelter","root cellar"], cls: "building"})
+        .add("common", {name: "shed", cls: "building"})
+        .add("uncommon", {name: "chicken coop", cls: "building"})
+        .add("uncommon", {name: "silo", cls: "building"})
+        .add("uncommon", {name: "grainery", cls: "building"})
+        .add("rare", {name: "greenhouse", cls: "building"})
+        .add("rare", {name: "fallout shelter", cls: "building"})
+        .add("rare", {name: "well house", cls: "building"})
+        .add("rare", {name: "water mill", cls: "building"})
+        .add("rare", {name: "windmill", cls: "building"})
+        .add("rare", {name: "horse mill", cls: "building"})
+        .add("rare", {name: "pigsty", cls: "building"})
+    })
+};
+
+// I am presuming that this is a tree that will be associated to a map at some point,
+// the structure will have to be adjusted.
+var locations = {
+    name: "locations",
+    contains: children()
+        .add("common", natural)
+        .add("uncommon", rural)
+}
+
+// Does not account for multiple children. That is easy enough, but preventing duplicate
+// children where appropriate will require more work.
+function resolveNode(array, node) {
+    var node = node.contains.get();
+    array.push( ion.random(node.name) );
+    return (node.contains) ? resolveNode(array, node) : array;
+}
+
+module.exports = {
+    getLocation: function() {
+        return resolveNode([], locations);
+    }
+};
+
+},{"../ion":24,"../tables/rarity_table":41}],18:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -2625,6 +2674,7 @@ var IonSet = require('../models/ion_set');
 var Item = require('../models/item');
 var timeSeries = require('./historical_time_series');
 var RarityTable = require('../tables/rarity_table');
+var parameters = require('../parameters');
 
 var comics = new RarityTable(ion.identity, false);
 var newsPubs = new RarityTable(ion.identity, false);
@@ -2780,6 +2830,8 @@ var collectibles = {
     "comics": comics
 };
 
+var collectibleKeys = ion.keys(collectibles).sort();
+
 /**
  * Create an item of memorabilia. These items are collectibles, worth a great deal of money
  * in sets or when traded with the right collector.
@@ -2805,12 +2857,14 @@ var collectibles = {
  * @return {atomic.models.Item} a collectible item
  */
 function createMemorabilia(params) {
-    var type = (ion.isString(params)) ? params : (params && params.type || ion.random(getMemorabiliaTypes()));
+    var params = parameters(params, "type", {
+        type: collectibleKeys
+    });
 
-    if (!collectibles[type]) {
-        throw new Error(type + " is an invalid collectible, use " + ion.keys(collectibles).join(', '));
+    if (!collectibles[params.type]) {
+        throw new Error(params.type + " is an invalid collectible, use " + collectibleKeys.join(', '));
     }
-    getCollectionItem(type);
+    return getCollectionItem(params.type);
 }
 
 /**
@@ -2823,7 +2877,7 @@ function createMemorabilia(params) {
  * @return {Array} an array of string types that can be used to generate a collectible.
  */
 function getMemorabiliaTypes() {
-    return ion.keys(collectibles);
+    return collectibleKeys;
 }
 
 /**
@@ -2846,18 +2900,22 @@ function getMemorabiliaTypes() {
  * @return {String} a description of what is being sought out for trade
  */
 function createMemorabiliaWanted(params) {
-    var type = (ion.isString(params)) ? params : (params && params.type || ion.random(ion.keys(collectibles)));
-    var length = getCollectionSize(type);
+    var params = parameters(params, "type", {
+        type: collectibleKeys,
+        format: 'long'
+    });
+
+    var length = getCollectionSize(params.type);
     var count = Math.floor(ion.gaussian(length/8,length/4));
 
     // collects a team rather than individual cards.
-    if (type === "baseball cards" && ion.test(20)) {
+    if (params.type === "baseball cards" && ion.test(20)) {
         var team = ion.random(ion.keys(bbCards));
         return "Collector is looking for any team baseball card for the " + team + ".";
     }
     var set = new IonSet();
     while(set.size() < count) {
-        var item = getCollectionItem(type);
+        var item = getCollectionItem(params.type);
         set.add(item.title);
     }
     var titles = set.toArray();
@@ -2866,7 +2924,7 @@ function createMemorabiliaWanted(params) {
     if (params.format === 'short') {
         titles = titles.map(function(title) { return title.match(/#\d+/)[0]; });
     }
-    return "Collector is looking for " + type + ": " + titles.join(", ") + ".";
+    return "Collector is looking for " + params.type + ": " + titles.join(", ") + ".";
 }
 
 module.exports = {
@@ -2875,7 +2933,7 @@ module.exports = {
     createMemorabiliaWanted: createMemorabiliaWanted
 };
 
-},{"../ion":23,"../models/ion_set":29,"../models/item":30,"../tables/rarity_table":39,"./historical_time_series":16}],18:[function(require,module,exports){
+},{"../ion":24,"../models/ion_set":30,"../models/item":31,"../parameters":39,"../tables/rarity_table":41,"./historical_time_series":16}],19:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -3003,7 +3061,7 @@ module.exports.createPlaceName = function(type) {
 module.exports.getLandformTypes = function() {
     return landforms;
 };
-},{"../ion":23,"../tables/rarity_table":39,"./character_name":12}],19:[function(require,module,exports){
+},{"../ion":24,"../tables/rarity_table":41,"./character_name":12}],20:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -3011,11 +3069,13 @@ var Item = require('../models/item');
 var itemDb = require('./data').itemDatabase;
 
 var adj = ["all", "amazing", "astonishing", "atomic", "baffling", "bolshevik", "boy's", "complete", "dark", "dynamic",
-    "exciting", "favorite", "gentleman's", "girl's", "glamorous", "haunted", "incredible", "lady's", "northwest", "popular",
-    "railroad man's", "ranch", "saucy", "spicy", "startling", "strange", "thrilling", "weird", "women's", "wonderful"];
-var genres = ["adventure", "air", "combat", "cowboy", "detective", "fantasy", "far west", "FBI", "flying", "frontier", "wild frontier",
-    "ghost", "high seas", "horror", "indian", "jungle", "library science", "love", "new love", "northwest", "outdoor",
-    "pirate", "prison", "ranch", "romance{|s}", "sci-fi", "science", "supernatural", "sweetheart", "war", "western"];
+    "exciting", "favorite", "gentleman's", "girl's", "glamorous", "haunted", "incredible", "lady's", "northwest",
+    "popular", "railroad man's", "ranch", "saucy", "spicy", "startling", "strange", "thrilling", "weird", "women's",
+    "wonderful"];
+var genres = ["adventure", "air", "combat", "cowboy", "detective", "fantasy", "far west", "FBI", "flying", "frontier",
+    "wild frontier", "ghost", "high seas", "horror", "indian", "jungle", "library science", "love", "new love",
+    "northwest", "outdoor", "pirate", "prison", "ranch", "romance{|s}", "sci-fi", "science", "south seas",
+    "supernatural", "sweetheart", "war", "western"];
 var base = ["almanac", "weekly", "magazine", "quarterly", "stories", "tales", "thrills"];
 var cannedTitles = ["all-story", "argosy", "black mask", "cavalier", "keepsake", "ladies home almanac", "ocean",
     "scrap book", "apache trail"];
@@ -3091,7 +3151,7 @@ module.exports.createBook = function() {
     return new Item({name: "book", title: title, value: 3, enc: 2, tags: ['reading']});
 };
 
-},{"../ion":23,"../models/item":30,"./data":14}],20:[function(require,module,exports){
+},{"../ion":24,"../models/item":31,"./data":14}],21:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -3402,7 +3462,7 @@ module.exports.createRelationship = function(params) {
     return new Relationship(older, younger, relName);
 };
 
-},{"../ion":23,"../models/character":26,"../models/family":27,"../models/relationship":35,"../tables/rarity_table":39,"./bag":10,"./character":11,"./character_name":12,"./data":14}],21:[function(require,module,exports){
+},{"../ion":24,"../models/character":27,"../models/family":28,"../models/relationship":36,"../tables/rarity_table":41,"./bag":10,"./character":11,"./character_name":12,"./data":14}],22:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -3622,7 +3682,7 @@ module.exports = function(params) {
     });
 };
 
-},{"../ion":23,"../models/bag":25,"../models/lib":31,"../models/name":33,"../models/store":36,"../tables/table":40,"./bag":10,"./character":11,"./character_name":12,"./data":14,"./gang":15,"./place_name":18,"./relationships":20}],22:[function(require,module,exports){
+},{"../ion":24,"../models/bag":26,"../models/lib":32,"../models/name":34,"../models/store":37,"../tables/table":42,"./bag":10,"./character":11,"./character_name":12,"./data":14,"./gang":15,"./place_name":19,"./relationships":21}],23:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -3687,7 +3747,7 @@ module.exports = function(month) {
     return weather;
 };
 
-},{"../ion":23,"../models/weather":37}],23:[function(require,module,exports){
+},{"../ion":24,"../models/weather":38}],24:[function(require,module,exports){
 "use strict";
 
 var DIE_PARSER  = /\d+d\d+/g,
@@ -4373,7 +4433,7 @@ var ion = {
 });
 
 module.exports = ion;
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -4425,7 +4485,7 @@ module.exports = ion.define(Profession, {
     }
 });
 
-},{"../ion":23,"./profession":34}],25:[function(require,module,exports){
+},{"../ion":24,"./profession":35}],26:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -4642,8 +4702,8 @@ var Bag = ion.define(Model, {
      * this prefix, such as `ammo:22` or `media:35mm`.
      *
      * @method typeOf
-     * @param prefix {String} the prefix to match
-     * @return {Array} all items that match this prefix
+     * @param prefix {String} the prefix to matchAndRemove
+     * @return {Array} all items that matchAndRemove this prefix
      */
     typeOf: function(p) {
         return this.entries.reduce(function(array, entry) {
@@ -4700,7 +4760,7 @@ var Bag = ion.define(Model, {
 
 module.exports = Bag;
 
-},{"../ion":23,"./item":30,"./model":32}],26:[function(require,module,exports){
+},{"../ion":24,"./item":31,"./model":33}],27:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 var Bag = require('./bag');
@@ -4926,7 +4986,7 @@ var Character =  ion.define(Model, {
 });
 
 module.exports = Character;
-},{"../builder":2,"../ion":23,"./bag":25,"./model":32}],27:[function(require,module,exports){
+},{"../builder":2,"../ion":24,"./bag":26,"./model":33}],28:[function(require,module,exports){
 var ion = require('../ion');
 var Builder = require('../builder');
 var Model = require('./model');
@@ -5088,7 +5148,7 @@ module.exports = ion.define({
         return builder.toString();
     }
 });
-},{"../builder":2,"../ion":23,"./model":32}],28:[function(require,module,exports){
+},{"../builder":2,"../ion":24,"./model":33}],29:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 var Builder = require('../builder');
@@ -5173,7 +5233,7 @@ module.exports = ion.define(Model, {
     }
 });
 
-},{"../builder":2,"../ion":23,"./model":32}],29:[function(require,module,exports){
+},{"../builder":2,"../ion":24,"./model":33}],30:[function(require,module,exports){
 var ion = require('../ion');
 
 module.exports = ion.define({
@@ -5245,7 +5305,7 @@ module.exports = ion.define({
         return ion.values(this.hash);
     }
 });
-},{"../ion":23}],30:[function(require,module,exports){
+},{"../ion":24}],31:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 var Builder = require('../builder');
@@ -5289,7 +5349,7 @@ module.exports = ion.define(Model, {
     }
 });
 
-},{"../builder":2,"../ion":23,"./model":32}],31:[function(require,module,exports){
+},{"../builder":2,"../ion":24,"./model":33}],32:[function(require,module,exports){
 var ion = require('../ion');
 
 var lookup = {
@@ -5353,7 +5413,7 @@ function clone(object, freeze) {
 module.exports.clone = clone;
 module.exports.deserializer = deserializer;
 
-},{"../ion":23,"./bag":25,"./character":26,"./family":27,"./gang":28,"./item":30,"./model":32,"./name":33,"./profession":34,"./relationship":35,"./store":36,"./weather":37}],32:[function(require,module,exports){
+},{"../ion":24,"./bag":26,"./character":27,"./family":28,"./gang":29,"./item":31,"./model":33,"./name":34,"./profession":35,"./relationship":36,"./store":37,"./weather":38}],33:[function(require,module,exports){
 var ion = require('../ion');
 
 var Model = ion.define({
@@ -5411,7 +5471,7 @@ var Model = ion.define({
      * item, such as `ammo:22` or `media:35mm`.
      *
      * @method typeOf
-     * @param prefix {String} the prefix to match
+     * @param prefix {String} the prefix to matchAndRemove
      * @return {String} the first tag found that matches this prefix
      */
     typeOf: function(p) {
@@ -5423,7 +5483,7 @@ var Model = ion.define({
 });
 
 module.exports = Model;
-},{"../ion":23}],33:[function(require,module,exports){
+},{"../ion":24}],34:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 
@@ -5488,7 +5548,7 @@ module.exports = ion.define(Model, {
 });
 
 
-},{"../ion":23,"./model":32}],34:[function(require,module,exports){
+},{"../ion":24,"./model":33}],35:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -5588,7 +5648,7 @@ module.exports = ion.define(Model, {
         this.postprocess(character);
     }
 });
-},{"../ion":23,"./model":32}],35:[function(require,module,exports){
+},{"../ion":24,"./model":33}],36:[function(require,module,exports){
 var ion = require('../ion');
 var Builder = require('../builder');
 
@@ -5651,7 +5711,7 @@ module.exports = function(older, younger, rel) {
     };
 
 };
-},{"../builder":2,"../ion":23}],36:[function(require,module,exports){
+},{"../builder":2,"../ion":24}],37:[function(require,module,exports){
 var ion = require('../ion');
 var Bag = require('./bag');
 var Model = require('./model');
@@ -5759,7 +5819,7 @@ module.exports = ion.define(Model, {
         return b.toString();
     }
 });
-},{"../builder":2,"../ion":23,"./bag":25,"./model":32}],37:[function(require,module,exports){
+},{"../builder":2,"../ion":24,"./bag":26,"./model":33}],38:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 
@@ -5780,7 +5840,37 @@ module.exports = ion.define(Model, {
 });
 
 
-},{"../ion":23,"./model":32}],38:[function(require,module,exports){
+},{"../ion":24,"./model":33}],39:[function(require,module,exports){
+var ion = require('./ion');
+
+// This massively ugly thing does a lot of work so elsewhere, we don't have to see so much parameter
+// intialization junk.
+function parameters(params, defaultField, defaults) {
+    if (!ion.isObject(params) && ion.isString(defaultField)) {
+        var object = {};
+        object[defaultField] = params;
+        params = object;
+    }
+    if (ion.isObject(defaultField)) {
+        defaults = defaultField;
+    }
+    var object = ion.extend({}, params);
+
+    ion.keys(defaults).forEach(function(field) {
+        var defaultValue = defaults[field];
+        if (ion.isUndefined(object[field])) {
+            object[field] = ion.random(defaultValue);
+        } else if (ion.isArray(defaultValue)) {
+            if (!ion.contains(defaultValue, object[field])) {
+                throw new Error(object[field] + " is an invalid " + field + ", use " + defaultValue.join(', '));
+            }
+        }
+    });
+    return object;
+}
+
+module.exports = parameters;
+},{"./ion":24}],40:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -5850,7 +5940,7 @@ module.exports = ion.define({
     }
 });
 
-},{"../ion":23}],39:[function(require,module,exports){
+},{"../ion":24}],41:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -5955,7 +6045,7 @@ module.exports = ion.define(Table, {
         return null;
     }
 });
-},{"../ion":23,"./table":40}],40:[function(require,module,exports){
+},{"../ion":24,"./table":42}],42:[function(require,module,exports){
 "use strict";
 
 var ion = require('../ion');
@@ -6049,5 +6139,5 @@ module.exports = ion.define({
     }
 });
 
-},{"../ion":23}]},{},[1])(1)
+},{"../ion":24}]},{},[1])(1)
 });
