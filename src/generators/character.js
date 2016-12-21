@@ -150,7 +150,7 @@ module.exports.createCharacter = function(params) {
         character.hp = 10 + character.trait('Tough');
     }
 
-    // Hispanic people are likely to speak some Spanish.
+    // Hispanic people are likely to speak some Spanish. But does this wipe out higher values that already exist?
     if (character.race === "hispanic") {
         character.changeTrait("Spanish", ion.nonNegativeGaussian(1.5));
     }
