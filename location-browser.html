@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Location Navigator</title>
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+body > div {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+body > div > div {
+    flex: 1;
+    overflow-y: scroll;
+}
+.area {
+    padding: .5rem .75rem;
+    margin: .2rem;
+    border-radius: .4rem;
+    background: #f4f4f4;
+    cursor: pointer;
+    border: 1px solid #e5e5e5;
+    font-size: 12pt;
+}
+.rarity .title::before {
+    content: "Ⓡ ";
+    font-style: normal;
+}
+.rarity .title {
+    font-style: italic;
+    font-weight: normal;
+}
+.listed .title::before {
+    content: "Ⓛ ";
+    font-style: normal;
+}
+.listed .title {
+    color: forestgreen;
+}
+.node > div.title::after {
+    float: right;
+    content: '›';
+    font-weight: bold;
+}
+.title {
+    font-weight: bold;
+}
+.content {
+    font-size: smaller;
+}
+.highlighted {
+    background-color: rgba(0,0,255,0.05);
+    border: 1px solid steelblue;
+}
+</style>
+</head>
+<body>
+
+<div id="nav"><div></div><div></div><div></div><div></div></div>
+<script src="dist/atomic.min.js"></script>
+<script>
+var nav = document.getElementById('nav');
+var nodeArray = Array.prototype.slice.call(nav.children);
+var historyStack = [];
+var data = atomic.getAllLocations();
+
+function sorter(a,b) {
+    return formatTitle(a).localeCompare(formatTitle(b));
+}
+
+function makeDiv(index, node) {
+    var div = document.createElement("div");
+    div.className = (node.children && node.children.length) ? "area node" : "area leaf";
+    div.classList.add(node.type);
+
+    div.onclick = function() {
+        var i = nodeArray.indexOf(div.parentNode);
+        deselectCurrentRow(i);
+        div.classList.add("highlighted");
+        renderRow(i+1, node.children);
+        clearAfter(i+1);
+        popIfNecessary(div);
+    }
+
+    var titleDiv = document.createElement('div');
+    titleDiv.textContent = formatTitle(node);
+    titleDiv.classList.add("title");
+    div.appendChild(titleDiv);
+    
+    var contentDiv = document.createElement('div');
+    contentDiv.classList.add("content");
+    var array = [];
+    addIf(array, node, "freq", upperCase);
+    addIf(array, node, "descr");
+    var formatter = FORMATTERS[node.type] || function() {};
+    formatter(array, node);
+    contentDiv.textContent = array.join('. ');
+    div.appendChild(contentDiv);
+    return div;
+}
+var FORMATTERS = {
+    'rarity': function(array, node) {
+
+    },
+    'listed': function(array, node) {
+        var str = node.children.map(function(child) {
+            return child.name + ": " + child.count;
+        }).join(", ");
+        array.push(str);
+    }
+}
+
+function formatTitle(node) {
+    var title = node.name || nameMap.get(node.ref).name;
+    return (Object.prototype.toString.call(title) === '[object Array]') ? 
+        title.join(', ') : title;
+}
+function formatContainer(object) {
+    return Object.keys(object).sort().map(function(name) {
+        return name + ": " + object[name];
+    }).join(", ");
+}
+function addIf(array, node, fieldName, func) {
+    func = func || function(s) { return s; };
+    if (node[fieldName]) { 
+        array.push( func(node[fieldName]) ); 
+    }
+}
+function upperCase(string) {
+    return string.substring(0,1).toUpperCase() + string.substring(1);
+}
+function popIfNecessary(node) {
+    if (historyStack.length && node.parentNode === nav.firstChild) {
+        var popped = historyStack.pop();
+        addAtStartOfNav( popped );
+    }
+}
+function addAtStartOfNav(node) {
+    nav.removeChild(nav.lastChild);
+    nav.insertBefore(node, nav.firstChild);
+    nodeArray = Array.prototype.slice.call(nav.children);
+}
+function addAtEndOfNav(node) {
+    var n = nav.firstChild;
+    nav.removeChild(n);
+    nav.appendChild(node);
+    nodeArray = Array.prototype.slice.call(nav.children);
+    return n;
+}
+function deselectCurrentRow(index) {
+    var row = nodeArray[index];
+    if (row) {
+        for (var n = row.firstChild; n != null; n = n.nextSibling) {
+            n.classList.remove("highlighted");
+        }
+    }
+}
+function addRow() {
+    var row = document.createElement('div');
+    var firstChild = addAtEndOfNav(row);
+    historyStack.push(firstChild);
+    return row;
+}
+function renderRow(index, array) {
+    var row = nodeArray[index] || addRow();
+    row.innerHTML = "";
+    if (array) {
+        array = array.sort(sorter);
+        for (var i=0; i < array.length; i++) {
+            var div = makeDiv(index, array[i]);
+            row.appendChild(div);
+        }
+    }
+}
+function clearAfter(index) {
+    if (index < (nodeArray.length-1)) {
+        nodeArray[++index].innerHTML = "";
+        clearAfter(index);
+    }
+}
+
+renderRow(0, data.children);
+</script>
+</body>
+</html>

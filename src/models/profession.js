@@ -1,5 +1,3 @@
-"use strict";
-
 var ion = require('../ion');
 var Model = require('./model');
 

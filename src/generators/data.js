@@ -363,7 +363,6 @@ sdb.register(
 
 module.exports = {
     getPlaces: function() { return ['Agricultural','Automotive','Civic','Criminal','Garage','Hospital','House','Industrial','Institution','Lodging','Military','Office','Public','Research','Restaurant','School','Tourism','Travel']; },
-    getLocations: function() { return ['Encampment', 'Roadside', 'Settlement', 'Town']; },
     itemDatabase: idb,
     professionDatabase: pdb,
     storeDatabase: sdb

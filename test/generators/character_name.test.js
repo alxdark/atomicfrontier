@@ -10,8 +10,8 @@ describe("createCharacterName()", function() {
     });
     it("has a first and last name, but no nickname", function() {
         var n = createCharacterName();
-        expect(n.given).to.equal("Bert");
-        expect(n.first).to.equal("Bert");
+        expect(n.given).to.equal("Ben");
+        expect(n.first).to.equal("Ben");
 
         expect(n.family).to.equal("Diaz");
         expect(n.last).to.equal("Diaz");

@@ -1,5 +1,3 @@
-"use strict";
-
 var ion = require('../ion');
 var db = require('./data').professionDatabase;
 var Character = require('../models/character');
@@ -11,9 +9,39 @@ var createKit = require('./bag').createKit;
 var createRace = require('./character').createRace;
 var createCharacterName = require('./character_name');
 
-// This creates pretty normal families. As always, the generators are for on-the-spot
-// filler material, and aim for believability. Make up the more unusual families in
-// your world.
+// Here are the most common (50) family/households, which I've boiled down a bit. There's more
+// diversity here than captured in these generators (although they are a pretty good start). 
+// 2 siblings
+// 1-4 friends
+// child, parent
+// grandparent, grandkid
+// householder, 1-2 parents
+// householder, friend or partner
+// householder, friend or partner, non-relative
+// householder, kid, parent
+// householder, non-relative
+// married couple
+// married couple, 1-2 grandkids
+// married couple, 1-2 kids, 1-2 grandkids
+// married couple, 1-2 kids, parent-in-law
+// married couple, 1-6 kids
+// married couple, 2 kids, relative
+// married couple, grandparent
+// married couple, kid, grandkid
+// married couple, kid, non-relative
+// married couple, kid, parent
+// married couple, non-relative
+// married couple, relative
+// married couple, siblings
+// parent, 1-3 kids, friend or partner
+// parent, 1-4 kids
+// parent, 2 kids, grandkid
+// parent, 4 kids, friend or partner
+// parent, kid, 1-2 grandkids
+// parent, kid, grandparent
+// parent, kid, non-relative
+// parent, kid, sibling
+// parent, kid, stepkid
 
 var innate = db.find('innate');
 

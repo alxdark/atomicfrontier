@@ -1,5 +1,3 @@
-"use strict";
-
 var DIE_PARSER  = /\d+d\d+/g,
     FORMAT_PARSER = /\{[^\|}]+\}/g,
     RANDOM_STRING = /\{[^\{\}]*\|[^\{\}]*\}/g,
@@ -7,6 +5,7 @@ var DIE_PARSER  = /\d+d\d+/g,
     STARTS_WITH_THE = /^[tT]he\s/,
     SMALL_WORDS = /^(a|an|and|as|at|but|by|en|for|if|in|nor|of|on|or|per|the|to|vs?\.?|via)$/i,
     PARENS = /(\{[^\}]*\})/g,
+    DIGITS = [1,2,3,4,5,6,7,8],
     CONS_Y = /[BCDFGHIJKLMNPQRSTVWXZbcdfghijklmnpqrstvwxz]y$/;
 
 function basicPluralize(string) {
@@ -690,6 +689,25 @@ var ion = {
      */
     newArray: function(length) {
         return Array.apply(null, Array(length));
+    },
+    /**
+     * Generate a globally unique identifier (using both a random and time-based component outside of 
+     * the random function, i.e. a collision of the random portion has to happen at the same millisecond).
+     * 
+     * @example
+     *     atomic.newUID();
+     *     => "rqpgsk1ydejvj"
+     * 
+     * @static
+     * @method newUID
+     * @for atomic
+     * @returns {String} a unique string identifier
+     */
+    newUID: function() {
+        // Random digits first to improve value as a hash key
+        return DIGITS.map(function() { 
+            return ion.roll(36).toString(36); 
+        }).join('') + (new Date().getTime()-1463775673773).toString(36);
     }
 };
 

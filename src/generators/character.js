@@ -1,5 +1,3 @@
-"use strict";
-
 var ion = require('../ion');
 var Name = require('../models/name');
 var Character = require('../models/character');
@@ -101,7 +99,7 @@ function traitsForAdult(character, prof, opts) {
  * @return {Array} array of profession names that can be used by generators
  */
 module.exports.getProfessions = function() {
-    return ion.profDb.findAll('post').rows.map(function(row) {
+    return db.findAll('post').rows.map(function(row) {
         return row.names[0];
     }, []).sort();
 };

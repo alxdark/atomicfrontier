@@ -1,5 +1,3 @@
-"use strict";
-
 var ion = require('../ion');
 var db = require('./data').professionDatabase;
 var createCharacter = require('./character').createCharacter;

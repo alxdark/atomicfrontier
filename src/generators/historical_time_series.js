@@ -1,4 +1,3 @@
-"use strict";
 var ion = require('../ion');
 
 var sevenDays = (7*24*60*60*1000);

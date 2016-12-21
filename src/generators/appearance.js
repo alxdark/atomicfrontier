@@ -1,12 +1,10 @@
-"use strict";
-
 var ion = require('../ion');
 var Table = require('../tables/table');
 var RarityTable = require('../tables/rarity_table');
 var createCharacterName = require('../generators/character_name');
 
 // Not thrilled with these, just because they're not easily role-played.
-/*
+/* This came from somewhere but I've now lost the reference. Grr.
  var adjectives = [ "Addict", "Agoraphobic", "Ambitious", "Anarchist",
  "Annoying", "Apologetic", "Argumentative", "Arrogant",
  "Authoritarian", "Bad Loser", "Beatnik", "Bitter",

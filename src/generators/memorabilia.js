@@ -1,11 +1,11 @@
-"use strict";
-
 var ion = require('../ion');
 var IonSet = require('../models/ion_set');
 var Item = require('../models/item');
 var timeSeries = require('./historical_time_series');
 var RarityTable = require('../tables/rarity_table');
 var parameters = require('../parameters');
+
+// TODO: This is a strong generator, but it needs to be tied into the creation of bags.
 
 var comics = new RarityTable(ion.identity, false);
 var newsPubs = new RarityTable(ion.identity, false);
@@ -24,9 +24,10 @@ function printed(printedType, collection) {
             var title = name + ", " + date + ", #" + i + " of " + coll.length;
             collection.add(rarity, {name: printedType, title: title, enc: 1, value: value, tags: ['collectible']});
         });
-    }
+    };
 }
 
+// TODO: Never uses the RarityTable branch, I don't believe
 function getCollectionItem(type) {
     var source = collectibles[type];
     if (source instanceof RarityTable) {
@@ -56,6 +57,7 @@ function poster(collection, type, fileExt, value) {
     });
 }
 
+// TODO: These are actually posters with images, these should be distributed alongside the code...
 var warTitles = ['am_i_proud', 'america_calling', 'are_you_playing_square', 'be_a_victory_farm_volunteer',
     'books_are_weapons_in_the_war_of_ideas', 'both_are_weapons', "carry_on_don't_be_carried_out",
     'do_the_job_he_left_behind', 'farm_scrap_builds_tanks_&_guns', 'fontana_dam', 'food_is_a_weapon',
@@ -136,20 +138,20 @@ ion.keys(bbCards).forEach(function(team) {
 addNews("Atlantic Dispatch Magazine", "uncommon", {period: 'weekly'});
 addNews("The Weekly Nation", "uncommon", {period: 'weekly', dayOfWeek: 'Monday', startDate: '1953-12-31'});
 addNews("Verve", "common", {period: 'monthly', format: 'short', dayOfWeek: 'Thursday'});
-addComic("Atomic War Comics", "common", {period: 'bimonthly', startDate: '1953-11-31', format: 'short'});
 addComic("Atomic Age Combat", "uncommon", {period: 'monthly', startDate: '1956-11-31', format: 'short'});
-addComic("The Adventures of Captain Atom", "common", {period: 'monthly', format: 'short'});
-addComic("Space Action", "common", {period: 'monthly', format: 'short'});
-addComic("Giggle Comics", "common", {period: 'weekly'});
-addComic("Midnight Mystery", "uncommon", {period: 'biweekly', startDate: '1955-06-06'});
-addComic("The Hand of Fate", "common", {period:"monthly", format: "short"});
-addComic("Black Cobra", "rare", {period:"monthly", format:"short"});
-addComic("The Flame", "uncommon", {period:"monthly", format:"short"});
-addComic("Forbidden Worlds", "uncommon", {period:"monthly", format:"short"});
+addComic("Atomic War Comics", "common", {period: 'bimonthly', startDate: '1953-11-31', format: 'short'});
 addComic("Battlefield Action", "uncommon", {period:"monthly", format:"short"});
-addComic("War Stories", "common", {period:"weekly", startDate: '1956-02-15'});
+addComic("Black Cobra", "rare", {period:"monthly", format:"short"});
 addComic("Blazing West", "common", {period:"bimonthly", startDate: '1948-10-10'});
+addComic("Forbidden Worlds", "uncommon", {period:"monthly", format:"short"});
+addComic("Giggle Comics", "common", {period: 'weekly'});
 addComic("Madhouse Comics", "rare", {period:"monthly", format:"short"});
+addComic("Midnight Mystery", "uncommon", {period: 'biweekly', startDate: '1955-06-06'});
+addComic("Space Action", "common", {period: 'monthly', format: 'short'});
+addComic("The Adventures of Captain Atom", "common", {period: 'monthly', format: 'short'});
+addComic("The Flame", "uncommon", {period:"monthly", format:"short"});
+addComic("The Hand of Fate", "common", {period:"monthly", format: "short"});
+addComic("War Stories", "common", {period:"weekly", startDate: '1956-02-15'});
 addComic("Wonder Boy", "uncommon", {period:"monthly", format:"short"});
 
 var collectibles = {
@@ -231,6 +233,8 @@ function getMemorabiliaTypes() {
  * @return {String} a description of what is being sought out for trade
  */
 function createMemorabiliaWanted(params) {
+    // TODO: The results are usable, but not as compact as they could be and difficult to scan or refer to 
+    // later. Results should be grouped by the series, probably.
     var params = parameters(params, "type", {
         type: collectibleKeys,
         format: 'long'

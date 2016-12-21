@@ -1,5 +1,3 @@
-"use strict";
-
 var ion = require('../ion');
 var Item = require('../models/item');
 var itemDb = require('./data').itemDatabase;
@@ -35,7 +33,9 @@ var bookTitles = [
     "Planning Guidance for Response to a Nuclear Detonation",
     "Protection in the Nuclear Age",
     "Recovery from Nuclear Attack",
-    "U.S. Army Survival Manual"
+    "U.S. Army Survival Manual",
+    "Communism, Hypnotism, and the Beatles",
+    "How You Can Fight Communism"
 ];
 
 function addIf(percent, array, options) {

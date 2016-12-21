@@ -40,8 +40,9 @@ lib.dice = require('./dice/dice');
 lib.createAppearance = require('./generators/appearance');
 lib.createCharacterName = require('./generators/character_name');
 lib.createCollectible = require('./generators/memorabilia');
+// TODO: probably combine these. 
 lib.createCorporateName = require('./generators/corporate_name');
-lib.createLocation = require('./generators/location');
+lib.createBizName = require('./generators/business_name');
 lib.createStore = require('./generators/store');
 lib.createWeather = require('./generators/weather');
 lib.createTimeSeries = require('./generators/historical_time_series');
@@ -50,6 +51,7 @@ ion.extend(lib, require('./generators/bag'));
 ion.extend(lib, require('./generators/character'));
 ion.extend(lib, require('./generators/data'));
 ion.extend(lib, require('./generators/gang'));
+ion.extend(lib, require('./generators/location'));
 ion.extend(lib, require('./generators/memorabilia'));
 ion.extend(lib, require('./generators/place_name'));
 ion.extend(lib, require('./generators/reading'));
@@ -58,7 +60,7 @@ ion.extend(lib.models, require('./models/lib'));
 
 // exports in Browserify as window.atomic
 module.exports = lib;
-},{"./builder":2,"./db/database":3,"./db/encounter_database":4,"./db/item_database":5,"./db/profession_database":6,"./db/store_database":7,"./dice/dice":8,"./generators/appearance":9,"./generators/bag":10,"./generators/character":11,"./generators/character_name":12,"./generators/corporate_name":13,"./generators/data":14,"./generators/gang":15,"./generators/historical_time_series":16,"./generators/location":17,"./generators/memorabilia":18,"./generators/place_name":19,"./generators/reading":20,"./generators/relationships":21,"./generators/store":22,"./generators/weather":23,"./ion":24,"./models/bag":26,"./models/character":27,"./models/family":28,"./models/gang":29,"./models/ion_set":30,"./models/item":31,"./models/lib":32,"./models/model":33,"./models/name":34,"./models/profession":35,"./models/relationship":36,"./models/store":37,"./models/weather":38,"./tables/hash_table":40,"./tables/rarity_table":41,"./tables/table":42}],2:[function(require,module,exports){
+},{"./builder":2,"./db/database":3,"./db/encounter_database":4,"./db/item_database":5,"./db/profession_database":6,"./db/store_database":7,"./dice/dice":8,"./generators/appearance":9,"./generators/bag":10,"./generators/business_name":11,"./generators/character":12,"./generators/character_name":13,"./generators/corporate_name":14,"./generators/data":15,"./generators/gang":16,"./generators/historical_time_series":17,"./generators/location":19,"./generators/memorabilia":20,"./generators/place_name":21,"./generators/reading":22,"./generators/relationships":23,"./generators/store":24,"./generators/weather":25,"./ion":26,"./models/bag":29,"./models/character":30,"./models/family":31,"./models/gang":32,"./models/ion_set":33,"./models/item":34,"./models/lib":35,"./models/model":36,"./models/name":37,"./models/profession":38,"./models/relationship":39,"./models/store":40,"./models/weather":41,"./tables/hash_table":43,"./tables/rarity_table":44,"./tables/table":45}],2:[function(require,module,exports){
 var ion = require('./ion');
 
 // throws lots of errors in strict mode jshint, doesn't like this style of (legal) code
@@ -259,7 +261,7 @@ module.exports = function(ctx) {
     return bldr;
 };
 
-},{"./ion":24}],3:[function(require,module,exports){
+},{"./ion":26}],3:[function(require,module,exports){
 var ion = require('../ion');
 var RarityTable = require('../tables/rarity_table');
 
@@ -372,7 +374,7 @@ module.exports = ion.define({
      * @for atomic.db.Database
      * @method matches
      *
-     * @param params {Object} conditions to matchAndRemove (tags are handled by the base class,
+     * @param params {Object} conditions to match (tags are handled by the base class,
      *      but sub-classed DBs can look at other conditions).
      * @param model {atomic.models.Model} the model object to examine (will be the type
      *      handled by the specific database implementation).
@@ -426,7 +428,7 @@ module.exports = ion.define({
     }
 });
 
-},{"../ion":24,"../tables/rarity_table":41}],4:[function(require,module,exports){
+},{"../ion":26,"../tables/rarity_table":44}],4:[function(require,module,exports){
 var ion = require('../ion');
 var Database = require('./database');
 
@@ -441,7 +443,7 @@ module.exports = ion.define(Database, {
         }
     }
 });
-},{"../ion":24,"./database":3}],5:[function(require,module,exports){
+},{"../ion":26,"./database":3}],5:[function(require,module,exports){
 var ion = require('../ion');
 var Database = require('./database');
 var Item = require('../models/item');
@@ -575,7 +577,7 @@ module.exports = ion.define(Database, {
         }
     }
 });
-},{"../ion":24,"../models/item":31,"./database":3}],6:[function(require,module,exports){
+},{"../ion":26,"../models/item":34,"./database":3}],6:[function(require,module,exports){
 var ion = require('../ion');
 var Database = require('./database');
 
@@ -661,7 +663,7 @@ module.exports = ion.define(Database, {
     }
 });
 
-},{"../ion":24,"./database":3}],7:[function(require,module,exports){
+},{"../ion":26,"./database":3}],7:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('../models/model');
 var Database = require('./database');
@@ -775,9 +777,7 @@ module.exports = ion.define(Database, {
     }
 });
 
-},{"../ion":24,"../models/model":33,"./database":3}],8:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26,"../models/model":36,"./database":3}],8:[function(require,module,exports){
 var ion = require('../ion');
 
 function sum(dice) {
@@ -932,16 +932,14 @@ var Dice = ion.define({
 module.exports.Die = Die;
 module.exports.FudgeDie = FudgeDie;
 module.exports.Dice = Dice;
-},{"../ion":24}],9:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26}],9:[function(require,module,exports){
 var ion = require('../ion');
 var Table = require('../tables/table');
 var RarityTable = require('../tables/rarity_table');
 var createCharacterName = require('../generators/character_name');
 
 // Not thrilled with these, just because they're not easily role-played.
-/*
+/* This came from somewhere but I've now lost the reference. Grr.
  var adjectives = [ "Addict", "Agoraphobic", "Ambitious", "Anarchist",
  "Annoying", "Apologetic", "Argumentative", "Arrogant",
  "Authoritarian", "Bad Loser", "Beatnik", "Bitter",
@@ -1203,9 +1201,7 @@ module.exports = function(character) {
     }, []).join('. ');
 };
 
-},{"../generators/character_name":12,"../ion":24,"../tables/rarity_table":41,"../tables/table":42}],10:[function(require,module,exports){
-"use strict";
-
+},{"../generators/character_name":13,"../ion":26,"../tables/rarity_table":44,"../tables/table":45}],10:[function(require,module,exports){
 var ion = require('../ion');
 var Bag = require('../models/bag');
 var IonSet = require('../models/ion_set');
@@ -1366,6 +1362,7 @@ function kitUniques(bag, count, tags) {
     return setToBag(bag, set);
 }
 function setToBag(bag, set) {
+    //set.toArray().forEach(bag.add.bind(bag));
     set.toArray().forEach(function(item) {
         bag.add(item);
     });
@@ -1391,7 +1388,7 @@ function createParams(params) {
     });
     if (params.maxValue <= 0 || params.maxEnc <= 0 ||
         params.minValue > params.maxValue || params.minEnc > params.maxEnc) {
-        throw new Error('Conditions cannot matchAndRemove any taggable: ' + JSON.stringify(params));
+        throw new Error('Conditions cannot match any taggable: ' + JSON.stringify(params));
     }
     if (params.totalValue <= 0) {
         throw new Error("Bag value must be more than 0");
@@ -1570,9 +1567,22 @@ module.exports.getContainerTypes = function() {
     return containerTypes;
 };
 
-},{"../ion":24,"../models/bag":26,"../models/ion_set":30,"../parameters":39,"./data":14}],11:[function(require,module,exports){
-"use strict";
+},{"../ion":26,"../models/bag":29,"../models/ion_set":33,"../parameters":42,"./data":15}],11:[function(require,module,exports){
+var ion = require('../ion');
 
+// Notes: 90% of time it's name+type, but sometimes can be type+name "Hotel El Ray";
+// Some portion of time, name should be a place name, or use a person's name. These 
+// also work for casinos 
+var hotelTypes = ['Hotel','Motel','Lodge','Inn'];
+var hotelNames = ["Admiral", "Alamo", "Bel Air", "Blue Diamond", "Bonanza", "Bonito", "Cara Mara", "Casa Bahama", 
+    "Coral Sands", "Crown", "Desert", "Desert Flower", "El Coronado", "El Ray", "Flamingo", "Frontier", "Golden Nugget", 
+    "Gondolier", "Impala", "Imperial", "Jolly Roger", "Kona Kai", "La Reine", "La Vita", "Oasis", "Pan American", "Ranch House", 
+    "Rio", "Satellite", "Shalimar", "Starlight", "Tahiti", "Utopia", "Western"];
+
+module.exports = function(opts) {
+
+};
+},{"../ion":26}],12:[function(require,module,exports){
 var ion = require('../ion');
 var Name = require('../models/name');
 var Character = require('../models/character');
@@ -1674,7 +1684,7 @@ function traitsForAdult(character, prof, opts) {
  * @return {Array} array of profession names that can be used by generators
  */
 module.exports.getProfessions = function() {
-    return ion.profDb.findAll('post').rows.map(function(row) {
+    return db.findAll('post').rows.map(function(row) {
         return row.names[0];
     }, []).sort();
 };
@@ -1750,9 +1760,7 @@ function createRace() {
 }
 module.exports.createRace = createRace;
 
-},{"../ion":24,"../models/character":27,"../models/name":34,"./appearance":9,"./bag":10,"./character_name":12,"./data":14}],12:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26,"../models/character":30,"../models/name":37,"./appearance":9,"./bag":10,"./character_name":13,"./data":15}],13:[function(require,module,exports){
 var ion = require('../ion');
 var Name = require('../models/name');
 
@@ -1763,21 +1771,20 @@ var names = {
         "Bradley", "Brock", "Bruce", "Bud", "Burt", "Caleb", "Calvin", "Carl", "Cecil", "Chuck", "Clayton",
         "Cliff", "Conrad", "Cooper", "Cyril", "Dakota", "Dallas", "Dalton", "Dan", "Dawson", "Dean", "Destry",
         "Don", "Doug", "Dwain", "Earl", "Ed", "Errol", "Floyd", "Frank", "Fred", "Gage", "Garth", "Gavin",
-        "Gene", "Glen", "Grady", "Greg", "Gus", "Guy", "Hal", "Hank", "Harlan", "Holden", "Hoyt", "Hudson",
-        "Hugh", "Huxley", "Ian", "Isaac", "Jack", "Jake", "Jason", "Jeremy", "Jerry", "Jethro", "Joe", "John",
+        "Gene", "Glen", "Grady", "Greg", "Gus", "Guy", "Ha{l|nk|rlan}", "Holden", "Hoyt", "Hudson", "Hugh", 
+        "Huxley", "Ian", "Isaac", "Jack", "Jake", "Jason", "Jeremy", "Jerry", "Jethro", "Joe", "John", 
         "Johnny", "Ken", "Kirk", "Kurt", "Kyle", "Larson", "Levi", "Lloyd", "Luke", "Lyle", "Mack", "Mark",
         "Marty", "Mason", "Matt", "Max", "Merle", "Nate", "Ned", "Neil", "Nick", "Norm", "Otis", "Pat", "Phil",
         "Ray", "Reed", "Rex", "Rick", "Rod", "Rodger", "Roy", "Russell", "Sam", "Scott", "Slim", "Stan",
         "Stratton", "Ted", "Tim", "Todd", "Tony", "Travis", "Tyler", "Vern", "Wade", "Wally", "Ward", "Wesley",
         "Will", "Wyatt" ],
-    "anglo female" : [ "Ada", "Agnes", "Alice", "Amy", "Ann", "Au{b|d}rey", "Barb", "Becky", "Betty", "Bev", "Carol",
-        "Cindy", "Clara", "Darla", "Diane", "Dona", "Doris", "Edith", "Edna", "Eileen", "Ella", "Ellen",
+    "anglo female" : [ "Ada", "Agnes", "Alice", "Amy", "Ann", "Au{b|d}rey", "Barb", "Becky", "Betty", "Bev{|erly}", 
+        "Carol", "Cindy", "Clara", "Darla", "Diane", "Dona", "Doris", "Edith", "Edna", "Eileen", "Ella", "Ellen",
         "Emma", "Emily", "Erma", "Esther", "Ethel", "Eva", "Fay", "Flo", "Flora", "Gail", "Grace", "Gwen",
-        "Hazel", "Helen", "Holly", "Ida", "Ilene", "Irene", "Iris", "Irma", "Jan", "Jane", "Janet", "Janis",
-        "Jean", "Joan", "Judy", "June", "Kathy", "Kay", "Lena", "Linda", "Lois", "Lorna", "Lucy", "Mabel",
-        "Mae", "Mary", "Mavis", "Nina", "Nora", "Norma", "Olga", "Pam", "Patty", "Paula", "Pearl", "Rita",
-        "Rose", "Ruth", "Sally", "Sara", "Stella", "Sue", "Sybil", "Tina", "Trudy", "Velma", "Vera", "Viola",
-        "Wanda", "Wilma" ],
+        "Hazel", "Helen", "Holly", "Ida", "I{l|r}ene", "Iris", "Irma", "Jan{|e|et|is}", "Jean", "Joan", "Judy", 
+        "June", "Kathy", "Kay", "Lena", "Linda", "Lois", "Lorna", "Lucy", "Mabel", "Mae", "Mary", "Mavis", 
+        "Nina", "Nora", "Norma", "Olga", "Pam", "Patty", "Paula", "Pearl", "Rita", "Rose", "Ruth", "Sally", 
+        "Sara", "Stella", "Sue", "Sybil", "Tina", "Trudy", "{V|Th}elma", "Vera", "Viola", "Wanda", "Wilma" ],
     "hispanic male" : [ "Alonso", "Bruno", "Camilo", "Carlos", "Dante", "Diego", "Emilio", "Felipe", "Franco",
         "Iker", "Jacobo", "Javier", "Jorge", "Jose", "Juan", "Julian", "Lucas", "Luis", "Manny", "Manuel",
         "Mario", "Mateo", "Matias", "Miguel", "Pablo", "Pedro", "Rafael", "Samuel", "Sergio", "Tomas", "Elias" ],
@@ -1850,12 +1857,12 @@ module.exports = function(opts) {
     });
 };
 
-},{"../ion":24,"../models/name":34}],13:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26,"../models/name":37}],14:[function(require,module,exports){
 var ion = require('../ion');
 var Table = require('../tables/table');
 var createCharacterName = require('./character_name');
+
+// Naming these is very hard.
 
 var e1 = "{Alpha|American|North American|National|General|Universal|International|Consolidated|Central|Western|Eastern|Union}",
     e2 = "{Argon|Iridium|Micro|Radiation|Nuclear|Atomic|Radium|Uranium|Plutonium|Development|X-Ray|Gamma Ray}",
@@ -1866,37 +1873,21 @@ var e1 = "{Alpha|American|North American|National|General|Universal|Internationa
 var e5 = [ "Raytomic", "Detectron", "Gamma-O-Meter", "Librascope", "Micromatic", "Micro Devices",
         "Micro Specialties", "Radiaphone", "Radiometric", "Ra-Tektor", "Nucleonics", "Scintillonics", "Tracerlab" ];
 
-var table1 = new Table(ion.transform);
-table1.add(60, function() {
-    return ion.random(e1) + " " + ion.random(e2);
-});
-table1.add(10, function() {
-    return ion.random(e2);
-});
-table1.add(15, function() {
-    return createCharacterName({race: "anglo"}).family + " " + ion.random(e2);
-});
-table1.add(15, function() {
-    return createCharacterName({race: "anglo"}).family;
-});
+var table1 = new Table(ion.transform)
+    .add(60, function() {return ion.random(e1) + " " + ion.random(e2);})
+    .add(10, function() {return ion.random(e2);})
+    .add(15, function() {return createCharacterName({race: "anglo"}).family + " " + ion.random(e2);})
+    .add(15, function() {return createCharacterName({race: "anglo"}).family;});
 
-var table2 = new Table(ion.transform);
-table2.add(25, function() {
-    return " " + ion.random(e3);
-});
-table2.add(25, function() {
-    return " " + ion.random(e4);
-});
-table2.add(50, function() {
-    return " " + ion.random(e3) + " " + ion.random(e4);
-});
+var table2 = new Table(ion.transform)
+    .add(25, function() {return " " + ion.random(e3);})
+    .add(25, function() {return " " + ion.random(e4);})
+    .add(50, function() {return " " + ion.random(e3) + " " + ion.random(e4);});
 
 function createName() {
-    if (ion.test(90)) {
-        return table1.get() + table2.get();
-    } else {
-        return ion.random(e5) + " " + ion.random(e4);
-    }
+    return (ion.test(90)) ?
+        (table1.get() + table2.get()) :
+        (ion.random(e5) + " " + ion.random(e4));
 }
 
 /**
@@ -1916,7 +1907,7 @@ module.exports = function() {
     return name;
 };
 
-},{"../ion":24,"../tables/table":42,"./character_name":12}],14:[function(require,module,exports){
+},{"../ion":26,"../tables/table":45,"./character_name":13}],15:[function(require,module,exports){
 var ItemDatabase = require('../db/item_database');
 var ProfessionDatabase = require('../db/profession_database');
 var StoreDatabase = require('../db/store_database');
@@ -2282,15 +2273,12 @@ sdb.register(
 
 module.exports = {
     getPlaces: function() { return ['Agricultural','Automotive','Civic','Criminal','Garage','Hospital','House','Industrial','Institution','Lodging','Military','Office','Public','Research','Restaurant','School','Tourism','Travel']; },
-    getLocations: function() { return ['Encampment', 'Roadside', 'Settlement', 'Town']; },
     itemDatabase: idb,
     professionDatabase: pdb,
     storeDatabase: sdb
 }
 
-},{"../db/item_database":5,"../db/profession_database":6,"../db/store_database":7,"../models/atomic_profession":25}],15:[function(require,module,exports){
-"use strict";
-
+},{"../db/item_database":5,"../db/profession_database":6,"../db/store_database":7,"../models/atomic_profession":28}],16:[function(require,module,exports){
 var ion = require('../ion');
 var db = require('./data').professionDatabase;
 var createCharacter = require('./character').createCharacter;
@@ -2513,8 +2501,7 @@ module.exports.createGang = function(params) {
     });
     return gang;
 };
-},{"../ion":24,"../models/gang":29,"./character":11,"./data":14}],16:[function(require,module,exports){
-"use strict";
+},{"../ion":26,"../models/gang":32,"./character":12,"./data":15}],17:[function(require,module,exports){
 var ion = require('../ion');
 
 var sevenDays = (7*24*60*60*1000);
@@ -2604,77 +2591,519 @@ function timeSeries(params) {
 }
 
 module.exports = timeSeries;
-},{"../ion":24}],17:[function(require,module,exports){
+},{"../ion":26}],18:[function(require,module,exports){
+module.exports = {name:"Root", abstract:true, children:[
+    {name:"Natural", abstract:true, type:"rarity", children: [
+        {name:"Canyon", freq:"common"},
+        {name:"Cave", freq:"rare"},
+        {name:"Caverns", freq:"rare", descr: "cave complex"},
+        {name:"Crater", abstract:true, freq:"rare", type:"rarity", children:[
+            {name:"Asteroid Crater", freq:"rare"},
+            {name:"Crash Site", freq:"uncommon", descr:"Plane or rocket"}
+        ]},
+        {name:"Forest", freq: "uncommon"},
+        {name:"Prairie", freq: "common"},
+        {name:"Lake", freq: "uncommon"},
+        {name:"Radioactive Area", freq: "rare"},
+        {name:"Rest Area", freq: "common"},
+        {name:"Scenic Overlook", freq: "uncommon"},
+        {name:"River", freq: "rare"},
+        {name:["Dry riverbed","Gulch"], freq: "uncommon"}
+    ]},
+    {name:"Rural", abstract:true, type:"rarity", children:[
+        {name:"Farm", freq:"uncommon", type:"rarity", children:[
+            {name:"Barn", freq: "common"},
+            {name:"Garage", freq: "common"},
+            {name:"Stable", freq: "common"},
+            {name:"Storm Cellar", freq: "common"},
+            {name:"Root Cellar", freq: "common"},
+            {name:"Shed", freq: "common"},
+            {name:"Chicken Coop", freq: "uncommon"},
+            {name:"Silo", freq: "uncommon"},
+            {name:"Grainery", freq: "uncommon"},
+            {name:"Greenhouse", freq: "rare"},
+            {name:"Fallout Shelter", freq: "rare"},
+            {name:"Well House", freq: "rare"},
+            {name:"Water Mill", freq: "rare"},
+            {name:"Windmill", freq: "rare"},
+            {name:"Horsemill", freq: "rare"},
+            {name:["Pigpen","Sty"], freq: "rare"}
+        ]},
+        {name:"Ranch", freq:"uncommon", children:[
+            {name:"Ranch House"},
+            {name:"Bunkhouse"},
+            {name:"Chow Wagon"},
+            {name:"Holding Pen"},
+            {ref:"Farm"}
+        ]},
+        {name:"Dairy Farm", freq:"rare"},
+        {name:"Water trough with windmill pump", freq:"common"},
+        {name:"Shack", freq:"common"},
+        {name:"Fairground", freq:"rare"},
+        {name:"Grange Building", freq:"rare"},
+        {name:"Church", freq:"uncommon", type:"listed", children: [
+            {name:"Restroom", count:1, type:"listed", children: [
+                {name:"Men's Restroom", count:1},
+                {name:"Women's Restroom", count:1}
+            ]},
+            {name:"Chapel", count:1},
+            {name:"Industrial Kitchen", count:"1d2-1"},
+            {name:"Meeting Hall", count: "1d2-1"}
+        ]},
+        {name:"Stables", freq:"rare"},
+        {name:"Cemetery", freq:"rare"},
+        {name:["Landfill","Dump"], freq:"uncommon"},
+        {name:"Race Track", freq:"rare"},
+        {name:"Luxury Home", freq:"rare"},
+        {name:"Mobile Home Park", freq:"common"},
+        {name:"Prison", freq:"uncommon"},
+        {name:"Reformatory School", freq:"rare"},
+        {name:"Ranger Station", freq:"rare"},
+        {name:"Power Station", freq:"uncommon"},
+        {name:"Power Line", freq:"common"},
+        {name:"Dam", freq:"rare"},
+        {name:"Reservoir", freq:"rare"},
+        {name:"Water Tower", freq:"common"},
+        {name:"Cistern", freq:"common"},
+        {name:"Indian Teepee", freq:"rare"}
+    ]},
+    {name:"Road", abstract:true, descr:"What is around roads between destinations", children:[
+        {name:"Roadside Stand"},
+        {name:"Highway Patrol Station"},
+        {name:"Battle Wreckage"},
+        {name:"Car Accident"},
+        {name:"Roadside Memorial"},
+        {name:"Roadside Service Building", abstract:true, children:[
+            {name:"Gas Station"},
+            {name:"Motel"},
+            {name:"Diner", children: [
+                {ref:"Restroom"}
+            ]},
+            {name:"Drive-In Diner"},
+            {name:"Truck Stop"},
+            {name:"Rest Stop"},
+            {name:"Gun Shop"},
+            {name:"Car Dealership"},
+            {name:"Roadside Chapel"},
+            {name:"Dude Ranch"},
+            {name:"Gift Shop"},
+            {name:"Campground", children:[
+                {ref:"Restroom"}
+            ]},
+            {name:"Boat Shop"},
+            {name:"Bait Shop"},
+            {name:"Casino", type:"listed", children:[
+                {ref:"Restroom", count:1},
+                {name:"Cashier Pen", count:1},
+                {name:"Game Floor", count:"1d3"}
+            ]},
+            {name:"Mini Golf"},
+            {name:"Slaughterhouse"},
+            {name:"Grain Silo"},
+            {name:"Grain Storage Depot", children:[
+                {ref:"Silo"}
+            ]},
+            {name:"Feed Store"},
+            {name:"Radio Station", freq:"rare", type:"listed", descr: "TODO: name of station", children:[
+                {name:"Broadcast Building", count:1, type:"listed", children: [
+                    {name:"Break Room", count:"1d2-1"},
+                    {name:"Lobby", count:1},
+                    {name:"Office", count: "1d3"},
+                    {ref: "Restroom", count:1},
+                    {name:"Storage Room", count:"1d2-1"}
+                ]},
+                {name:"Radio Towers", count:1}
+            ]}
+        ]}
+    ]},
+    {name:"Rail", abstract:true, children: [
+        {name:"Train Station"},
+        {name:"Grain Transfer Depot", children:[
+            {ref:"Silo"}
+        ]},
+        {name:"Trainyard", children: [
+            {name:["Roundhouse","Engine House"]},
+            {name:"Rail Yard"},
+            {name:"Repair Building"},
+            {name:"Administrative Offices"}
+        ]},
+        {name:"Wreckage", abstract:true, children: [
+            {name:"Abandoned Train Cars"},
+            {name:"Derailed Train Cars"}
+        ]}
+    ]},
+    {name:"Rural Industrial", abstract:true, type:"rarity", children: [
+        {name:"Military Installation", abstract:true, freq:"rare", type:"rarity", children: [
+            {name:"ICBM Missile Silo", freq:"uncommon"},
+            {name:"Underground Bunker Complex", freq:"uncommon"},
+            {name:"Ammunition Factory", freq:"rare"},
+            {name:"Army Base", freq:"common"},
+            {name:"Air Force Base", freq:"common"}
+        ]},
+        {name:"Research Facility", abstract:true, freq:"rare", children: [
+            {name:"Astronomical Observatory", freq:"rare"},
+            {name:"University Campus", freq:"uncommon"},
+            {name:"Light-Industrial Research Facility", freq:"uncommon"}
+        ]},
+        {name:"Mine", freq:"uncommon"},
+        {name:"Quarry", freq:"uncommon"},
+        {name:"Oil Field", freq:"uncommon"},
+        {name:"Airport", freq:"rare"},
+    ]},
+    {name:"Surburb", abstract:true, children: [
+        {name:"Housing tract", children: [
+            {name:"House", children: [
+                {name:"Bathroom"}
+            ]}
+        ]},
+        {name:"Business District", type:"unique", count:"3d3", children: [
+            {name:"Grocery Store", freq:"common"},
+            {name:"Restaurant", freq:"common"},
+            {name:["Barber Shop","Beauty Salon"], freq:"uncommon"},
+            {name:"Drug Store", freq:"common"},
+            {name:"Bookstore", freq:"rare"},
+            {name:"Liquor Store", freq:"uncommon"},
+            {name:"Pet Shop", freq:"rare"},
+            {name:"Record Shop", freq:"rare"},
+            {name:"Instrumental Music Store", freq:"rare"},
+            {name:"Bank", freq:"uncommon"},
+            {name:"Bakery", freq:"uncommon"},
+            {name:"Library", freq:"uncommon"},
+            {name:"History Museum", freq:"rare"},
+            {name:"Movie Theater", freq:"uncommon"},
+            {name:"Theater", freq:"rare"},
+            {name:"Florist", freq:"rare"},
+            {name:"Bar", freq:"common"},
+            {ref:"Diner", freq:"common"},
+            {name:"Hotel", freq:"uncommon"}
+        ]},
+        {ref:"Church"},
+        {name:"Synagogue"},
+        {ref:"Cemetery"},
+        {name:"Drive-In Movie Theater"},
+        {ref:"Mobile Home Park"},
+        {name:"Elementary School"},
+        {name:"High School"},
+        {name:"College Campus"},
+        {name:"Produce Stands"},
+        {name:"Police Station"},
+        {name:"Fire Station"},
+        {name:"Apartment Building"},
+        {name:"Retirement Home"},
+        {name:"Sanitarium"},
+        {name:"Nurseries"},
+        {name:"Hospital"},
+        {name:"City Park", children: [
+            {name:"Playground"},
+            {name:"Pool"},
+            {name:"Sports Field"},
+            {name:"Picnic Area"},
+            {name:"Swimming Pool"}
+        ]}
+    ]},
+    // but maybe not, mabye town/city
+    {name:"Urban Ruins", abstract:true, children: [
+        {name:"Factory", abstract:true, children: [
+            {name:"Junk Yard"},
+            {name:"Salvage Yard"},
+            {name:"Scrap Yard"},
+            {name:"Warehouse"},
+            {name:"Manufacturing Plant"},
+            {name:"Soda Bottling Plant"},
+            {name:"Business Headquarters"},
+            {name:"Industrial Bakery"},
+            {name:"Trucking Facilities"},
+            {name:"Foundry"},
+            {name:"Power Transfer Station"},
+            {name:"Bus Station"},
+            {ref:"Train Station"}            
+        ]},
+        {ref:"Business District"}
+    ]},
+    {name:"Settlement", abstract:true, children: [
+        {name:"Semi-Permanent Camp"},
+        {name:"Hobo Encampment"},
+        {name:"Bunker"},
+        {ref:"Fallout Shelter"},
+        {name:"Camp Site"},
+        {name:"Makeshift Fortification"},
+        {name:"Cabin"},
+        {name:"Tent City"},
+        {name:"RV Encampment"}
+    ]}
+]};
+
+/*
+Loot:
+    Agricultural
+    Automotive
+    Civic
+    Criminal
+    Garage
+    Hospital
+    House
+    Industrial
+    Institution
+    Lodging
+    Military
+    Office
+    Public
+    Research
+    Restaurant
+    School
+    Tourism
+    Travel
+
+central: church, synagogue, academic campus, restaurant, police station,
+    fire station, fraternal organization (masons, IOOF, Elk, Moose, Eagle,
+    only the cool ones), bus station, train station, city park (playground, pool,
+    sports fields, picnic areas), hotel, hospital, city hall, courthouse, post office,
+    jailhouse/county jail
+*/
+},{}],19:[function(require,module,exports){
 var ion = require('../ion');
+require('../lib/cycle');
 var RarityTable = require('../tables/rarity_table');
 
-function children() {
-    return new RarityTable(ion.identity, false);
+/*
+Selection criteria:
+    abstract: this thing just branches, but doesn't create a location. used to group possibilities, but they are included
+        according to the rules of the parent. (this may be more about description)
+
+    rarity: select a randomized number of items according to rarity. allow duplicates, don't allow duplicates.
+    
+    listed: work through each item and add a number of items equal to its count value (number or string). if number, exact amount
+*/
+
+var tree = require('./location-data');
+tree.parsed = false;
+var nameMap = new Map();
+var FREQUENCIES = new Set(['common','uncommon','rare']);
+var EMPTY = Object.freeze([]);
+
+/* ================================================================================= */
+/* Utilities */
+/* ================================================================================= */
+
+function forEachChild(node, func) {
+    (node.children || EMPTY).forEach(func);
 }
 
-var natural = {name: "natural", cls: "type", contains: children()
-    .add("common", {name: "canyon", cls: "area"})
-    .add("common", {name: "prairie", cls: "area"})
-    .add("uncommon", {name: "forest", cls: "area"})
-    .add("uncommon", {name: ["dry river bed", "gulch"], cls: "area"})
-    .add("uncommon", {name: "lake", cls: "area"})
-    .add("rare", {name: "river", cls: "area"})
-    .add("rare", {name: "cave", cls: "area"})
-    .add("rare", {name: "caverns", cls: "area"})
-    .add("rare", {name: "crater", cls: "area"})
-};
-var rural = {name: "rural", cls: "type", contains: children()
-    .add("uncommon", {name: "farm", cls: "area", num: "1d5+1", contains: children()
-        .add("common", {name: "barn", cls: "building"})
-        .add("common", {name: "garage", cls: "building"})
-        .add("common", {name: "stable", cls: "building"})
-        .add("common", {name: ["storm shelter","root cellar"], cls: "building"})
-        .add("common", {name: "shed", cls: "building"})
-        .add("uncommon", {name: "chicken coop", cls: "building"})
-        .add("uncommon", {name: "silo", cls: "building"})
-        .add("uncommon", {name: "grainery", cls: "building"})
-        .add("rare", {name: "greenhouse", cls: "building"})
-        .add("rare", {name: "fallout shelter", cls: "building"})
-        .add("rare", {name: "well house", cls: "building"})
-        .add("rare", {name: "water mill", cls: "building"})
-        .add("rare", {name: "windmill", cls: "building"})
-        .add("rare", {name: "horse mill", cls: "building"})
-        .add("rare", {name: "pigsty", cls: "building"})
-    })
-};
-
-// I am presuming that this is a tree that will be associated to a map at some point,
-// the structure will have to be adjusted.
-var locations = {
-    name: "locations",
-    contains: children()
-        .add("common", natural)
-        .add("uncommon", rural)
+function pushName(array, node) {
+    if (!node.abstract) {
+        if (ion.isArray(node.name)) {
+            array.push(ion.random(node.name));
+        } else {
+            array.push(node.name);
+        }
+    }
 }
 
-// Does not account for multiple children. That is easy enough, but preventing duplicate
-// children where appropriate will require more work.
-function resolveNode(array, node) {
-    var node = node.contains.get();
-    array.push( ion.random(node.name) );
-    return (node.contains) ? resolveNode(array, node) : array;
+function collapseToName(node, array) {
+    array = array || [];
+    pushName(array, node);
+    var childArray = [];
+    forEachChild(node, function(child) {
+        collapseToName(child, childArray);
+    });
+    if (childArray.length) {
+        if (node.abstract) {
+            array.push(childArray.join(', '));
+        } else {
+            array.push("("+childArray.join(', ')+")");
+        }
+    }
+    return array.join(", ").replace(/\, \(/g," (");
+}
+
+/* ================================================================================= */
+/* Valdation */
+/* ================================================================================= */
+
+function rarityValidator(node) {
+    forEachChild(node, function(child) {
+        if (!FREQUENCIES.has(child.freq)) {
+            throw new Error("Rarity node "+node.name+" has child without valid 'freq' attribute: "+child.name);
+        }
+    });
+}
+function listedValidator(node) {
+    forEachChild(node, function(child) {
+        if (!child.count) {
+            throw new Error("Listed node "+node.name+" has child without 'count' attribute: "+child.name);
+        }
+    });
+}
+function uniqueValidator(node) {
+    if (!node.count) {
+        throw new Error("Unique node requires count property: " + child.name);
+    }
+}
+function isValidNode(node) {
+    if (node.name && nameMap.has(node.name)) {
+        throw new Error("Node has been defined twice: " + node.name);
+    }
+    return (!node.ref);
+}
+function isValidRef(node, parent) {
+    if (!node.ref) {
+        return false;
+    }
+    if (!nameMap.has(node.ref)) {
+        throw new Error("Node reference hasn't been defined: " + node.ref);
+    }
+    for (var p = parent; p != null; p = p.parent) {
+        if (p.name === node.ref) {
+            throw new Error("Cyclical reference to " + node.ref);
+        }
+    }
+    return true;
+}
+function validateNode(node) {
+    var validator = VALIDATORS[node.type];
+    if (validator) {
+        validator(node);
+    } else if (typeof node.type !== 'undefined') {
+        throw new Error("No validator for node type: " + node.type);
+    }
+}
+
+var VALIDATORS = {
+    'rarity': rarityValidator,
+    'listed': listedValidator,
+    'unique': uniqueValidator,
+    'isValidNode': isValidNode,
+    'isValidRef': isValidRef
+};
+
+/* ================================================================================= */
+/* Instantiation */
+/* ================================================================================= */
+
+// these resolves could return the new child array and let caller do some of the work.
+// rarity resolver reuses RarityTable objects it constructs from child locations. 
+var rarityTables = {};
+
+function oneResolver(node) {
+    var child = ion.random(node.children || []);
+    node.children = [child];
+}
+
+function rarityResolver(node) {
+    // convert children into a table and extract from that.
+    if (!rarityTables[node.name]) {
+        rarityTables[node.name] = new RarityTable(ion.identity, false);
+        forEachChild(node, function(child) {
+            rarityTables[node.name].add(child.freq, child);
+        });
+    }
+    node.children = [rarityTables[node.name].get()];
+}
+function listedResolver(node) {
+    // nothing just yet
+}
+function uniqueResolver(node) {
+    var uniques = new Set();
+    var count = ion.roll(node.count);
+    var children = [];
+    var i = 0;
+    while(children.length < count && i < 100) {
+        var child = ion.random(node.children);
+        if (!uniques.has(child)) {
+            uniques.add(child);
+            children.push(node);
+        }
+    }
+    node.children = children;
+}
+function processNodes(node) {
+    if (node.children && node.children.length) {
+        (RESOLVERS[node.type] || oneResolver)(node);
+        forEachChild(node, processNodes);
+    }
+}
+var RESOLVERS = {
+    'rarity': rarityResolver,
+    'listed': listedResolver,
+    'unique': uniqueResolver
+};
+function instantiate(node) {
+    var string = JSON.stringify(JSON.decycle(node));
+    var copy = JSON.retrocycle(JSON.parse(string));
+    processNodes(copy);
+    return copy;
+}
+
+/* ================================================================================= */
+/* Configuration tree parsing (resolving references) */
+/* ================================================================================= */
+
+function deepCopy(node) { 
+    var newNode = Object.assign({}, node);
+    if (node.children) {
+        for (var i=0; i < node.children.length; i++) {
+            node.children[i] = deepCopy(node.children[i]);
+        }
+    }
+    return newNode;
+}
+function copyReference(parent, node) {
+    var existing = nameMap.get(node.ref);
+    var newNode = deepCopy(existing);
+    Object.assign(newNode, node);
+    newNode.parent = parent;
+    delete newNode.ref;
+    return newNode;
+}
+function parseTree(node) {
+    forEachChild(node, function(child, i) {
+        if (VALIDATORS.isValidRef(child, node)) {
+            node.children[i] = copyReference(node, child);
+            validateNode(node.children[i]);
+        } else if (VALIDATORS.isValidNode(child)) {
+            nameMap.set(child.name, child);
+            child.parent = node;
+            validateNode(child);
+            parseTree(child);
+        } else {
+            throw new Error("Node is not a valid reference or a new node: " + child);
+        }
+    });
+}
+function init() {
+    if (!tree.parsed) {
+        parseTree(tree);
+        tree.parsed = true;
+    }
 }
 
 module.exports = {
-    getLocation: function() {
-        return resolveNode([], locations);
+    createLocation: function(name) {
+        init();
+        if (!name) {
+            name = ion.random(tree.children).name;
+        } 
+        var node = nameMap.get(name);
+        if (node) {
+            return collapseToName(instantiate(node));
+        }
+        return null;
+    },
+    getAllLocations: function() {
+        init();
+        return tree;
     }
 };
 
-},{"../ion":24,"../tables/rarity_table":41}],18:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26,"../lib/cycle":27,"../tables/rarity_table":44,"./location-data":18}],20:[function(require,module,exports){
 var ion = require('../ion');
 var IonSet = require('../models/ion_set');
 var Item = require('../models/item');
 var timeSeries = require('./historical_time_series');
 var RarityTable = require('../tables/rarity_table');
 var parameters = require('../parameters');
+
+// TODO: This is a strong generator, but it needs to be tied into the creation of bags.
 
 var comics = new RarityTable(ion.identity, false);
 var newsPubs = new RarityTable(ion.identity, false);
@@ -2693,9 +3122,10 @@ function printed(printedType, collection) {
             var title = name + ", " + date + ", #" + i + " of " + coll.length;
             collection.add(rarity, {name: printedType, title: title, enc: 1, value: value, tags: ['collectible']});
         });
-    }
+    };
 }
 
+// TODO: Never uses the RarityTable branch, I don't believe
 function getCollectionItem(type) {
     var source = collectibles[type];
     if (source instanceof RarityTable) {
@@ -2725,6 +3155,7 @@ function poster(collection, type, fileExt, value) {
     });
 }
 
+// TODO: These are actually posters with images, these should be distributed alongside the code...
 var warTitles = ['am_i_proud', 'america_calling', 'are_you_playing_square', 'be_a_victory_farm_volunteer',
     'books_are_weapons_in_the_war_of_ideas', 'both_are_weapons', "carry_on_don't_be_carried_out",
     'do_the_job_he_left_behind', 'farm_scrap_builds_tanks_&_guns', 'fontana_dam', 'food_is_a_weapon',
@@ -2805,20 +3236,20 @@ ion.keys(bbCards).forEach(function(team) {
 addNews("Atlantic Dispatch Magazine", "uncommon", {period: 'weekly'});
 addNews("The Weekly Nation", "uncommon", {period: 'weekly', dayOfWeek: 'Monday', startDate: '1953-12-31'});
 addNews("Verve", "common", {period: 'monthly', format: 'short', dayOfWeek: 'Thursday'});
-addComic("Atomic War Comics", "common", {period: 'bimonthly', startDate: '1953-11-31', format: 'short'});
 addComic("Atomic Age Combat", "uncommon", {period: 'monthly', startDate: '1956-11-31', format: 'short'});
-addComic("The Adventures of Captain Atom", "common", {period: 'monthly', format: 'short'});
-addComic("Space Action", "common", {period: 'monthly', format: 'short'});
-addComic("Giggle Comics", "common", {period: 'weekly'});
-addComic("Midnight Mystery", "uncommon", {period: 'biweekly', startDate: '1955-06-06'});
-addComic("The Hand of Fate", "common", {period:"monthly", format: "short"});
-addComic("Black Cobra", "rare", {period:"monthly", format:"short"});
-addComic("The Flame", "uncommon", {period:"monthly", format:"short"});
-addComic("Forbidden Worlds", "uncommon", {period:"monthly", format:"short"});
+addComic("Atomic War Comics", "common", {period: 'bimonthly', startDate: '1953-11-31', format: 'short'});
 addComic("Battlefield Action", "uncommon", {period:"monthly", format:"short"});
-addComic("War Stories", "common", {period:"weekly", startDate: '1956-02-15'});
+addComic("Black Cobra", "rare", {period:"monthly", format:"short"});
 addComic("Blazing West", "common", {period:"bimonthly", startDate: '1948-10-10'});
+addComic("Forbidden Worlds", "uncommon", {period:"monthly", format:"short"});
+addComic("Giggle Comics", "common", {period: 'weekly'});
 addComic("Madhouse Comics", "rare", {period:"monthly", format:"short"});
+addComic("Midnight Mystery", "uncommon", {period: 'biweekly', startDate: '1955-06-06'});
+addComic("Space Action", "common", {period: 'monthly', format: 'short'});
+addComic("The Adventures of Captain Atom", "common", {period: 'monthly', format: 'short'});
+addComic("The Flame", "uncommon", {period:"monthly", format:"short"});
+addComic("The Hand of Fate", "common", {period:"monthly", format: "short"});
+addComic("War Stories", "common", {period:"weekly", startDate: '1956-02-15'});
 addComic("Wonder Boy", "uncommon", {period:"monthly", format:"short"});
 
 var collectibles = {
@@ -2900,6 +3331,8 @@ function getMemorabiliaTypes() {
  * @return {String} a description of what is being sought out for trade
  */
 function createMemorabiliaWanted(params) {
+    // TODO: The results are usable, but not as compact as they could be and difficult to scan or refer to 
+    // later. Results should be grouped by the series, probably.
     var params = parameters(params, "type", {
         type: collectibleKeys,
         format: 'long'
@@ -2933,14 +3366,12 @@ module.exports = {
     createMemorabiliaWanted: createMemorabiliaWanted
 };
 
-},{"../ion":24,"../models/ion_set":30,"../models/item":31,"../parameters":39,"../tables/rarity_table":41,"./historical_time_series":16}],19:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26,"../models/ion_set":33,"../models/item":34,"../parameters":42,"../tables/rarity_table":44,"./historical_time_series":17}],21:[function(require,module,exports){
 var ion = require('../ion');
 var RarityTable = require('../tables/rarity_table');
 var createCharacterName = require('./character_name');
 
-// Something that makes ranch names, like 44; A Bar A; A X Ranch; Bar B/C/M/V/X, latName Ranch
+// Something that makes ranch names, like 44; A Bar A; A X Ranch; Bar B/C/M/V/X, lastName Ranch
 
 function regionByLocation(location) {
     return ion.random( (location === "River" && ion.test(100)) ? water_regional : regional );
@@ -2952,6 +3383,7 @@ function getName() {
 }
 
 // Woods, Forest, are not part of this terrain at all.
+// Pine Grove
 // Also wetlands, really?
 // "{Ditch|Gap}"
 // "{Knoll}"
@@ -2973,7 +3405,7 @@ var locative = {
     'Elevation': ["Butte", "Bluffs", "Cliff", "Mountain{|s}", "Point", "Pass", "Spur", "Ridge", "Butte", "Mesa", "Gap", "Rock", "Hill{|s}", "Summit", "Plateau"],
     'Water': ["Spring{|s}", "Lake", "Pond", "Bar", "Basin", "Creek", "River", "Reservoir", "Rapids", "Stream", "Wetlands", "Swamp", "Falls", "Dam", "Slough"],
     'Junction': ["Bend", "Bridge", "Junction", "Crossing"],
-    'Woods': ['Woods', 'Forest']
+    'Woods': ['Woods','Forest','Grove']
 };
 var descriptive = ["Adobe", "{Agate|Amethyst|Geode|Diamond}", "Alkali", "Ant{|hill}", "Antelope", "Antler", "Anvil", "{Apple|Peach}", "Arrow{|head|tail}",
     "{Arlington|American|Army|Military|Soldier}", "{Arapahoe|Navajo|Sioux}", "{Alaska|Arizona|Wyoming|Colorado|California}", "Artesian",
@@ -2997,38 +3429,38 @@ var regional = ["Bad","{Bald|Bare}","Big","Dead","Happy","New","Middle","{North|
 
 var water_regional = "{North|South|East|West|Middle} Fork of the";
 
-var patterns = new RarityTable(ion.identity, false);
-patterns.add('rare', function(type) {
-    // East Pond
-    return ion.random(regional) + " " + ion.random(locative[type]);
-});
-patterns.add('uncommon', function(type) {
-    // West Anderson Junction
-    var location = ion.random(locative[type]);
-    return regionByLocation(location) + " " + getName() + " " + ion.random(locative[type]);
-});
-patterns.add('uncommon', function(type) {
-    // West Bison Lake
-    var location = ion.random(locative[type]);
-    return regionByLocation(location) + " " + ion.random(descriptive) + " " + location;
-});
-patterns.add('rare', function(type) {
-    // Ford Trail Pond
-    var name = (ion.test(50)) ? ion.random(descriptive) : getName();
-    return name + " Trail " + ion.random(locative[type]);
-});
-patterns.add('rare', function(type) {
-    // Alfalfa
-    return ion.random(real);
-});
-patterns.add('common', function(type) {
-    // Red Hollow
-    return ion.random(descriptive) + " " + ion.random(locative[type]);
-});
-patterns.add('common', function(type) {
-    // Williams Crossing
-    return getName() + " " + ion.random(locative[type]);
-});
+var patterns = new RarityTable(ion.identity, false)
+    .add('rare', function(type) {
+        // East Pond
+        return ion.random(regional) + " " + ion.random(locative[type]);
+    })
+    .add('uncommon', function(type) {
+        // West Anderson Junction
+        var location = ion.random(locative[type]);
+        return regionByLocation(location) + " " + getName() + " " + ion.random(locative[type]);
+    })
+    .add('uncommon', function(type) {
+        // West Bison Lake
+        var location = ion.random(locative[type]);
+        return regionByLocation(location) + " " + ion.random(descriptive) + " " + location;
+    })
+    .add('rare', function(type) {
+        // Ford Trail Pond
+        var name = (ion.test(50)) ? ion.random(descriptive) : getName();
+        return name + " Trail " + ion.random(locative[type]);
+    })
+    .add('rare', function(type) {
+        // Alfalfa
+        return ion.random(real);
+    })
+    .add('common', function(type) {
+        // Red Hollow
+        return ion.random(descriptive) + " " + ion.random(locative[type]);
+    })
+    .add('common', function(type) {
+        // Williams Crossing
+        return getName() + " " + ion.random(locative[type]);
+    });
 var landforms = ion.keys(locative).sort();
 
 /**
@@ -3061,9 +3493,7 @@ module.exports.createPlaceName = function(type) {
 module.exports.getLandformTypes = function() {
     return landforms;
 };
-},{"../ion":24,"../tables/rarity_table":41,"./character_name":12}],20:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26,"../tables/rarity_table":44,"./character_name":13}],22:[function(require,module,exports){
 var ion = require('../ion');
 var Item = require('../models/item');
 var itemDb = require('./data').itemDatabase;
@@ -3099,7 +3529,9 @@ var bookTitles = [
     "Planning Guidance for Response to a Nuclear Detonation",
     "Protection in the Nuclear Age",
     "Recovery from Nuclear Attack",
-    "U.S. Army Survival Manual"
+    "U.S. Army Survival Manual",
+    "Communism, Hypnotism, and the Beatles",
+    "How You Can Fight Communism"
 ];
 
 function addIf(percent, array, options) {
@@ -3151,9 +3583,7 @@ module.exports.createBook = function() {
     return new Item({name: "book", title: title, value: 3, enc: 2, tags: ['reading']});
 };
 
-},{"../ion":24,"../models/item":31,"./data":14}],21:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26,"../models/item":34,"./data":15}],23:[function(require,module,exports){
 var ion = require('../ion');
 var db = require('./data').professionDatabase;
 var Character = require('../models/character');
@@ -3165,9 +3595,39 @@ var createKit = require('./bag').createKit;
 var createRace = require('./character').createRace;
 var createCharacterName = require('./character_name');
 
-// This creates pretty normal families. As always, the generators are for on-the-spot
-// filler material, and aim for believability. Make up the more unusual families in
-// your world.
+// Here are the most common (50) family/households, which I've boiled down a bit. There's more
+// diversity here than captured in these generators (although they are a pretty good start). 
+// 2 siblings
+// 1-4 friends
+// child, parent
+// grandparent, grandkid
+// householder, 1-2 parents
+// householder, friend or partner
+// householder, friend or partner, non-relative
+// householder, kid, parent
+// householder, non-relative
+// married couple
+// married couple, 1-2 grandkids
+// married couple, 1-2 kids, 1-2 grandkids
+// married couple, 1-2 kids, parent-in-law
+// married couple, 1-6 kids
+// married couple, 2 kids, relative
+// married couple, grandparent
+// married couple, kid, grandkid
+// married couple, kid, non-relative
+// married couple, kid, parent
+// married couple, non-relative
+// married couple, relative
+// married couple, siblings
+// parent, 1-3 kids, friend or partner
+// parent, 1-4 kids
+// parent, 2 kids, grandkid
+// parent, 4 kids, friend or partner
+// parent, kid, 1-2 grandkids
+// parent, kid, grandparent
+// parent, kid, non-relative
+// parent, kid, sibling
+// parent, kid, stepkid
 
 var innate = db.find('innate');
 
@@ -3462,9 +3922,7 @@ module.exports.createRelationship = function(params) {
     return new Relationship(older, younger, relName);
 };
 
-},{"../ion":24,"../models/character":27,"../models/family":28,"../models/relationship":36,"../tables/rarity_table":41,"./bag":10,"./character":11,"./character_name":12,"./data":14}],22:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26,"../models/character":30,"../models/family":31,"../models/relationship":39,"../tables/rarity_table":44,"./bag":10,"./character":12,"./character_name":13,"./data":15}],24:[function(require,module,exports){
 var ion = require('../ion');
 var Bag = require('../models/bag');
 var Store = require('../models/store');
@@ -3682,9 +4140,7 @@ module.exports = function(params) {
     });
 };
 
-},{"../ion":24,"../models/bag":26,"../models/lib":32,"../models/name":34,"../models/store":37,"../tables/table":42,"./bag":10,"./character":11,"./character_name":12,"./data":14,"./gang":15,"./place_name":19,"./relationships":21}],23:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26,"../models/bag":29,"../models/lib":35,"../models/name":37,"../models/store":40,"../tables/table":45,"./bag":10,"./character":12,"./character_name":13,"./data":15,"./gang":16,"./place_name":21,"./relationships":23}],25:[function(require,module,exports){
 var ion = require('../ion');
 var Weather = require('../models/weather');
 
@@ -3747,9 +4203,7 @@ module.exports = function(month) {
     return weather;
 };
 
-},{"../ion":24,"../models/weather":38}],24:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26,"../models/weather":41}],26:[function(require,module,exports){
 var DIE_PARSER  = /\d+d\d+/g,
     FORMAT_PARSER = /\{[^\|}]+\}/g,
     RANDOM_STRING = /\{[^\{\}]*\|[^\{\}]*\}/g,
@@ -3757,6 +4211,7 @@ var DIE_PARSER  = /\d+d\d+/g,
     STARTS_WITH_THE = /^[tT]he\s/,
     SMALL_WORDS = /^(a|an|and|as|at|but|by|en|for|if|in|nor|of|on|or|per|the|to|vs?\.?|via)$/i,
     PARENS = /(\{[^\}]*\})/g,
+    DIGITS = [1,2,3,4,5,6,7,8],
     CONS_Y = /[BCDFGHIJKLMNPQRSTVWXZbcdfghijklmnpqrstvwxz]y$/;
 
 function basicPluralize(string) {
@@ -3889,7 +4344,21 @@ var ion = {
             return (args.indexOf(value) === -1);
         });
     },
-    // Here's that scary use of object-orientation in JS that your parents told you about
+    /**
+     * Define a class (a constructor function with many of the amenities of a class, including a 
+     * constructor function that is not called to generate a prototype, and property and static 
+     * definitions, in one syntactic bundle).
+     * 
+     * @static
+     * @method define
+     * @for atomic
+     * 
+     * @param [parent] a parent class to serve as the prototype for this class.
+     * @param methods an object containing methods for this class. There are two special 
+     *      properties on this object that will be treated differently. `properties` defines
+     *      one or more properties on the object, while `static` defines one ore more functions 
+     *      to assign to the constructor, rather than the objects returned by the constructor.
+     */
     define: function(parent, methods) {
         if (arguments.length === 1) { // parent is optional
             methods = parent;
@@ -3910,6 +4379,12 @@ var ion = {
                 });
             }
             delete methods.properties;
+        }
+        if (methods.static) {
+            for (var funcName in methods.static) {
+                F[funcName] = methods.static[funcName];
+            }
+            delete methods.static;
         }
         delete methods.init;
         for (var prop in methods) {
@@ -4420,6 +4895,25 @@ var ion = {
      */
     newArray: function(length) {
         return Array.apply(null, Array(length));
+    },
+    /**
+     * Generate a globally unique identifier (using both a random and time-based component outside of 
+     * the random function, i.e. a collision of the random portion has to happen at the same millisecond).
+     * 
+     * @example
+     *     atomic.newUID();
+     *     => "rqpgsk1ydejvj"
+     * 
+     * @static
+     * @method newUID
+     * @for atomic
+     * @returns {String} a unique string identifier
+     */
+    newUID: function() {
+        // Random digits first to improve value as a hash key
+        return DIGITS.map(function() { 
+            return ion.roll(36).toString(36); 
+        }).join('') + (new Date().getTime()-1463775673773).toString(36);
     }
 };
 
@@ -4433,9 +4927,102 @@ var ion = {
 });
 
 module.exports = ion;
-},{}],25:[function(require,module,exports){
-"use strict";
+},{}],27:[function(require,module,exports){
+/*
+    cycle.js
+    2016-05-01
 
+    Public Domain.
+
+    NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
+
+    This code should be minified before deployment.
+    See http://javascript.crockford.com/jsmin.html
+
+    USE YOUR OWN COPY. IT IS EXTREMELY UNWISE TO LOAD CODE FROM SERVERS YOU DO
+    NOT CONTROL.
+*/
+// Source: https://github.com/douglascrockford/JSON-js/blob/master/cycle.js
+if (typeof JSON.decycle !== "function") {
+    JSON.decycle = function decycle(object, replacer) {
+        var objects = [];   // Keep a reference to each unique object or array
+        var paths = [];     // Keep the path to each unique object or array
+        return (function derez(value, path) {
+            var i;          // The loop counter
+            var nu;         // The new object or array
+            if (replacer !== undefined) {
+                value = replacer(value);
+            }
+            if (
+                typeof value === "object" && value !== null &&
+                !(value instanceof Boolean) &&
+                !(value instanceof Date) &&
+                !(value instanceof Number) &&
+                !(value instanceof RegExp) &&
+                !(value instanceof String)
+            ) {
+                i = objects.indexOf(value);
+                if (i >= 0) {
+                    return {$ref: paths[i]};
+                }
+                objects.push(value);
+                paths.push(path);
+                if (Array.isArray(value)) {
+                    nu = [];
+                    value.forEach(function (element, i) {
+                        nu[i] = derez(element, path + "[" + i + "]");
+                    });
+                } else {
+                    nu = {};
+                    Object.keys(value).forEach(function (name) {
+                        nu[name] = derez(
+                            value[name],
+                            path + "[" + JSON.stringify(name) + "]"
+                        );
+                    });
+                }
+                return nu;
+            }
+            return value;
+        }(object, "$"));
+    };
+}
+
+if (typeof JSON.retrocycle !== "function") {
+    JSON.retrocycle = function retrocycle($) {
+        var px = /^\$(?:\[(?:\d+|\"(?:[^\\\"\u0000-\u001f]|\\([\\\"\/bfnrt]|u[0-9a-zA-Z]{4}))*\")\])*$/;
+        (function rez(value) {
+            if (value && typeof value === "object") {
+                if (Array.isArray(value)) {
+                    value.forEach(function (element, i) {
+                        if (typeof element === "object" && element !== null) {
+                            var path = element.$ref;
+                            if (typeof path === "string" && px.test(path)) {
+                                value[i] = eval(path);
+                            } else {
+                                rez(element);
+                            }
+                        }
+                    });
+                } else {
+                    Object.keys(value).forEach(function (name) {
+                        var item = value[name];
+                        if (typeof item === "object" && item !== null) {
+                            var path = item.$ref;
+                            if (typeof path === "string" && px.test(path)) {
+                                value[name] = eval(path);
+                            } else {
+                                rez(item);
+                            }
+                        }
+                    });
+                }
+            }
+        }($));
+        return $;
+    };
+}
+},{}],28:[function(require,module,exports){
 var ion = require('../ion');
 var Profession = require('./profession');
 
@@ -4485,9 +5072,7 @@ module.exports = ion.define(Profession, {
     }
 });
 
-},{"../ion":24,"./profession":35}],26:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26,"./profession":38}],29:[function(require,module,exports){
 var ion = require('../ion');
 var Item = require('./item');
 var Model = require('./model');
@@ -4760,7 +5345,7 @@ var Bag = ion.define(Model, {
 
 module.exports = Bag;
 
-},{"../ion":24,"./item":31,"./model":33}],27:[function(require,module,exports){
+},{"../ion":26,"./item":34,"./model":36}],30:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 var Bag = require('./bag');
@@ -4986,7 +5571,7 @@ var Character =  ion.define(Model, {
 });
 
 module.exports = Character;
-},{"../builder":2,"../ion":24,"./bag":26,"./model":33}],28:[function(require,module,exports){
+},{"../builder":2,"../ion":26,"./bag":29,"./model":36}],31:[function(require,module,exports){
 var ion = require('../ion');
 var Builder = require('../builder');
 var Model = require('./model');
@@ -5148,7 +5733,7 @@ module.exports = ion.define({
         return builder.toString();
     }
 });
-},{"../builder":2,"../ion":24,"./model":33}],29:[function(require,module,exports){
+},{"../builder":2,"../ion":26,"./model":36}],32:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 var Builder = require('../builder');
@@ -5233,7 +5818,7 @@ module.exports = ion.define(Model, {
     }
 });
 
-},{"../builder":2,"../ion":24,"./model":33}],30:[function(require,module,exports){
+},{"../builder":2,"../ion":26,"./model":36}],33:[function(require,module,exports){
 var ion = require('../ion');
 
 module.exports = ion.define({
@@ -5305,7 +5890,7 @@ module.exports = ion.define({
         return ion.values(this.hash);
     }
 });
-},{"../ion":24}],31:[function(require,module,exports){
+},{"../ion":26}],34:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 var Builder = require('../builder');
@@ -5349,7 +5934,7 @@ module.exports = ion.define(Model, {
     }
 });
 
-},{"../builder":2,"../ion":24,"./model":33}],32:[function(require,module,exports){
+},{"../builder":2,"../ion":26,"./model":36}],35:[function(require,module,exports){
 var ion = require('../ion');
 
 var lookup = {
@@ -5413,7 +5998,7 @@ function clone(object, freeze) {
 module.exports.clone = clone;
 module.exports.deserializer = deserializer;
 
-},{"../ion":24,"./bag":26,"./character":27,"./family":28,"./gang":29,"./item":31,"./model":33,"./name":34,"./profession":35,"./relationship":36,"./store":37,"./weather":38}],33:[function(require,module,exports){
+},{"../ion":26,"./bag":29,"./character":30,"./family":31,"./gang":32,"./item":34,"./model":36,"./name":37,"./profession":38,"./relationship":39,"./store":40,"./weather":41}],36:[function(require,module,exports){
 var ion = require('../ion');
 
 var Model = ion.define({
@@ -5471,7 +6056,7 @@ var Model = ion.define({
      * item, such as `ammo:22` or `media:35mm`.
      *
      * @method typeOf
-     * @param prefix {String} the prefix to matchAndRemove
+     * @param prefix {String} the prefix to match
      * @return {String} the first tag found that matches this prefix
      */
     typeOf: function(p) {
@@ -5483,7 +6068,7 @@ var Model = ion.define({
 });
 
 module.exports = Model;
-},{"../ion":24}],34:[function(require,module,exports){
+},{"../ion":26}],37:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 
@@ -5548,9 +6133,7 @@ module.exports = ion.define(Model, {
 });
 
 
-},{"../ion":24,"./model":33}],35:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26,"./model":36}],38:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 
@@ -5648,7 +6231,7 @@ module.exports = ion.define(Model, {
         this.postprocess(character);
     }
 });
-},{"../ion":24,"./model":33}],36:[function(require,module,exports){
+},{"../ion":26,"./model":36}],39:[function(require,module,exports){
 var ion = require('../ion');
 var Builder = require('../builder');
 
@@ -5711,7 +6294,7 @@ module.exports = function(older, younger, rel) {
     };
 
 };
-},{"../builder":2,"../ion":24}],37:[function(require,module,exports){
+},{"../builder":2,"../ion":26}],40:[function(require,module,exports){
 var ion = require('../ion');
 var Bag = require('./bag');
 var Model = require('./model');
@@ -5819,7 +6402,7 @@ module.exports = ion.define(Model, {
         return b.toString();
     }
 });
-},{"../builder":2,"../ion":24,"./bag":26,"./model":33}],38:[function(require,module,exports){
+},{"../builder":2,"../ion":26,"./bag":29,"./model":36}],41:[function(require,module,exports){
 var ion = require('../ion');
 var Model = require('./model');
 
@@ -5840,17 +6423,19 @@ module.exports = ion.define(Model, {
 });
 
 
-},{"../ion":24,"./model":33}],39:[function(require,module,exports){
+},{"../ion":26,"./model":36}],42:[function(require,module,exports){
 var ion = require('./ion');
 
 // This massively ugly thing does a lot of work so elsewhere, we don't have to see so much parameter
 // intialization junk.
 function parameters(params, defaultField, defaults) {
+    // params("foo", "bar), initializes {foo: "bar"};
     if (!ion.isObject(params) && ion.isString(defaultField)) {
-        var object = {};
-        object[defaultField] = params;
-        params = object;
+        var obj = {};
+        obj[defaultField] = params;
+        params = obj;
     }
+    // params({}, {defaultValue: true, "B": "C"})
     if (ion.isObject(defaultField)) {
         defaults = defaultField;
     }
@@ -5858,9 +6443,12 @@ function parameters(params, defaultField, defaults) {
 
     ion.keys(defaults).forEach(function(field) {
         var defaultValue = defaults[field];
+        // If the value is undefined in parameters, but we have a default, copy it over (processing through random)
         if (ion.isUndefined(object[field])) {
             object[field] = ion.random(defaultValue);
-        } else if (ion.isArray(defaultValue)) {
+        } 
+        // validate a value against an array of allowed values declared in the defaults... ?
+        else if (ion.isArray(defaultValue)) {
             if (!ion.contains(defaultValue, object[field])) {
                 throw new Error(object[field] + " is an invalid " + field + ", use " + defaultValue.join(', '));
             }
@@ -5870,9 +6458,7 @@ function parameters(params, defaultField, defaults) {
 }
 
 module.exports = parameters;
-},{"./ion":24}],40:[function(require,module,exports){
-"use strict";
-
+},{"./ion":26}],43:[function(require,module,exports){
 var ion = require('../ion');
 
 module.exports = ion.define({
@@ -5940,9 +6526,7 @@ module.exports = ion.define({
     }
 });
 
-},{"../ion":24}],41:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26}],44:[function(require,module,exports){
 var ion = require('../ion');
 var Table = require('./table');
 
@@ -6045,9 +6629,7 @@ module.exports = ion.define(Table, {
         return null;
     }
 });
-},{"../ion":24,"./table":42}],42:[function(require,module,exports){
-"use strict";
-
+},{"../ion":26,"./table":45}],45:[function(require,module,exports){
 var ion = require('../ion');
 
 module.exports = ion.define({
@@ -6139,5 +6721,5 @@ module.exports = ion.define({
     }
 });
 
-},{"../ion":24}]},{},[1])(1)
+},{"../ion":26}]},{},[1])(1)
 });

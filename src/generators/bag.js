@@ -1,5 +1,3 @@
-"use strict";
-
 var ion = require('../ion');
 var Bag = require('../models/bag');
 var IonSet = require('../models/ion_set');
@@ -160,6 +158,7 @@ function kitUniques(bag, count, tags) {
     return setToBag(bag, set);
 }
 function setToBag(bag, set) {
+    //set.toArray().forEach(bag.add.bind(bag));
     set.toArray().forEach(function(item) {
         bag.add(item);
     });

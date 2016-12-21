@@ -39,8 +39,9 @@ lib.dice = require('./dice/dice');
 lib.createAppearance = require('./generators/appearance');
 lib.createCharacterName = require('./generators/character_name');
 lib.createCollectible = require('./generators/memorabilia');
+// TODO: probably combine these. 
 lib.createCorporateName = require('./generators/corporate_name');
-lib.createLocation = require('./generators/location');
+lib.createBizName = require('./generators/business_name');
 lib.createStore = require('./generators/store');
 lib.createWeather = require('./generators/weather');
 lib.createTimeSeries = require('./generators/historical_time_series');
@@ -49,6 +50,7 @@ ion.extend(lib, require('./generators/bag'));
 ion.extend(lib, require('./generators/character'));
 ion.extend(lib, require('./generators/data'));
 ion.extend(lib, require('./generators/gang'));
+ion.extend(lib, require('./generators/location'));
 ion.extend(lib, require('./generators/memorabilia'));
 ion.extend(lib, require('./generators/place_name'));
 ion.extend(lib, require('./generators/reading'));

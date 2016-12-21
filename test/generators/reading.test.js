@@ -16,6 +16,6 @@ describe("createBook()", function() {
         var b = reading.createBook();
         expect(b.constructor).to.equal(Item);
         expect(b.name).to.equal("book");
-        expect(b.title).to.equal("Nuclear War Survival");
+        expect(b.title).to.equal("Planning Guidance for Response to a Nuclear Detonation");
     });
 });

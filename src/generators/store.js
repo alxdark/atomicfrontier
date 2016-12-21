@@ -1,5 +1,3 @@
-"use strict";
-
 var ion = require('../ion');
 var Bag = require('../models/bag');
 var Store = require('../models/store');

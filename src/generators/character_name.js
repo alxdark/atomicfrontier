@@ -1,5 +1,3 @@
-"use strict";
-
 var ion = require('../ion');
 var Name = require('../models/name');
 
@@ -10,21 +8,20 @@ var names = {
         "Bradley", "Brock", "Bruce", "Bud", "Burt", "Caleb", "Calvin", "Carl", "Cecil", "Chuck", "Clayton",
         "Cliff", "Conrad", "Cooper", "Cyril", "Dakota", "Dallas", "Dalton", "Dan", "Dawson", "Dean", "Destry",
         "Don", "Doug", "Dwain", "Earl", "Ed", "Errol", "Floyd", "Frank", "Fred", "Gage", "Garth", "Gavin",
-        "Gene", "Glen", "Grady", "Greg", "Gus", "Guy", "Hal", "Hank", "Harlan", "Holden", "Hoyt", "Hudson",
-        "Hugh", "Huxley", "Ian", "Isaac", "Jack", "Jake", "Jason", "Jeremy", "Jerry", "Jethro", "Joe", "John",
+        "Gene", "Glen", "Grady", "Greg", "Gus", "Guy", "Ha{l|nk|rlan}", "Holden", "Hoyt", "Hudson", "Hugh", 
+        "Huxley", "Ian", "Isaac", "Jack", "Jake", "Jason", "Jeremy", "Jerry", "Jethro", "Joe", "John", 
         "Johnny", "Ken", "Kirk", "Kurt", "Kyle", "Larson", "Levi", "Lloyd", "Luke", "Lyle", "Mack", "Mark",
         "Marty", "Mason", "Matt", "Max", "Merle", "Nate", "Ned", "Neil", "Nick", "Norm", "Otis", "Pat", "Phil",
         "Ray", "Reed", "Rex", "Rick", "Rod", "Rodger", "Roy", "Russell", "Sam", "Scott", "Slim", "Stan",
         "Stratton", "Ted", "Tim", "Todd", "Tony", "Travis", "Tyler", "Vern", "Wade", "Wally", "Ward", "Wesley",
         "Will", "Wyatt" ],
-    "anglo female" : [ "Ada", "Agnes", "Alice", "Amy", "Ann", "Au{b|d}rey", "Barb", "Becky", "Betty", "Bev", "Carol",
-        "Cindy", "Clara", "Darla", "Diane", "Dona", "Doris", "Edith", "Edna", "Eileen", "Ella", "Ellen",
+    "anglo female" : [ "Ada", "Agnes", "Alice", "Amy", "Ann", "Au{b|d}rey", "Barb", "Becky", "Betty", "Bev{|erly}", 
+        "Carol", "Cindy", "Clara", "Darla", "Diane", "Dona", "Doris", "Edith", "Edna", "Eileen", "Ella", "Ellen",
         "Emma", "Emily", "Erma", "Esther", "Ethel", "Eva", "Fay", "Flo", "Flora", "Gail", "Grace", "Gwen",
-        "Hazel", "Helen", "Holly", "Ida", "Ilene", "Irene", "Iris", "Irma", "Jan", "Jane", "Janet", "Janis",
-        "Jean", "Joan", "Judy", "June", "Kathy", "Kay", "Lena", "Linda", "Lois", "Lorna", "Lucy", "Mabel",
-        "Mae", "Mary", "Mavis", "Nina", "Nora", "Norma", "Olga", "Pam", "Patty", "Paula", "Pearl", "Rita",
-        "Rose", "Ruth", "Sally", "Sara", "Stella", "Sue", "Sybil", "Tina", "Trudy", "Velma", "Vera", "Viola",
-        "Wanda", "Wilma" ],
+        "Hazel", "Helen", "Holly", "Ida", "I{l|r}ene", "Iris", "Irma", "Jan{|e|et|is}", "Jean", "Joan", "Judy", 
+        "June", "Kathy", "Kay", "Lena", "Linda", "Lois", "Lorna", "Lucy", "Mabel", "Mae", "Mary", "Mavis", 
+        "Nina", "Nora", "Norma", "Olga", "Pam", "Patty", "Paula", "Pearl", "Rita", "Rose", "Ruth", "Sally", 
+        "Sara", "Stella", "Sue", "Sybil", "Tina", "Trudy", "{V|Th}elma", "Vera", "Viola", "Wanda", "Wilma" ],
     "hispanic male" : [ "Alonso", "Bruno", "Camilo", "Carlos", "Dante", "Diego", "Emilio", "Felipe", "Franco",
         "Iker", "Jacobo", "Javier", "Jorge", "Jose", "Juan", "Julian", "Lucas", "Luis", "Manny", "Manuel",
         "Mario", "Mateo", "Matias", "Miguel", "Pablo", "Pedro", "Rafael", "Samuel", "Sergio", "Tomas", "Elias" ],

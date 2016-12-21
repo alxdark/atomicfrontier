@@ -1,10 +1,8 @@
-"use strict";
-
 var ion = require('../ion');
 var RarityTable = require('../tables/rarity_table');
 var createCharacterName = require('./character_name');
 
-// Something that makes ranch names, like 44; A Bar A; A X Ranch; Bar B/C/M/V/X, latName Ranch
+// Something that makes ranch names, like 44; A Bar A; A X Ranch; Bar B/C/M/V/X, lastName Ranch
 
 function regionByLocation(location) {
     return ion.random( (location === "River" && ion.test(100)) ? water_regional : regional );
@@ -16,6 +14,7 @@ function getName() {
 }
 
 // Woods, Forest, are not part of this terrain at all.
+// Pine Grove
 // Also wetlands, really?
 // "{Ditch|Gap}"
 // "{Knoll}"
@@ -37,7 +36,7 @@ var locative = {
     'Elevation': ["Butte", "Bluffs", "Cliff", "Mountain{|s}", "Point", "Pass", "Spur", "Ridge", "Butte", "Mesa", "Gap", "Rock", "Hill{|s}", "Summit", "Plateau"],
     'Water': ["Spring{|s}", "Lake", "Pond", "Bar", "Basin", "Creek", "River", "Reservoir", "Rapids", "Stream", "Wetlands", "Swamp", "Falls", "Dam", "Slough"],
     'Junction': ["Bend", "Bridge", "Junction", "Crossing"],
-    'Woods': ['Woods', 'Forest']
+    'Woods': ['Woods','Forest','Grove']
 };
 var descriptive = ["Adobe", "{Agate|Amethyst|Geode|Diamond}", "Alkali", "Ant{|hill}", "Antelope", "Antler", "Anvil", "{Apple|Peach}", "Arrow{|head|tail}",
     "{Arlington|American|Army|Military|Soldier}", "{Arapahoe|Navajo|Sioux}", "{Alaska|Arizona|Wyoming|Colorado|California}", "Artesian",
@@ -61,38 +60,38 @@ var regional = ["Bad","{Bald|Bare}","Big","Dead","Happy","New","Middle","{North|
 
 var water_regional = "{North|South|East|West|Middle} Fork of the";
 
-var patterns = new RarityTable(ion.identity, false);
-patterns.add('rare', function(type) {
-    // East Pond
-    return ion.random(regional) + " " + ion.random(locative[type]);
-});
-patterns.add('uncommon', function(type) {
-    // West Anderson Junction
-    var location = ion.random(locative[type]);
-    return regionByLocation(location) + " " + getName() + " " + ion.random(locative[type]);
-});
-patterns.add('uncommon', function(type) {
-    // West Bison Lake
-    var location = ion.random(locative[type]);
-    return regionByLocation(location) + " " + ion.random(descriptive) + " " + location;
-});
-patterns.add('rare', function(type) {
-    // Ford Trail Pond
-    var name = (ion.test(50)) ? ion.random(descriptive) : getName();
-    return name + " Trail " + ion.random(locative[type]);
-});
-patterns.add('rare', function(type) {
-    // Alfalfa
-    return ion.random(real);
-});
-patterns.add('common', function(type) {
-    // Red Hollow
-    return ion.random(descriptive) + " " + ion.random(locative[type]);
-});
-patterns.add('common', function(type) {
-    // Williams Crossing
-    return getName() + " " + ion.random(locative[type]);
-});
+var patterns = new RarityTable(ion.identity, false)
+    .add('rare', function(type) {
+        // East Pond
+        return ion.random(regional) + " " + ion.random(locative[type]);
+    })
+    .add('uncommon', function(type) {
+        // West Anderson Junction
+        var location = ion.random(locative[type]);
+        return regionByLocation(location) + " " + getName() + " " + ion.random(locative[type]);
+    })
+    .add('uncommon', function(type) {
+        // West Bison Lake
+        var location = ion.random(locative[type]);
+        return regionByLocation(location) + " " + ion.random(descriptive) + " " + location;
+    })
+    .add('rare', function(type) {
+        // Ford Trail Pond
+        var name = (ion.test(50)) ? ion.random(descriptive) : getName();
+        return name + " Trail " + ion.random(locative[type]);
+    })
+    .add('rare', function(type) {
+        // Alfalfa
+        return ion.random(real);
+    })
+    .add('common', function(type) {
+        // Red Hollow
+        return ion.random(descriptive) + " " + ion.random(locative[type]);
+    })
+    .add('common', function(type) {
+        // Williams Crossing
+        return getName() + " " + ion.random(locative[type]);
+    });
 var landforms = ion.keys(locative).sort();
 
 /**
